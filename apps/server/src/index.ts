@@ -1,15 +1,20 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+import express, {Application} from "express";
+import {apiRouter} from "./routes/api";
+import {initDB} from "./db/initDB";
 
-dotenv.config();
-const app = express();
-app.use(cors());
-app.use(express.json());
+(async (): Promise<void> => {
+  try {
+    await initDB()
+  } catch (err) {
+    console.error('DB init error: ', err)
+    process.exit(1)
+  }
 
-app.get("/api/hello", (_req, res) => {
-  res.json({ message: "Hello from server" });
-});
+  const PORT: number = 8000
+  const app: Application = express()
 
-const port = process.env.PORT;
-app.listen(port, () => console.log(`Backend listen: http://localhost:${port}`));
+  app.use(express.json())
+  app.use('/api', apiRouter)
+
+  app.listen(PORT, () => console.log(`server connected on port ${PORT}`))
+})()

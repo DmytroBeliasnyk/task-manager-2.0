@@ -1,13 +1,18 @@
 {
   "name": "task-manager-2.0",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "install-all": "npm install",
     "dev": "concurrently \"npm --workspace=apps/server run dev\" \"npm --workspace=apps/client run dev\""
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "nanoid": "^5.1.6"
   }
 }
-
