@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@plugin 'tailwind-scrollbar';
+
+@theme {
+  --color-primary-bg: #f3f4f6;
+  --color-secondary-bg: #e5e7eb ;
+  --color-highlight-bg: #a9cdf2;
+  --color-focus-bg: #6eaaf9;
+  --color-text-primary: #111827;
+  --color-text-secondary: #4b5563;
+  --color-border: #d1d5db;
+  --color-error-bg: #fef2f2;
+  --color-error-border: #fca5a5;
+  --color-error-text: #dc2626;
+  --color-success-bg: #f0fdf4;
+  --color-success-text: #16a34a;
+  --color-warning-bg: #fffbeb;
+  --color-warning-text: #a16207;
+}

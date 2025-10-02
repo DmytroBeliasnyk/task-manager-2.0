@@ -10,7 +10,7 @@ import {initDB} from "./db/initDB";
     process.exit(1)
   }
 
-  const PORT: number = 8000
+  const PORT = 8000
   const app: Application = express()
 
   app.use(express.json())
