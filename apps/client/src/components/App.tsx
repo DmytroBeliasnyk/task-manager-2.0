@@ -10,7 +10,11 @@ type ListManagementFormState = {
   isOpen: boolean
   formState?: ListManagementFormMode
 }
-
+/*
+перенести запрос из компонента в папку api
+управлять состоянием формы через контекст
+хранить списки в контексте
+*/
 export const App: FC = () => {
   const [lists, setLists] = useState<Array<List>>([])
   const [listManagementFormState, setModalFormState] = useState<ListManagementFormState>({

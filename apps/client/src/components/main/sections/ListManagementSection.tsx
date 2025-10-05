@@ -9,7 +9,7 @@ type TaskSectionProps = {
   selectedList: List | null
   openForm: (formState: ListManagementFormMode) => void
 }
-
+// использовать контекст модалки для управления формой
 export const ListManagementSection: FC<TaskSectionProps> = (
   {selectedList, openForm}) => {
   const tasksSectionClassName: string = clsx(

@@ -6,7 +6,11 @@ type ModalFormProps = {
   formState: ListManagementFormMode
   closeModal: () => void
 }
-
+/*
+дописать api на сервере
+реализовать formAction
+все запросы как api изолировать в другом файле
+*/
 export const ListManagementForm: FC<ModalFormProps> = ({formState, closeModal}) => {
   const inputTitle = useRef<HTMLInputElement>(null!)
   useEffect(() => {

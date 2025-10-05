@@ -9,10 +9,10 @@ type MainProps = {
   lists: Array<List>
   openForm: (formState: ListManagementFormMode) => void
 }
-
+// переместить Header в App
 export const Main: FC<MainProps> = ({lists, openForm}) => {
   const [selectedList, setSelectedList] = useState<List | null>(null)
-  console.log(selectedList)
+
   return (
     <>
       <div className="flex flex-col size-full p-4">
