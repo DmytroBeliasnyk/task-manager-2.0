@@ -10,7 +10,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@shared": path.resolve(__dirname, "../../packages/shared/src")
+      "@shared": path.resolve(__dirname, "../../packages/shared/src"),
+      "@utils": path.resolve(__dirname, "./src/utils")
     }
   },
   server: {
