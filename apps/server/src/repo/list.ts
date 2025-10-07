@@ -23,7 +23,26 @@ export async function saveListInDB(id: string, title: string, description: strin
 
 export async function getListsFromDB(): Promise<List[]> {
   try {
-    const res = await db.query<List>('SELECT * FROM lists');
+    const res = await db.query<List>(`
+        SELECT l.id,
+               l.title,
+               l.description,
+               COALESCE(
+                       json_agg(
+                               json_build_object(
+                                       'id', t.id,
+                                       'title', t.title,
+                                       'description', t.description
+                               )
+                       ) FILTER(WHERE t.id IS NOT NULL),
+                       '[]'
+               ) AS tasks
+        FROM lists l
+                 LEFT JOIN tasks t ON t.list_id = l.id
+        GROUP BY l.id, l.title, l.description
+        ORDER BY l.title;
+    `);
+
     return res.rows;
   } catch (err) {
     console.log(err);

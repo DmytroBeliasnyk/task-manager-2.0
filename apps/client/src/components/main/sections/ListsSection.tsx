@@ -31,9 +31,7 @@ export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
             (list: List): JSX.Element => (
               <div
                 key={list.id}
-                onClick={() =>
-                  selectList(lists.find((findList: List): boolean => findList.id === list.id)!)
-                }
+                onClick={() => selectList(list)}
                 className="flex flex-1 p-2 bg-gray-300 rounded-md hover:border hover:border-gray-400"
               >
                 <section className="flex flex-col">
