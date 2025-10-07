@@ -5,6 +5,7 @@ import { ListManagementForm } from './forms/ListManagementForm';
 import clsx from 'clsx/lite';
 import type { FormOptions } from '@utils/formOptions.ts';
 import type { List } from '@shared/types/list.ts';
+import { Header } from './main/Header';
 
 type AppContextType = {
   openForm: (options: FormOptions) => void;
@@ -40,12 +41,15 @@ export const App: FC = () => {
   return (
     <div className={containerClassName}>
       <Sidebar />
-      <AppContext value={{ openForm, lists }}>
-        <Main />
-      </AppContext>
-      {formState.isOpen && (
-        <ListManagementForm options={formState.options!} closeModal={closeForm} />
-      )}
+      <div className="flex flex-col size-full p-4">
+        <Header />
+        <AppContext value={{ openForm, lists }}>
+          <Main />
+        </AppContext>
+        {formState.isOpen && (
+          <ListManagementForm options={formState.options!} closeModal={closeForm} />
+        )}
+      </div>
     </div>
   );
 };
