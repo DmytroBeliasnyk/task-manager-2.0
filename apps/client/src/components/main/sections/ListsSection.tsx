@@ -48,15 +48,13 @@ export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
       </section>
       <div className="flex justify-end">
         <Button
-          text={'Create new list'}
           type={'button'}
-          clickHandler={() =>
-            openForm({
+          onClick={() => openForm({
               mode: FormMode.AddList,
               item: null,
             })
           }
-        />
+        >Create new list</Button>
       </div>
     </section>
   );

@@ -49,8 +49,8 @@ export const ListManagementForm: FC<ListManagementFormProps> = ({ options, close
             ></textarea>
           </label>
           <div className="flex justify-end gap-4 mt-2">
-            <Button text={'Submit'} type={'submit'} />
-            <Button text={'Close'} type={'reset'} clickHandler={closeModal} />
+            <Button type={'submit'}>Submit</Button>
+            <Button type={'reset'} onClick={closeModal}>Close</Button>
           </div>
         </form>
       </div>

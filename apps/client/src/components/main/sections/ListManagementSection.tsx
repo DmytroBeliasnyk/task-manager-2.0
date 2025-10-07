@@ -61,16 +61,14 @@ export const ListManagementSection: FC<TaskSectionProps> = ({ selectedList }) =>
           </section>
           <div className="flex justify-end">
             <Button
-              text={'Add task'}
               type={'button'}
-              clickHandler={() =>
-                openForm({
+              onClick={() => openForm({
                   mode: FormMode.AddTask,
                   item: null,
                   listId: selectedList.id,
                 })
               }
-            />
+            >Add task</Button>
           </div>
         </>
       ) : (
