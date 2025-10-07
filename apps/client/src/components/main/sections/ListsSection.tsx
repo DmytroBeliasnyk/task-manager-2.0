@@ -14,10 +14,9 @@ export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
 
   const listsSectionClassName: string = clsx(
     'flex flex-col flex-1',
-    lists.length &&
-    `gap-2 pr-1 overflow-y-auto scrollbar-thin
-     scrollbar-thumb-gray-400 scrollbar-track-transparent`,
-    !lists.length && 'justify-center items-center text-center',
+    lists.length
+      ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent'
+      : 'justify-center items-center text-center',
   );
 
   return (
@@ -32,7 +31,7 @@ export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
               <div
                 key={list.id}
                 onClick={() => selectList(list)}
-                className="flex flex-1 p-2 bg-gray-300 rounded-md hover:border hover:border-gray-400"
+                className="flex p-2 bg-gray-300 rounded-md hover:border hover:border-gray-400"
               >
                 <section className="flex flex-col">
                   <h3 className="text-text-primary text-base font-semibold">{list.title}</h3>
