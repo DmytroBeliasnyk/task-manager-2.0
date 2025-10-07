@@ -5,7 +5,7 @@ import { ListManagementForm } from './forms/ListManagementForm';
 import clsx from 'clsx/lite';
 import type { FormOptions } from '@utils/formOptions.ts';
 import type { List } from '@shared/types/list.ts';
-import { Header } from './main/Header';
+import { Header } from './header/Header';
 
 type AppContextType = {
   openForm: (options: FormOptions) => void;
