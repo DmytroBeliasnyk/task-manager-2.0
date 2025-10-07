@@ -10,8 +10,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src",
-    "../../packages/shared"
-  ]
+  "include": ["src", "../../packages/shared"]
 }

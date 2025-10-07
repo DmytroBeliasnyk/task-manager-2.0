@@ -1,10 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -12,10 +10,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@utils/*": ["src/utils/*"],
+      "@shared/*": ["../../packages/shared/*"]
+    }
   },
-  "include": [
-    "src",
-    "../../packages/shared"
-  ]
+  "include": ["src", "../../packages/shared"]
 }

@@ -1,26 +1,27 @@
-import type {FC, JSX} from 'react';
+import { type FC, type JSX, useContext } from 'react';
+import { AppContext } from '../../App';
 import clsx from 'clsx/lite';
-import {Button} from "../../button/Button";
-import {type ListManagementFormMode, ModalFormMode} from "../../../utils/modalFormMode";
-import type {List} from "@shared/types/list.ts";
-import type {Task} from "@shared/types/task.ts";
+import { Button } from '../../button/Button';
+import { FormMode } from '@utils/formOptions';
+import type { List } from '@shared/types/list.ts';
+import type { Task } from '@shared/types/task.ts';
 
 type TaskSectionProps = {
-  selectedList: List | null
-  openForm: (formState: ListManagementFormMode) => void
-}
-// использовать контекст модалки для управления формой
-export const ListManagementSection: FC<TaskSectionProps> = (
-  {selectedList, openForm}) => {
+  selectedList: List | null,
+};
+
+export const ListManagementSection: FC<TaskSectionProps> = ({ selectedList }) => {
+  const { openForm } = useContext(AppContext)!;
+
   const tasksSectionClassName: string = clsx(
     'flex flex-col flex-1 bg-secondary-bg rounded-md',
     !selectedList && 'justify-center items-center text-center',
-    selectedList && 'justify-between gap-2 p-4'
-  )
+    selectedList && 'justify-between gap-2 p-4',
+  );
   const tasksListClassName: string = clsx(
     'flex flex-col flex-1 bg-secondary-bg rounded-md gap-2 pr-1 overflow-y-auto ',
     'scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent',
-  )
+  );
 
   return (
     <section className={tasksSectionClassName}>
@@ -30,15 +31,17 @@ export const ListManagementSection: FC<TaskSectionProps> = (
             {selectedList.title}
           </h2>
           <section className={tasksListClassName}>
-            {selectedList.tasks
-              .map((task: Task): JSX.Element => (
+            {selectedList.tasks.map(
+              (task: Task): JSX.Element => (
                 <div
                   key={task.id}
-                  onClick={() => openForm({
-                    formMode: ModalFormMode.EditTask,
-                    formItem: task,
-                    listId: selectedList.id
-                  })}
+                  onClick={() =>
+                    openForm({
+                      mode: FormMode.EditTask,
+                      item: task,
+                      listId: selectedList.id,
+                    })
+                  }
                   className="flex flex-1 p-2 bg-gray-300 rounded-md hover:border hover:border-gray-400"
                 >
                   <section className="flex flex-col">
@@ -46,17 +49,20 @@ export const ListManagementSection: FC<TaskSectionProps> = (
                     <p className="text-text-secondary text-sm font-medium">{task.description}</p>
                   </section>
                 </div>
-              ))}
+              ),
+            )}
           </section>
           <div className="flex justify-end">
             <Button
-              text={"Add task"}
-              type={"button"}
-              clickHandler={() => openForm({
-                formMode: ModalFormMode.AddTask,
-                formItem: null,
-                listId: selectedList.id
-              })}
+              text={'Add task'}
+              type={'button'}
+              clickHandler={() =>
+                openForm({
+                  mode: FormMode.AddTask,
+                  item: null,
+                  listId: selectedList.id,
+                })
+              }
             />
           </div>
         </>
@@ -66,5 +72,5 @@ export const ListManagementSection: FC<TaskSectionProps> = (
         </span>
       )}
     </section>
-  )
-}
+  );
+};

@@ -1,10 +1,10 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @plugin 'tailwind-scrollbar';
 
 @theme {
   --color-primary-bg: #f3f4f6;
-  --color-secondary-bg: #e5e7eb ;
+  --color-secondary-bg: #e5e7eb;
   --color-highlight-bg: #a9cdf2;
   --color-focus-bg: #6eaaf9;
   --color-text-primary: #111827;

@@ -10,12 +10,7 @@ module.exports = {
     node: true,
     es2021: true,
   },
-  plugins: [
-    '@typescript-eslint',
-    'import',
-    'react',
-    'react-hooks'
-  ],
+  plugins: ['@typescript-eslint', 'import', 'react', 'react-hooks'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -28,15 +23,12 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-unused-vars': ['warn'],
-    'import/order': ['warn', { 'alphabetize': { 'order': 'asc' } }],
+    'import/order': ['warn', { alphabetize: { order: 'asc' } }],
   },
   settings: {
     react: {
       version: 'detect',
     },
   },
-  ignorePatterns: [
-    'dist',
-    'node_modules',
-  ],
+  ignorePatterns: ['dist', 'node_modules'],
 };

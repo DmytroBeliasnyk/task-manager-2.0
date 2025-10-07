@@ -1,8 +1,8 @@
-import type {Task} from "./task.ts";
+import type { Task } from './task.ts';
 
 export type List = {
-  id: string
-  title: string
-  description: string
-  tasks: Array<Task>
-}
+  id: string;
+  title: string;
+  description: string;
+  tasks: Array<Task>;
+};

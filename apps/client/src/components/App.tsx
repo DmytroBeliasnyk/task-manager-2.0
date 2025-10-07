@@ -1,56 +1,51 @@
-import {Sidebar} from "./sidebar/Sidebar";
-import {Main} from "./main/Main";
-import {type FC, useEffect, useState} from "react";
-import {ListManagementForm} from "./forms/ListManagementForm";
-import clsx from "clsx/lite";
-import type {ListManagementFormMode} from "../utils/modalFormMode.ts";
-import type {List} from "@shared/types/list.ts";
+import { Sidebar } from './sidebar/Sidebar';
+import { Main } from './main/Main';
+import { type FC, useEffect, useState, createContext } from 'react';
+import { ListManagementForm } from './forms/ListManagementForm';
+import clsx from 'clsx/lite';
+import type { FormOptions } from '@utils/formOptions.ts';
+import type { List } from '@shared/types/list.ts';
 
-type ListManagementFormState = {
-  isOpen: boolean
-  formState?: ListManagementFormMode
-}
-/*
-перенести запрос из компонента в папку api
-управлять состоянием формы через контекст
-хранить списки в контексте
-*/
+type AppContextType = {
+  openForm: (options: FormOptions) => void;
+  lists: Array<List>;
+};
+export const AppContext = createContext<AppContextType | null>(null);
+
+type FormState = {
+  isOpen: boolean;
+  options?: FormOptions;
+};
+
 export const App: FC = () => {
-  const [lists, setLists] = useState<Array<List>>([])
-  const [listManagementFormState, setModalFormState] = useState<ListManagementFormState>({
-    isOpen: false
-  })
+  const [lists, setLists] = useState<Array<List>>([]);
+  const [formState, setFormState] = useState<FormState>({ isOpen: false });
+
   useEffect(() => {
     fetch('/api/lists')
-      .then(res => res.json())
-      .then(res => setLists(res.data))
-  }, [])
+      .then((res) => res.json())
+      .then((res) => setLists(res.data));
+  }, []);
 
-  function openForm(formState: ListManagementFormMode): void {
-    setModalFormState({isOpen: true, formState})
+  function openForm(options: FormOptions): void {
+    setFormState({ isOpen: true, options });
   }
 
   function closeForm(): void {
-    setModalFormState({isOpen: false})
+    setFormState({ isOpen: false });
   }
 
-  const containerClassName: string = clsx(
-    'flex flex-row h-full',
-    listManagementFormState.isOpen && 'relative'
-  )
+  const containerClassName: string = clsx('flex flex-row h-full', formState.isOpen && 'relative');
 
   return (
     <div className={containerClassName}>
-      <Sidebar/>
-      <Main
-        lists={lists}
-        openForm={openForm}
-      />
-      {listManagementFormState.isOpen &&
-        <ListManagementForm
-          formState={listManagementFormState.formState!}
-          closeModal={closeForm}
-        />}
+      <Sidebar />
+      <AppContext value={{ openForm, lists }}>
+        <Main />
+      </AppContext>
+      {formState.isOpen && (
+        <ListManagementForm options={formState.options!} closeModal={closeForm} />
+      )}
     </div>
-  )
-}
+  );
+};
