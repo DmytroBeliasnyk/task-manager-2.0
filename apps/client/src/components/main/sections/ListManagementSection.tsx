@@ -1,5 +1,5 @@
 import { type FC, type JSX, useContext } from 'react';
-import { AppContext } from '../../App';
+import { FormContext } from '../../App';
 import clsx from 'clsx/lite';
 import { Button } from '../../button/Button';
 import { FormMode } from '@utils/formOptions';
@@ -11,7 +11,7 @@ type TaskSectionProps = {
 };
 
 export const ListManagementSection: FC<TaskSectionProps> = ({ selectedList }) => {
-  const { openForm } = useContext(AppContext)!;
+  const openForm = useContext(FormContext)!;
 
   const tasksSectionClassName: string = clsx(
     'flex flex-col flex-1 bg-secondary-bg rounded-md',

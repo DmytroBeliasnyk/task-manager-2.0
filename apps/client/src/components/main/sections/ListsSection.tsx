@@ -1,5 +1,5 @@
 import { type FC, type JSX, useContext } from 'react';
-import { AppContext } from '../../App';
+import { FormContext, ListsContext } from '../../App';
 import { Button } from '../../button/Button';
 import clsx from 'clsx/lite';
 import { FormMode } from '@utils/formOptions';
@@ -10,7 +10,8 @@ type ListsSectionProps = {
 };
 
 export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
-  const { openForm, lists } = useContext(AppContext)!;
+  const openForm  = useContext(FormContext)!;
+  const lists = useContext(ListsContext);
 
   const listsSectionClassName: string = clsx(
     'flex flex-col flex-1',
