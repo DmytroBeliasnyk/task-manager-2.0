@@ -1,13 +1,16 @@
 import { type FC, useEffect, useRef } from 'react';
-import type { FormOptions } from '@utils/formOptions.ts';
+import { FormMode, type FormOptions } from '@utils/formOptions';
 import { Button } from '../button/Button';
+import { addList } from '@api/lists';
+import type { List } from '@shared/types/list';
 
 type ListManagementFormProps = {
+  addNewList: (newList: List) => void;
   options: FormOptions;
   closeModal: () => void;
 };
 
-export const ListManagementForm: FC<ListManagementFormProps> = ({ options, closeModal }) => {
+export const ListManagementForm: FC<ListManagementFormProps> = ({ addNewList, options, closeModal }) => {
   const inputTitle = useRef<HTMLInputElement>(null!);
   useEffect(() => {
     inputTitle.current.focus();
@@ -17,8 +20,27 @@ export const ListManagementForm: FC<ListManagementFormProps> = ({ options, close
   const inputDescriptionValue: string = options.item ? options.item.description : '';
 
   function formAction(formData: FormData): void {
-    console.log(formData.get('title'));
-    console.log(formData.get('description'));
+    const title = String(formData.get('title'));
+    const description = String(formData.get('description'));
+
+    switch (options.mode) {
+      case FormMode.AddList :
+        addList(title, description).then(id => {
+          addNewList({ id, title, description, tasks: [] });
+        });
+        break;
+      case FormMode.AddTask :
+        console.log(FormMode.AddTask);
+        break;
+      case FormMode.EditList :
+        console.log(FormMode.EditList);
+        break;
+      case FormMode.EditTask :
+        console.log(FormMode.EditTask);
+        break;
+      default:
+        console.log('ERROR');
+    }
 
     closeModal();
   }

@@ -4,13 +4,8 @@ import { List } from '@shared/types/list';
 
 export const addListController: RequestHandler = async (req, res) => {
   try {
-    if (!req.body) {
-      res.status(400).json({ messages: 'parameter "title" is required' });
-      return;
-    }
-
-    const { title = '', description = '' } = req.body;
-    if (!title) {
+    const { title = '', description = '' } = req?.body;
+    if (!req.body || !title) {
       res.status(400).json({ messages: 'parameter "title" is required' });
       return;
     }

@@ -25,6 +25,10 @@ export const App: FC = () => {
     getAllLists().then((lists: List[]) => setLists(lists));
   }, []);
 
+  function addNewList(newList: List): void {
+    setLists((prev: List[]) => [...prev, newList])
+  }
+
   function openForm(options: FormOptions): void {
     setFormState({ isOpen: true, options });
   }
@@ -45,7 +49,11 @@ export const App: FC = () => {
             <Main />
           </FormContext>
           {formState.isOpen && (
-            <ListManagementForm options={formState.options!} closeModal={closeForm} />
+            <ListManagementForm
+              addNewList={addNewList}
+              options={formState.options!}
+              closeModal={closeForm}
+            />
           )}
         </div>
       </ListsContext>
