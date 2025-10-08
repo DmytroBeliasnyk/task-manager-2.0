@@ -8,8 +8,8 @@ export enum FormMode {
   EditTask = 'Edit task',
 }
 
-export type FormOptions = {
-  mode: FormMode;
-  item: List | Task | null;
-  listId?: string;
-};
+export type FormOptions =
+  | { mode: FormMode.AddList; }
+  | { mode: FormMode.AddTask; listId: string; }
+  | { mode: FormMode.EditList; item: List; }
+  | { mode: FormMode.EditTask; item: Task; listId: string; };

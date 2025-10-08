@@ -3,25 +3,32 @@ import { FormMode, type FormOptions } from '@utils/formOptions';
 import { Button } from '../button/Button';
 import { addList } from '@api/lists';
 import type { List } from '@shared/types/list';
+import { Task } from '@shared/types/task';
+import { addTask } from '@api/tasks';
 
 type ListManagementFormProps = {
   addNewList: (newList: List) => void;
+  addNewTask: (newTask: Task, listId: string) => void;
   options: FormOptions;
   closeModal: () => void;
 };
 
-export const ListManagementForm: FC<ListManagementFormProps> = ({ addNewList, options, closeModal }) => {
+export const ListManagementForm: FC<ListManagementFormProps> = ({ addNewList, addNewTask, options, closeModal }) => {
   const inputTitle = useRef<HTMLInputElement>(null!);
   useEffect(() => {
     inputTitle.current.focus();
   }, []);
 
-  const inputTitleValue: string = options.item ? options.item.title : '';
-  const inputDescriptionValue: string = options.item ? options.item.description : '';
+  let inputTitleValue = '';
+  let inputDescriptionValue = '';
+  if (options.mode === FormMode.EditList || options.mode === FormMode.EditTask) {
+    inputTitleValue = options.item.title;
+    inputDescriptionValue = options.item.description;
+  }
 
   function formAction(formData: FormData): void {
-    const title = String(formData.get('title'));
-    const description = String(formData.get('description'));
+    const title: string = String(formData.get('title'));
+    const description: string = String(formData.get('description'));
 
     switch (options.mode) {
       case FormMode.AddList :
@@ -30,7 +37,9 @@ export const ListManagementForm: FC<ListManagementFormProps> = ({ addNewList, op
         });
         break;
       case FormMode.AddTask :
-        console.log(FormMode.AddTask);
+        addTask(title, description, options.listId).then(id => {
+          addNewTask({id, title, description}, options.listId)
+        });
         break;
       case FormMode.EditList :
         console.log(FormMode.EditList);

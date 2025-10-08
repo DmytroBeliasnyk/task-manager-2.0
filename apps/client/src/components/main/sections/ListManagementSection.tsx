@@ -64,7 +64,6 @@ export const ListManagementSection: FC<TaskSectionProps> = ({ selectedList }) =>
               type={'button'}
               onClick={() => openForm({
                   mode: FormMode.AddTask,
-                  item: null,
                   listId: selectedList.id,
                 })
               }

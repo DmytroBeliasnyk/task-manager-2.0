@@ -7,6 +7,7 @@ import clsx from 'clsx/lite';
 import type { FormOptions } from '@utils/formOptions.ts';
 import type { List } from '@shared/types/list.ts';
 import { Header } from './header/Header';
+import { Task } from '@shared/types/task';
 
 export const ListsContext = createContext<List[]>([]);
 
@@ -26,7 +27,17 @@ export const App: FC = () => {
   }, []);
 
   function addNewList(newList: List): void {
-    setLists((prev: List[]) => [...prev, newList])
+    setLists((prevLists: List[]) => [...prevLists, newList]);
+  }
+
+  function addNewTask(newTask: Task, listId: string): void {
+    setLists((prevLists: List[]) => (
+      prevLists.map((list: List) => (
+        list.id === listId
+          ? { ...list, tasks: [...list.tasks, newTask] }
+          : list
+      ))
+    ));
   }
 
   function openForm(options: FormOptions): void {
@@ -42,21 +53,22 @@ export const App: FC = () => {
   return (
     <div className={containerClassName}>
       <Sidebar />
-      <ListsContext value={lists}>
-        <div className="flex flex-col size-full p-4">
+      <div className="flex flex-col size-full p-4">
+        <ListsContext value={lists}>
           <Header />
           <FormContext value={openForm}>
             <Main />
           </FormContext>
-          {formState.isOpen && (
-            <ListManagementForm
-              addNewList={addNewList}
-              options={formState.options!}
-              closeModal={closeForm}
-            />
-          )}
-        </div>
-      </ListsContext>
+        </ListsContext>
+        {formState.isOpen && (
+          <ListManagementForm
+            addNewList={addNewList}
+            addNewTask={addNewTask}
+            options={formState.options!}
+            closeModal={closeForm}
+          />
+        )}
+      </div>
     </div>
   );
 };

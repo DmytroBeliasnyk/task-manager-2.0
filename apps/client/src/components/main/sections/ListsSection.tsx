@@ -6,7 +6,7 @@ import { FormMode } from '@utils/formOptions';
 import type { List } from '@shared/types/list.ts';
 
 type ListsSectionProps = {
-  selectList: (list: List | null) => void;
+  selectList: (listId: string) => void;
 };
 
 export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
@@ -31,7 +31,7 @@ export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
             (list: List): JSX.Element => (
               <div
                 key={list.id}
-                onClick={() => selectList(list)}
+                onClick={() => selectList(list.id)}
                 className="flex p-2 bg-gray-300 rounded-md hover:border hover:border-gray-400"
               >
                 <section className="flex flex-col">
@@ -51,8 +51,7 @@ export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
         <Button
           type={'button'}
           onClick={() => openForm({
-              mode: FormMode.AddList,
-              item: null,
+              mode: FormMode.AddList
             })
           }
         >Create new list</Button>
