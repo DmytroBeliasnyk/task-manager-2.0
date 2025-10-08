@@ -13,6 +13,7 @@
     "jsx": "react-jsx",
     "paths": {
       "@utils/*": ["src/utils/*"],
+      "@api/*": ["src/api/*"],
       "@shared/*": ["../../packages/shared/*"]
     }
   },

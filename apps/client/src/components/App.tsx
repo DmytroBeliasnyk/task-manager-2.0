@@ -2,6 +2,7 @@ import { Sidebar } from './sidebar/Sidebar';
 import { Main } from './main/Main';
 import { type FC, useEffect, useState, createContext } from 'react';
 import { ListManagementForm } from './forms/ListManagementForm';
+import { getAllLists } from '@api/lists';
 import clsx from 'clsx/lite';
 import type { FormOptions } from '@utils/formOptions.ts';
 import type { List } from '@shared/types/list.ts';
@@ -19,13 +20,11 @@ type FormState = {
 };
 
 export const App: FC = () => {
-  const [lists, setLists] = useState<Array<List>>([]);
+  const [lists, setLists] = useState<List[]>([]);
   const [formState, setFormState] = useState<FormState>({ isOpen: false });
 
   useEffect(() => {
-    fetch('/api/lists')
-      .then((res) => res.json())
-      .then((res) => setLists(res.data));
+    getAllLists().then((lists: List[]) => setLists(lists));
   }, []);
 
   function openForm(options: FormOptions): void {
@@ -43,9 +42,9 @@ export const App: FC = () => {
       <Sidebar />
       <div className="flex flex-col size-full p-4">
         <Header />
-        <AppContext value={{ openForm, lists }}>
+        <AppContext.Provider value={{ openForm, lists }}>
           <Main />
-        </AppContext>
+        </AppContext.Provider>
         {formState.isOpen && (
           <ListManagementForm options={formState.options!} closeModal={closeForm} />
         )}

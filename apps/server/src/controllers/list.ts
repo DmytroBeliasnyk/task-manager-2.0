@@ -25,7 +25,7 @@ export const addListController: RequestHandler = async (req, res) => {
 export const getListsController: RequestHandler = async (req, res) => {
   try {
     const lists: Array<List> = await getLists();
-    res.json({ data: lists });
+    res.json({ lists: lists });
   } catch (err) {
     res.status(500).json({ message: err });
   }
