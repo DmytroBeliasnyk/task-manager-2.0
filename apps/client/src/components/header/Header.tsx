@@ -1,21 +1,21 @@
 import type { FC } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaAngleDown, FaSearch } from 'react-icons/fa';
 
 export const Header: FC = () => {
   return (
     <header className="flex justify-between pb-2 text-1g">
-      <label className="rounded-md bg-secondary-bg py-1 px-2 text-gray-400">
+      <label className="flex items-center bg-secondary-bg py-1 px-2 text-gray-400">
+        <FaSearch className="mr-2"/>
         <input
           className="placeholder:text-gray-400 placeholder:italic focus:outline-none text-text-secondary"
           placeholder="Search list by name"
           type="text"
         />
-        <FontAwesomeIcon icon="search" />
       </label>
       <div className="flex items-center gap-2 text-base text-text-secondary font-medium">
         <div className="size-8 rounded-full bg-text-secondary">{/* avatar */}</div>
         <span>username</span>
-        <FontAwesomeIcon icon="angle-down" /> {/* open options list */}
+        <FaAngleDown />{/* open options list */}
       </div>
     </header>
   );
