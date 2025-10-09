@@ -11,9 +11,8 @@ export const ItemCard: FC<ItemCardProps> = ({ item, clickHandler }) => {
   return (
     <>
       <div
-        key={item.id}
         onClick={clickHandler}
-        className="flex p-2 bg-gray-300 rounded-md hover:border hover:border-gray-400"
+        className="flex justify-between items-center p-2 bg-gray-300 rounded-md cursor-pointer hover:border hover:border-gray-400"
       >
         <section className="flex flex-col">
           <h3 className="text-text-primary text-base font-semibold">{item.title}</h3>

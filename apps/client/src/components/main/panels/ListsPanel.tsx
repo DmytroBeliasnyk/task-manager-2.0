@@ -30,6 +30,7 @@ export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
         {lists.length ? (
           lists.map((list: List): JSX.Element => (
             <ItemCard
+              key={list.id}
               item={list}
               clickHandler={() => selectList(list.id)}
             />

@@ -6,6 +6,7 @@ import { FormMode } from '@utils/formOptions';
 import type { List } from '@shared/types/list.ts';
 import type { Task } from '@shared/types/task.ts';
 import { ItemCard } from './common/ItemCard';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 type TaskSectionProps = {
   selectedList: List | null,
@@ -26,18 +27,31 @@ export const TasksPanel: FC<TaskSectionProps> = ({ selectedList }) => {
       ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent'
       : 'justify-center items-center text-center',
   ) : null;
+  const iconClassName: string = 'cursor-pointer hover:text-text-primary';
 
   return (
     <section className={tasksSectionClassName}>
       {selectedList ? (
         <>
-          <h2 className="pb-2 border-b border-text-secondary text-2xl font-semibold text-text-primary">
-            {selectedList.title}
-          </h2>
+          <header
+            className="flex justify-between items-center pb-2 border-b border-text-secondary text-2xl font-semibold text-text-primary">
+            <h2>{selectedList.title}</h2>
+            <section className="flex gap-2 text-base text-text-secondary">
+              <FaEdit
+                className={iconClassName}
+                onClick={() => openForm({
+                  mode: FormMode.EditList,
+                  item: selectedList,
+                })}
+              />
+              <FaTrash className={iconClassName} />
+            </section>
+          </header>
           <section className={tasksListClassName ?? undefined}>
             {selectedList.tasks.length ? (
               selectedList.tasks.map((task: Task): JSX.Element => (
                 <ItemCard
+                  key={task.id}
                   item={task}
                   clickHandler={() => openForm({
                     mode: FormMode.EditTask,
