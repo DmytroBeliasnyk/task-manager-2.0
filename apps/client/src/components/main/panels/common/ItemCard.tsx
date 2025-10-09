@@ -1,0 +1,25 @@
+import { FC } from 'react';
+import { Task } from '@shared/types/task';
+import { List } from '@shared/types/list';
+
+type ItemCardProps = {
+  item: List | Task;
+  clickHandler: () => void;
+}
+
+export const ItemCard: FC<ItemCardProps> = ({ item, clickHandler }) => {
+  return (
+    <>
+      <div
+        key={item.id}
+        onClick={clickHandler}
+        className="flex p-2 bg-gray-300 rounded-md hover:border hover:border-gray-400"
+      >
+        <section className="flex flex-col">
+          <h3 className="text-text-primary text-base font-semibold">{item.title}</h3>
+          <p className="text-text-secondary text-sm font-medium">{item.description}</p>
+        </section>
+      </div>
+    </>
+  );
+};

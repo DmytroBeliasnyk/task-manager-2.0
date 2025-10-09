@@ -4,13 +4,14 @@ import { Button } from '../../button/Button';
 import clsx from 'clsx/lite';
 import { FormMode } from '@utils/formOptions';
 import type { List } from '@shared/types/list.ts';
+import { ItemCard } from './common/ItemCard';
 
 type ListsSectionProps = {
   selectList: (listId: string) => void;
 };
 
-export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
-  const openForm  = useContext(FormContext)!;
+export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
+  const openForm = useContext(FormContext)!;
   const lists = useContext(ListsContext);
 
   const listsSectionClassName: string = clsx(
@@ -27,20 +28,12 @@ export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
       </h2>
       <section className={listsSectionClassName}>
         {lists.length ? (
-          lists.map(
-            (list: List): JSX.Element => (
-              <div
-                key={list.id}
-                onClick={() => selectList(list.id)}
-                className="flex p-2 bg-gray-300 rounded-md hover:border hover:border-gray-400"
-              >
-                <section className="flex flex-col">
-                  <h3 className="text-text-primary text-base font-semibold">{list.title}</h3>
-                  <p className="text-text-secondary text-sm font-medium">{list.description}</p>
-                </section>
-              </div>
-            ),
-          )
+          lists.map((list: List): JSX.Element => (
+            <ItemCard
+              item={list}
+              clickHandler={() => selectList(list.id)}
+            />
+          ))
         ) : (
           <span className="inline-block w-3/4 text-4xl text-gray-400">
             You don't have any lists...
@@ -50,10 +43,9 @@ export const ListsSection: FC<ListsSectionProps> = ({ selectList }) => {
       <div className="flex justify-end">
         <Button
           type={'button'}
-          onClick={() => openForm({
-              mode: FormMode.AddList
-            })
-          }
+          onClick={() => openForm(
+            { mode: FormMode.AddList },
+          )}
         >Create new list</Button>
       </div>
     </section>

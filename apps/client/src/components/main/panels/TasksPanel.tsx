@@ -5,19 +5,20 @@ import { Button } from '../../button/Button';
 import { FormMode } from '@utils/formOptions';
 import type { List } from '@shared/types/list.ts';
 import type { Task } from '@shared/types/task.ts';
+import { ItemCard } from './common/ItemCard';
 
 type TaskSectionProps = {
   selectedList: List | null,
 };
 
-export const ListManagementSection: FC<TaskSectionProps> = ({ selectedList }) => {
+export const TasksPanel: FC<TaskSectionProps> = ({ selectedList }) => {
   const openForm = useContext(FormContext)!;
 
   const tasksSectionClassName: string = clsx(
     'flex flex-col flex-1 bg-secondary-bg rounded-md',
     selectedList
       ? 'justify-between gap-2 p-4'
-      : 'justify-center items-center text-center'
+      : 'justify-center items-center text-center',
   );
   const tasksListClassName: string | null = selectedList ? clsx(
     'flex flex-col flex-1',
@@ -36,24 +37,16 @@ export const ListManagementSection: FC<TaskSectionProps> = ({ selectedList }) =>
           <section className={tasksListClassName ?? undefined}>
             {selectedList.tasks.length ? (
               selectedList.tasks.map((task: Task): JSX.Element => (
-                  <div
-                    key={task.id}
-                    onClick={() =>
-                      openForm({
-                        mode: FormMode.EditTask,
-                        item: task,
-                        listId: selectedList.id,
-                      })
-                    }
-                    className="flex p-2 bg-gray-300 rounded-md hover:border hover:border-gray-400"
-                  >
-                    <section className="flex flex-col">
-                      <h3 className="text-text-primary text-base font-semibold">{task.title}</h3>
-                      <p className="text-text-secondary text-sm font-medium">{task.description}</p>
-                    </section>
-                  </div>
-                ),
-              )) : (
+                <ItemCard
+                  item={task}
+                  clickHandler={() => openForm({
+                    mode: FormMode.EditTask,
+                    item: task,
+                    listId: selectedList.id,
+                  })}
+                />
+              ))
+            ) : (
               <span className="inline-block w-3/4 text-4xl text-gray-400">
               You don't have any tasks...
               </span>
@@ -63,9 +56,9 @@ export const ListManagementSection: FC<TaskSectionProps> = ({ selectedList }) =>
             <Button
               type={'button'}
               onClick={() => openForm({
-                  mode: FormMode.AddTask,
-                  listId: selectedList.id,
-                })
+                mode: FormMode.AddTask,
+                listId: selectedList.id,
+              })
               }
             >Add task</Button>
           </div>
