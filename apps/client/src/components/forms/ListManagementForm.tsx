@@ -1,7 +1,7 @@
 import { type FC, useEffect, useRef } from 'react';
 import { FormMode, type FormOptions } from '@utils/formOptions';
 import { Button } from '../button/Button';
-import { addList } from '@api/lists';
+import { addList, updateList } from '@api/lists';
 import type { List } from '@shared/types/list';
 import { Task } from '@shared/types/task';
 import { addTask } from '@api/tasks';
@@ -9,11 +9,18 @@ import { addTask } from '@api/tasks';
 type ListManagementFormProps = {
   addNewList: (newList: List) => void;
   addNewTask: (newTask: Task, listId: string) => void;
+  editList: (id: string, title: string, description: string) => void
   options: FormOptions;
   closeModal: () => void;
 };
 
-export const ListManagementForm: FC<ListManagementFormProps> = ({ addNewList, addNewTask, options, closeModal }) => {
+export const ListManagementForm: FC<ListManagementFormProps> = ({
+                                                                  addNewList,
+                                                                  addNewTask,
+                                                                  editList,
+                                                                  options,
+                                                                  closeModal,
+                                                                }) => {
   const inputTitle = useRef<HTMLInputElement>(null!);
   useEffect(() => {
     inputTitle.current.focus();
@@ -38,11 +45,13 @@ export const ListManagementForm: FC<ListManagementFormProps> = ({ addNewList, ad
         break;
       case FormMode.AddTask :
         addTask(title, description, options.listId).then(id => {
-          addNewTask({id, title, description}, options.listId)
+          addNewTask({ id, title, description }, options.listId);
         });
         break;
       case FormMode.EditList :
-        console.log(FormMode.EditList);
+        updateList(options.item.id, title, description).then(() => {
+          editList(options.item.id, title, description);
+        });
         break;
       case FormMode.EditTask :
         console.log(FormMode.EditTask);

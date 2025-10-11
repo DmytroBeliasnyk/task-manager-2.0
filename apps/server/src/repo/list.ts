@@ -1,5 +1,6 @@
 import { List } from '@shared/types/list';
 import { db } from '../db/db';
+import NonExistentIDError from '../utils/errors/NonExistentIDError';
 
 export async function saveListInDB(id: string, title: string, description: string): Promise<void> {
   const client = await db.connect();
@@ -47,5 +48,31 @@ export async function getListsFromDB(): Promise<List[]> {
   } catch (err) {
     console.log(err);
     throw new Error('DB error while fetching lists');
+  }
+}
+
+export async function saveUpdatedList(id: string, title: string, description: string): Promise<void> {
+  const client = await db.connect();
+  const query = `
+      UPDATE lists
+      SET title=$1,
+          description=$2
+      WHERE id = $3 RETURNING *`;
+
+  try {
+    await client.query('BEGIN');
+
+    const res = await client.query<List>(query, [title, description, id]);
+    if (!res.rowCount) {
+      throw new NonExistentIDError('Error update list: non-existent id');
+    }
+
+    await client.query('COMMIT');
+  } catch (err) {
+    console.error(err);
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
   }
 }

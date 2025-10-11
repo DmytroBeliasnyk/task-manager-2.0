@@ -40,6 +40,16 @@ export const App: FC = () => {
     ));
   }
 
+  function editList(id: string, title: string, description: string): void {
+    setLists((prevLists: List[]) => (
+      prevLists.map((list: List) => (
+        list.id === id
+          ? { ...list, title: title, description: description }
+          : list
+      ))
+    ));
+  }
+
   function openForm(options: FormOptions): void {
     setFormState({ isOpen: true, options });
   }
@@ -64,6 +74,7 @@ export const App: FC = () => {
           <ListManagementForm
             addNewList={addNewList}
             addNewTask={addNewTask}
+            editList={editList}
             options={formState.options!}
             closeModal={closeForm}
           />
