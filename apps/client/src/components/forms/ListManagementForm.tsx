@@ -4,12 +4,13 @@ import { Button } from '../button/Button';
 import { addList, updateList } from '@api/lists';
 import type { List } from '@shared/types/list';
 import { Task } from '@shared/types/task';
-import { addTask } from '@api/tasks';
+import { addTask, updateTask } from '@api/tasks';
 
 type ListManagementFormProps = {
   addNewList: (newList: List) => void;
   addNewTask: (newTask: Task, listId: string) => void;
-  editList: (id: string, title: string, description: string) => void
+  editList: (id: string, title: string, description: string) => void;
+  editTask: (task: Task, listId: string) => void;
   options: FormOptions;
   closeModal: () => void;
 };
@@ -18,6 +19,7 @@ export const ListManagementForm: FC<ListManagementFormProps> = ({
                                                                   addNewList,
                                                                   addNewTask,
                                                                   editList,
+                                                                  editTask,
                                                                   options,
                                                                   closeModal,
                                                                 }) => {
@@ -54,7 +56,9 @@ export const ListManagementForm: FC<ListManagementFormProps> = ({
         });
         break;
       case FormMode.EditTask :
-        console.log(FormMode.EditTask);
+        updateTask(options.item.id, title, description).then((task: Task) => {
+          editTask(task, options.listId);
+        });
         break;
       default:
         console.log('ERROR');

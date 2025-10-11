@@ -50,6 +50,20 @@ export const App: FC = () => {
     ));
   }
 
+  function editTask(editedTask: Task, listId: string): void {
+    const list: List = lists.find(list => list.id === listId)!;
+    const updatedTasks: Task[] = list.tasks.map((task: Task) =>
+      task.id === editedTask.id ? editedTask : task);
+
+    setLists((prevLists: List[]) => (
+      prevLists.map((list: List) => (
+        list.id === listId
+          ? { ...list, tasks: updatedTasks }
+          : list
+      ))
+    ));
+  }
+
   function openForm(options: FormOptions): void {
     setFormState({ isOpen: true, options });
   }
@@ -75,6 +89,7 @@ export const App: FC = () => {
             addNewList={addNewList}
             addNewTask={addNewTask}
             editList={editList}
+            editTask={editTask}
             options={formState.options!}
             closeModal={closeForm}
           />

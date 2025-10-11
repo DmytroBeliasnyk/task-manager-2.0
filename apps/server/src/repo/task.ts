@@ -1,4 +1,6 @@
 import { db } from '../db/db';
+import NonExistentIDError from '../utils/errors/NonExistentIDError';
+import { Task } from '@shared/types/task';
 
 export async function saveTaskInDB(taskId: string,
                                    title: string,
@@ -18,6 +20,34 @@ export async function saveTaskInDB(taskId: string,
     console.error('Error saving task: ', err);
     await client.query('ROLLBACK');
     throw new Error('DB error while saving task');
+  } finally {
+    client.release();
+  }
+}
+
+export async function saveUpdatedTask(id: string, title: string, description: string): Promise<Task> {
+  const client = await db.connect();
+  const query = `
+      UPDATE tasks
+      SET title=$1,
+          description=$2
+      WHERE id = $3
+      RETURNING *`;
+
+  try {
+    await client.query('BEGIN');
+
+    const res = await client.query<Task>(query, [title, description, id]);
+    if (!res.rowCount) {
+      throw new NonExistentIDError('Error update task: non-existent id');
+    }
+
+    await client.query('COMMIT');
+    return res.rows[0];
+  } catch (err) {
+    console.error(err);
+    await client.query('ROLLBACK');
+    throw err;
   } finally {
     client.release();
   }
