@@ -1,6 +1,6 @@
+import { Task } from '@shared/types/task';
 import { db } from '../db/db';
 import NonExistentIDError from '../utils/errors/NonExistentIDError';
-import { Task } from '@shared/types/task';
 
 export async function saveTaskInDB(taskId: string,
                                    title: string,

@@ -1,6 +1,6 @@
+import { List } from '@shared/types/list';
 import { RequestHandler } from 'express';
 import { getLists, saveList, updateList } from '../services/list';
-import { List } from '@shared/types/list';
 import NonExistentIDError from '../utils/errors/NonExistentIDError';
 
 export const addListController: RequestHandler = async (req, res) => {

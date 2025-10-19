@@ -1,10 +1,10 @@
-import { type FC, useEffect, useRef } from 'react';
-import { FormMode, type FormOptions } from '@utils/formOptions';
-import { Button } from '../button/Button';
 import { addList, updateList } from '@api/lists';
-import type { List } from '@shared/types/list';
-import { Task } from '@shared/types/task';
 import { addTask, updateTask } from '@api/tasks';
+import type { List } from '@shared/types/list';
+import type { Task } from '@shared/types/task';
+import { FormMode, type FormOptions } from '@utils/formOptions';
+import { type FC, useEffect, useRef } from 'react';
+import { Button } from '../button/Button';
 
 type ListManagementFormProps = {
   addNewList: (newList: List) => void;
@@ -16,13 +16,13 @@ type ListManagementFormProps = {
 };
 
 export const ListManagementForm: FC<ListManagementFormProps> = ({
-                                                                  addNewList,
-                                                                  addNewTask,
-                                                                  editList,
-                                                                  editTask,
-                                                                  options,
-                                                                  closeModal,
-                                                                }) => {
+  addNewList,
+  addNewTask,
+  editList,
+  editTask,
+  options,
+  closeModal,
+}) => {
   const inputTitle = useRef<HTMLInputElement>(null!);
   useEffect(() => {
     inputTitle.current.focus();
@@ -40,22 +40,22 @@ export const ListManagementForm: FC<ListManagementFormProps> = ({
     const description: string = String(formData.get('description'));
 
     switch (options.mode) {
-      case FormMode.AddList :
-        addList(title, description).then(id => {
+      case FormMode.AddList:
+        addList(title, description).then((id) => {
           addNewList({ id, title, description, tasks: [] });
         });
         break;
-      case FormMode.AddTask :
-        addTask(title, description, options.listId).then(id => {
+      case FormMode.AddTask:
+        addTask(title, description, options.listId).then((id) => {
           addNewTask({ id, title, description }, options.listId);
         });
         break;
-      case FormMode.EditList :
+      case FormMode.EditList:
         updateList(options.item.id, title, description).then(() => {
           editList(options.item.id, title, description);
         });
         break;
-      case FormMode.EditTask :
+      case FormMode.EditTask:
         updateTask(options.item.id, title, description).then((task: Task) => {
           editTask(task, options.listId);
         });
@@ -94,7 +94,9 @@ export const ListManagementForm: FC<ListManagementFormProps> = ({
           </label>
           <div className="flex justify-end gap-4 mt-2">
             <Button type={'submit'}>Submit</Button>
-            <Button type={'reset'} onClick={closeModal}>Close</Button>
+            <Button type={'reset'} onClick={closeModal}>
+              Close
+            </Button>
           </div>
         </form>
       </div>

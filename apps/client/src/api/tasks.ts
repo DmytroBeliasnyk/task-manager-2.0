@@ -1,6 +1,6 @@
-// TODO: implement error handling
+import type { Task } from '@shared/types/task';
 
-import { Task } from '@shared/types/task';
+// TODO: implement error handling
 
 export async function addTask(title: string, description: string, listId: string): Promise<string> {
   const res: Response = await fetch('api/add_task', {

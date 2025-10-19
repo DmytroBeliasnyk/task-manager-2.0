@@ -1,7 +1,7 @@
+import { Task } from '@shared/types/task';
 import { RequestHandler } from 'express';
 import { saveTask, updateTask } from '../services/task';
 import NonExistentIDError from '../utils/errors/NonExistentIDError';
-import { Task } from '@shared/types/task';
 
 export const addTaskController: RequestHandler = async (req, res) => {
   try {

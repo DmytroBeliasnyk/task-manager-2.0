@@ -1,5 +1,5 @@
-import type { FC, ReactNode, ButtonHTMLAttributes } from 'react';
 import clsx from 'clsx/lite';
+import type { FC, ReactNode, ButtonHTMLAttributes } from 'react';
 
 type ButtonProps = {
   children: ReactNode

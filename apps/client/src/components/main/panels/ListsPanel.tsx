@@ -1,9 +1,9 @@
+import type { List } from '@shared/types/list.ts';
+import { FormMode } from '@utils/formOptions';
+import clsx from 'clsx/lite';
 import { type FC, type JSX, useContext } from 'react';
 import { FormContext, ListsContext } from '../../App';
 import { Button } from '../../button/Button';
-import clsx from 'clsx/lite';
-import { FormMode } from '@utils/formOptions';
-import type { List } from '@shared/types/list.ts';
 import { ItemCard } from './common/ItemCard';
 
 type ListsSectionProps = {
@@ -28,13 +28,11 @@ export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
       </h2>
       <section className={listsSectionClassName}>
         {lists.length ? (
-          lists.map((list: List): JSX.Element => (
-            <ItemCard
-              key={list.id}
-              item={list}
-              clickHandler={() => selectList(list.id)}
-            />
-          ))
+          lists.map(
+            (list: List): JSX.Element => (
+              <ItemCard key={list.id} item={list} clickHandler={() => selectList(list.id)} />
+            ),
+          )
         ) : (
           <span className="inline-block w-3/4 text-4xl text-gray-400">
             You don't have any lists...
@@ -42,12 +40,9 @@ export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
         )}
       </section>
       <div className="flex justify-end">
-        <Button
-          type={'button'}
-          onClick={() => openForm(
-            { mode: FormMode.AddList },
-          )}
-        >Create new list</Button>
+        <Button type={'button'} onClick={() => openForm({ mode: FormMode.AddList })}>
+          Create new list
+        </Button>
       </div>
     </section>
   );

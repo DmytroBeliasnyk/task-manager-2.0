@@ -1,5 +1,5 @@
-import type { List } from '@shared/types/list.ts';
-import type { Task } from '@shared/types/task.ts';
+import type { List } from '@shared/types/list';
+import type { Task } from '@shared/types/task';
 
 export enum FormMode {
   AddList = 'Create new list',
@@ -9,7 +9,7 @@ export enum FormMode {
 }
 
 export type FormOptions =
-  | { mode: FormMode.AddList; }
-  | { mode: FormMode.AddTask; listId: string; }
-  | { mode: FormMode.EditList; item: List; }
-  | { mode: FormMode.EditTask; item: Task; listId: string; };
+  | { mode: FormMode.AddList }
+  | { mode: FormMode.AddTask; listId: string }
+  | { mode: FormMode.EditList; item: List }
+  | { mode: FormMode.EditTask; item: Task; listId: string };

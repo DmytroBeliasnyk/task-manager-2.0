@@ -1,9 +1,10 @@
 {
   "name": "task-manager-2.0",
+  "type": "module",
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "shared/*"
   ],
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx,.js",
@@ -12,6 +13,7 @@
     "dev": "concurrently \"npm --workspace=apps/server run dev\" \"npm --workspace=apps/client run dev\""
   },
   "devDependencies": {
+    "@eslint/js": "^9.38.0",
     "@typescript-eslint/eslint-plugin": "^8.45.0",
     "@typescript-eslint/parser": "^8.45.0",
     "concurrently": "^9.2.1",
@@ -20,7 +22,8 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^6.1.1",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.46.1"
   },
   "dependencies": {
     "nanoid": "^5.1.6"

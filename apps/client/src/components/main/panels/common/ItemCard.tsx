@@ -1,11 +1,11 @@
-import { FC } from 'react';
-import { Task } from '@shared/types/task';
-import { List } from '@shared/types/list';
+import type { List } from '@shared/types/list';
+import type { Task } from '@shared/types/task';
+import type { FC } from 'react';
 
 type ItemCardProps = {
   item: List | Task;
   clickHandler: () => void;
-}
+};
 
 export const ItemCard: FC<ItemCardProps> = ({ item, clickHandler }) => {
   return (

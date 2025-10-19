@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
-import { apiRouter } from './routes/api';
 import { initDB } from './db/initDB';
+import { apiRouter } from './routes/api';
 
 (async (): Promise<void> => {
   try {

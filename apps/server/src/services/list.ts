@@ -1,6 +1,6 @@
 import { List } from '@shared/types/list';
-import { getListsFromDB, saveListInDB, saveUpdatedList } from '../repo/list';
 import { nanoid } from 'nanoid';
+import { getListsFromDB, saveListInDB, saveUpdatedList } from '../repo/list';
 
 export async function saveList(title: string, description: string): Promise<string> {
   const id: string = nanoid();

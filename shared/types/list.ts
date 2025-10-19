@@ -1,4 +1,4 @@
-import type { Task } from './task.ts';
+import type { Task } from './task';
 
 export type List = {
   id: string;

@@ -1,6 +1,6 @@
+import { Task } from '@shared/types/task';
 import { nanoid } from 'nanoid';
 import { saveTaskInDB, saveUpdatedTask } from '../repo/task';
-import { Task } from '@shared/types/task';
 
 export async function saveTask(title: string, description: string, listId: string): Promise<string> {
   const taskId: string = nanoid();

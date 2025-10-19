@@ -1,16 +1,14 @@
-import { type FC, useContext, useState } from 'react';
-import { TasksPanel } from './panels/TasksPanel';
-import { ListsPanel } from './panels/ListsPanel';
 import type { List } from '@shared/types/list';
+import { type FC, useContext, useState } from 'react';
 import { ListsContext } from '../App';
+import { ListsPanel } from './panels/ListsPanel';
+import { TasksPanel } from './panels/TasksPanel';
 
 export const Main: FC = () => {
   const [selectedListId, setSelectedListId] = useState<string>('');
 
   const lists: List[] = useContext(ListsContext);
-  const selectedList: List = lists.find((list: List) => (
-    list.id === selectedListId
-  ))!;
+  const selectedList: List = lists.find((list: List) => list.id === selectedListId)!;
 
   return (
     <main className="flex gap-4 h-full overflow-hidden">
