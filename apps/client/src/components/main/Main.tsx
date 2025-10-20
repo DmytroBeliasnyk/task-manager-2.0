@@ -3,17 +3,23 @@ import { type FC, useContext, useState } from 'react';
 import { ListsContext } from '../App';
 import { ListsPanel } from './panels/ListsPanel';
 import { TasksPanel } from './panels/TasksPanel';
+import { ItemsManagementForm } from '@forms/itemsManagement/ItemsManagementForm';
+import { ItemsManagementFormContext } from '@forms/itemsManagement/ItemsManagementFormContextProvider';
 
 export const Main: FC = () => {
   const [selectedListId, setSelectedListId] = useState<string>('');
+  const { lists } = useContext(ListsContext);
+  const { formState } = useContext(ItemsManagementFormContext);
 
-  const lists: List[] = useContext(ListsContext);
   const selectedList: List = lists.find((list: List) => list.id === selectedListId)!;
 
   return (
-    <main className="flex gap-4 h-full overflow-hidden">
-      <ListsPanel selectList={setSelectedListId} />
-      <TasksPanel selectedList={selectedList} />
-    </main>
+    <>
+      <main className="flex gap-4 h-full overflow-hidden">
+        <ListsPanel selectList={setSelectedListId} />
+        <TasksPanel selectedList={selectedList} />
+      </main>
+      {formState.isOpen && <ItemsManagementForm />}
+    </>
   );
 };

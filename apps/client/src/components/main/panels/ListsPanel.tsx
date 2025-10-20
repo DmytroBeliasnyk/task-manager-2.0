@@ -1,8 +1,9 @@
 import type { List } from '@shared/types/list.ts';
-import { FormMode } from '@utils/formOptions';
+import { ItemsManagementFormMode } from '@forms/itemsManagement/formOptions';
+import { ItemsManagementFormContext } from '@forms/itemsManagement/ItemsManagementFormContextProvider';
 import clsx from 'clsx/lite';
 import { type FC, type JSX, useContext } from 'react';
-import { FormContext, ListsContext } from '../../App';
+import { ListsContext } from '../../App';
 import { Button } from '../../button/Button';
 import { ItemCard } from './common/ItemCard';
 
@@ -11,8 +12,8 @@ type ListsSectionProps = {
 };
 
 export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
-  const openForm = useContext(FormContext)!;
-  const lists = useContext(ListsContext);
+  const { openForm } = useContext(ItemsManagementFormContext);
+  const { lists } = useContext(ListsContext);
 
   const listsSectionClassName: string = clsx(
     'flex flex-col flex-1',
@@ -40,7 +41,11 @@ export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
         )}
       </section>
       <div className="flex justify-end">
-        <Button type={'button'} onClick={() => openForm({ mode: FormMode.AddList })}>
+        <Button
+          type={'button'}
+          onClick={() => openForm(
+            { mode: ItemsManagementFormMode.AddList }
+          )}>
           Create new list
         </Button>
       </div>

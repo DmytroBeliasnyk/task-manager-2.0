@@ -1,10 +1,10 @@
 import type { List } from '@shared/types/list.ts';
 import type { Task } from '@shared/types/task.ts';
-import { FormMode } from '@utils/formOptions';
+import { ItemsManagementFormMode } from '@forms/itemsManagement/formOptions';
 import clsx from 'clsx/lite';
 import { type FC, type JSX, useContext } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { FormContext } from '../../App';
+import { ItemsManagementFormContext } from '@forms/itemsManagement/ItemsManagementFormContextProvider';
 import { Button } from '../../button/Button';
 import { ItemCard } from './common/ItemCard';
 
@@ -13,7 +13,7 @@ type TaskSectionProps = {
 };
 
 export const TasksPanel: FC<TaskSectionProps> = ({ selectedList }) => {
-  const openForm = useContext(FormContext)!;
+  const { openForm } = useContext(ItemsManagementFormContext);
 
   const tasksSectionClassName: string = clsx(
     'flex flex-col flex-1 bg-secondary-bg rounded-md',
@@ -40,7 +40,7 @@ export const TasksPanel: FC<TaskSectionProps> = ({ selectedList }) => {
                 className={iconClassName}
                 onClick={() =>
                   openForm({
-                    mode: FormMode.EditList,
+                    mode: ItemsManagementFormMode.EditList,
                     item: selectedList,
                   })
                 }
@@ -57,7 +57,7 @@ export const TasksPanel: FC<TaskSectionProps> = ({ selectedList }) => {
                     item={task}
                     clickHandler={() =>
                       openForm({
-                        mode: FormMode.EditTask,
+                        mode: ItemsManagementFormMode.EditTask,
                         item: task,
                         listId: selectedList.id,
                       })
@@ -76,7 +76,7 @@ export const TasksPanel: FC<TaskSectionProps> = ({ selectedList }) => {
               type={'button'}
               onClick={() =>
                 openForm({
-                  mode: FormMode.AddTask,
+                  mode: ItemsManagementFormMode.AddTask,
                   listId: selectedList.id,
                 })
               }

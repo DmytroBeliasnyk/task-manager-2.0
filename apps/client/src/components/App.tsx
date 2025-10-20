@@ -1,26 +1,34 @@
 import { getAllLists } from '@api/lists';
 import type { List } from '@shared/types/list.ts';
-import type { Task } from '@shared/types/task';
-import type { FormOptions } from '@utils/formOptions.ts';
-import clsx from 'clsx/lite';
 import { type FC, useEffect, useState, createContext } from 'react';
-import { ListManagementForm } from './forms/ListManagementForm';
 import { Header } from './header/Header';
 import { Main } from './main/Main';
 import { Sidebar } from './sidebar/Sidebar';
+import { ItemsManagementFormContextProvider } from './forms/itemsManagement/ItemsManagementFormContextProvider';
+import { type Task } from '@shared/types/task';
 
-export const ListsContext = createContext<List[]>([]);
+type ListsContextType = {
+  lists: List[];
+  addNewList: (newList: List) => void;
+  addNewTask: (newTask: Task, listId: string) => void;
+  editList: (id: string, title: string, description: string) => void;
+  editTask: (editedTask: Task, listId: string) => void;
+}
 
-type FormContextType = (options: FormOptions) => void;
-export const FormContext = createContext<FormContextType | null>(null);
-type FormState = {
-  isOpen: boolean;
-  options?: FormOptions;
-};
+export const ListsContext = createContext<ListsContextType>({
+  lists: [],
+  addNewList: () => {
+  },
+  addNewTask: () => {
+  },
+  editList: () => {
+  },
+  editTask: () => {
+  },
+});
 
 export const App: FC = () => {
   const [lists, setLists] = useState<List[]>([]);
-  const [formState, setFormState] = useState<FormState>({ isOpen: false });
 
   useEffect(() => {
     getAllLists().then((lists: List[]) => setLists(lists));
@@ -57,36 +65,17 @@ export const App: FC = () => {
     );
   }
 
-  function openForm(options: FormOptions): void {
-    setFormState({ isOpen: true, options });
-  }
-
-  function closeForm(): void {
-    setFormState({ isOpen: false });
-  }
-
-  const containerClassName: string = clsx('flex flex-row h-full', formState.isOpen && 'relative');
-
   return (
-    <div className={containerClassName}>
+    <div className="flex flex-row h-full relative">
       <Sidebar />
       <div className="flex flex-col size-full p-4">
-        <ListsContext value={lists}>
+        <ListsContext
+          value={{ lists, addNewList, addNewTask, editList, editTask }}>
           <Header />
-          <FormContext value={openForm}>
+          <ItemsManagementFormContextProvider>
             <Main />
-          </FormContext>
+          </ItemsManagementFormContextProvider>
         </ListsContext>
-        {formState.isOpen && (
-          <ListManagementForm
-            addNewList={addNewList}
-            addNewTask={addNewTask}
-            editList={editList}
-            editTask={editTask}
-            options={formState.options!}
-            closeModal={closeForm}
-          />
-        )}
       </div>
     </div>
   );
