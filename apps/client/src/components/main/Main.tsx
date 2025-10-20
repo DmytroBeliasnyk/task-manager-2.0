@@ -8,6 +8,7 @@ import { ItemsManagementFormContext } from '@forms/itemsManagement/ItemsManageme
 
 export const Main: FC = () => {
   const [selectedListId, setSelectedListId] = useState<string>('');
+
   const { lists } = useContext(ListsContext);
   const { formState } = useContext(ItemsManagementFormContext);
 

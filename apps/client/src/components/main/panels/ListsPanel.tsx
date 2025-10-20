@@ -2,10 +2,11 @@ import type { List } from '@shared/types/list.ts';
 import { ItemsManagementFormMode } from '@forms/itemsManagement/formOptions';
 import { ItemsManagementFormContext } from '@forms/itemsManagement/ItemsManagementFormContextProvider';
 import clsx from 'clsx/lite';
-import { type FC, type JSX, useContext } from 'react';
+import { type FC, type JSX, useContext, useMemo } from 'react';
 import { ListsContext } from '../../App';
 import { Button } from '../../button/Button';
 import { ItemCard } from './common/ItemCard';
+import { HeaderContext } from '../../header/HeaderContextProvider';
 
 type ListsSectionProps = {
   selectList: (listId: string) => void;
@@ -14,10 +15,17 @@ type ListsSectionProps = {
 export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
   const { openForm } = useContext(ItemsManagementFormContext);
   const { lists } = useContext(ListsContext);
+  const { searchValue } = useContext(HeaderContext);
+  const filteredLists = useMemo(() => {
+    return searchValue
+      ? lists.filter(list =>
+        list.title.toLowerCase().includes(searchValue.toLowerCase()))
+      : lists;
+  }, [lists, searchValue]);
 
-  const listsSectionClassName: string = clsx(
+  const listsSectionClassName= clsx(
     'flex flex-col flex-1',
-    lists.length
+    filteredLists.length
       ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent'
       : 'justify-center items-center text-center',
   );
@@ -28,15 +36,20 @@ export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
         My lists
       </h2>
       <section className={listsSectionClassName}>
-        {lists.length ? (
-          lists.map(
+        {filteredLists.length ? (
+          filteredLists.map(
             (list: List): JSX.Element => (
-              <ItemCard key={list.id} item={list} clickHandler={() => selectList(list.id)} />
-            ),
-          )
+              <ItemCard
+                key={list.id}
+                item={list}
+                clickHandler={() => selectList(list.id)}
+              />
+            ))
         ) : (
           <span className="inline-block w-3/4 text-4xl text-gray-400">
-            You don't have any lists...
+            {lists.length
+              ? 'No lists match your search...'
+              : "You don't have any lists..."}
           </span>
         )}
       </section>
@@ -44,7 +57,7 @@ export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
         <Button
           type={'button'}
           onClick={() => openForm(
-            { mode: ItemsManagementFormMode.AddList }
+            { mode: ItemsManagementFormMode.AddList },
           )}>
           Create new list
         </Button>

@@ -6,6 +6,7 @@ import { Main } from './main/Main';
 import { Sidebar } from './sidebar/Sidebar';
 import { ItemsManagementFormContextProvider } from './forms/itemsManagement/ItemsManagementFormContextProvider';
 import { type Task } from '@shared/types/task';
+import { HeaderContextProvider } from './header/HeaderContextProvider';
 
 type ListsContextType = {
   lists: List[];
@@ -68,15 +69,16 @@ export const App: FC = () => {
   return (
     <div className="flex flex-row h-full relative">
       <Sidebar />
-      <div className="flex flex-col size-full p-4">
-        <ListsContext
-          value={{ lists, addNewList, addNewTask, editList, editTask }}>
-          <Header />
-          <ItemsManagementFormContextProvider>
-            <Main />
-          </ItemsManagementFormContextProvider>
-        </ListsContext>
-      </div>
+      <ListsContext value={{ lists, addNewList, addNewTask, editList, editTask }}>
+        <div className="flex flex-col size-full p-4">
+          <HeaderContextProvider>
+            <Header />
+            <ItemsManagementFormContextProvider>
+              <Main />
+            </ItemsManagementFormContextProvider>
+          </HeaderContextProvider>
+        </div>
+      </ListsContext>
     </div>
   );
 };
