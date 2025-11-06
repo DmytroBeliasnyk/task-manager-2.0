@@ -1,11 +1,11 @@
 import { type FC } from 'react';
-import { Header } from './ui/header/Header';
+import { Header } from '@ui/header/Header';
 import { Main } from './app/Main';
-import { Sidebar } from './ui/sidebar/Sidebar';
+import { Sidebar } from '@ui/sidebar/Sidebar';
 import {
   ItemsManagementFormContextProvider,
 } from './app/features/forms/itemsManagement/ItemsManagementFormContextProvider';
-import { HeaderContextProvider } from './ui/header/HeaderContextProvider';
+import { HeaderContextProvider } from '@ui/header/HeaderContextProvider';
 
 export const App: FC = () => {
   return (

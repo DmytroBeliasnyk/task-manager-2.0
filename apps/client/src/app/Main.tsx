@@ -10,7 +10,7 @@ export const Main: FC = () => {
   return (
     <>
       <main className="flex gap-4 h-full overflow-hidden">
-        <ListsPanel/>
+        <ListsPanel />
         <TasksPanel />
       </main>
       {formState.isOpen && <ItemsManagementForm />}

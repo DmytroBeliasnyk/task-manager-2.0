@@ -42,7 +42,7 @@ export const ListsPanel = () => {
                 key={list.id}
                 item={list}
                 clickHandler={() =>
-                  dispatch(listActions.setSelectedList({ listId: list.id }))
+                  dispatch(listActions.setSelectedList({ list }))
                 }
               />
             ))

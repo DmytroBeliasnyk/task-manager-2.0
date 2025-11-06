@@ -1,9 +1,10 @@
 import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { List, ListId } from '@shared/types/list';
+import { rootReducer } from '../../redux';
 
 type ListsState = {
   entities: Record<ListId, List>;
-  selectedList: ListId | undefined;
+  selectedList: List | undefined;
 }
 
 const initialState: ListsState = {
@@ -34,14 +35,14 @@ const listSlice = createSlice({
     removeList: (state, action: PayloadAction<{ listId: ListId }>) => {
       delete state.entities[action.payload.listId];
     },
-    setSelectedList: (state, action: PayloadAction<{ listId: ListId }>) => {
-      state.selectedList = action.payload.listId;
+    setSelectedList: (state, action: PayloadAction<{ list: List }>) => {
+      state.selectedList = action.payload.list;
     },
     removeSelectedList: (state) => {
       state.selectedList = undefined;
     },
   },
-});
+}).injectInto(rootReducer);
 
 export const listSelectors = listSlice.selectors;
 export const listActions = listSlice.actions;

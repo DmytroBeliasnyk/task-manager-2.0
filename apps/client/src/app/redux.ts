@@ -4,7 +4,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 
 export const rootReducer = combineSlices();
 
-export type AppState = unknown
+export type AppState = ReturnType<typeof rootReducer>
 export type AppDispatch = typeof store.dispatch
 
 export const useAppSelector = useSelector.withTypes<AppState>()
