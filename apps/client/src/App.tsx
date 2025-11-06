@@ -1,12 +1,12 @@
 import { getAllLists } from '@api/lists';
 import type { List } from '@shared/types/list.ts';
 import { type FC, useEffect, useState, createContext } from 'react';
-import { Header } from './header/Header';
-import { Main } from './main/Main';
-import { Sidebar } from './sidebar/Sidebar';
-import { ItemsManagementFormContextProvider } from './forms/itemsManagement/ItemsManagementFormContextProvider';
+import { Header } from './ui/header/Header';
+import { Main } from './app/Main';
+import { Sidebar } from './ui/sidebar/Sidebar';
+import { ItemsManagementFormContextProvider } from './app/forms/itemsManagement/ItemsManagementFormContextProvider';
 import { type Task } from '@shared/types/task';
-import { HeaderContextProvider } from './header/HeaderContextProvider';
+import { HeaderContextProvider } from './ui/header/HeaderContextProvider';
 
 type ListsContextType = {
   lists: List[];

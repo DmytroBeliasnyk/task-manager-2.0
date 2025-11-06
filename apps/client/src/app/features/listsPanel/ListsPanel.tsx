@@ -3,10 +3,10 @@ import { ItemsManagementFormMode } from '@forms/itemsManagement/formOptions';
 import { ItemsManagementFormContext } from '@forms/itemsManagement/ItemsManagementFormContextProvider';
 import clsx from 'clsx/lite';
 import { type FC, type JSX, useContext, useMemo } from 'react';
-import { ListsContext } from '../../App';
-import { Button } from '../../button/Button';
-import { ItemCard } from './common/ItemCard';
-import { HeaderContext } from '../../header/HeaderContextProvider';
+import { ListsContext } from '../../../App';
+import { Button } from '../../../ui/Button';
+import { ItemCard } from '../../../ui/ItemCard';
+import { HeaderContext } from '../../../ui/header/HeaderContextProvider';
 
 type ListsSectionProps = {
   selectList: (listId: string) => void;

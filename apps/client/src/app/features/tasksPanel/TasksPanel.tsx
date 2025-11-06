@@ -5,8 +5,8 @@ import clsx from 'clsx/lite';
 import { type FC, type JSX, useContext } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ItemsManagementFormContext } from '@forms/itemsManagement/ItemsManagementFormContextProvider';
-import { Button } from '../../button/Button';
-import { ItemCard } from './common/ItemCard';
+import { Button } from '../../../ui/Button';
+import { ItemCard } from '../../../ui/ItemCard';
 
 type TaskSectionProps = {
   selectedList: List | null;

@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@shared': path.resolve(__dirname, '../../shared'),
-      '@forms': path.resolve(__dirname, 'src/components/forms'),
+      '@forms': path.resolve(__dirname, 'src/app/forms'),
       '@api': path.resolve(__dirname, 'src/api'),
     },
   },

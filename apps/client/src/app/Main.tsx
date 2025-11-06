@@ -1,8 +1,8 @@
 import type { List } from '@shared/types/list';
 import { type FC, useContext, useState } from 'react';
 import { ListsContext } from '../App';
-import { ListsPanel } from './panels/ListsPanel';
-import { TasksPanel } from './panels/TasksPanel';
+import { ListsPanel } from './features/listsPanel/ListsPanel';
+import { TasksPanel } from './features/tasksPanel/TasksPanel';
 import { ItemsManagementForm } from '@forms/itemsManagement/ItemsManagementForm';
 import { ItemsManagementFormContext } from '@forms/itemsManagement/ItemsManagementFormContextProvider';
 
