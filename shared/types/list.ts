@@ -1,8 +1,7 @@
-import type { Task } from './task';
+export type ListId = string
 
 export type List = {
-  id: string;
+  id: ListId;
   title: string;
   description: string;
-  tasks: Array<Task>;
 };

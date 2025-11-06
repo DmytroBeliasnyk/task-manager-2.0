@@ -8,9 +8,9 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "paths": {
-      "@forms/*": ["src/app/forms/*"],
       "@api/*": ["src/api/*"],
-      "@shared/*": ["../../shared/*"]
+      "@shared/*": ["../../shared/*"],
+      "@ui/*": ["src/ui/*"]
     },
 
     /* Bundler mode */

@@ -3,9 +3,9 @@ import { addTask, updateTask } from '@api/tasks';
 import type { Task } from '@shared/types/task';
 import { ItemsManagementFormMode } from './formOptions';
 import { type FC, useContext, useEffect, useRef } from 'react';
-import { Button } from '../../../ui/Button';
+import { Button } from '../../../../ui/Button';
 import { ItemsManagementFormContext } from './ItemsManagementFormContextProvider';
-import { ListsContext } from '../../../App';
+import { ListsContext } from '../../../../App';
 
 export const ItemsManagementForm: FC = () => {
   const {addNewList, addNewTask, editList, editTask} = useContext(ListsContext)
