@@ -6,14 +6,13 @@ import { ItemCard } from '@ui/ItemCard';
 import { HeaderContext } from '@ui/header/HeaderContextProvider';
 import { useAppDispatch, useAppSelector } from '../../redux';
 import { listActions, listSelectors } from './listSlice';
-import { ItemsManagementFormContext } from '../forms/itemsManagement/ItemsManagementFormContextProvider';
-import { ItemsManagementFormMode } from '../forms/itemsManagement/formOptions';
+import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
+import { ItemsManagementFormMode } from '../forms/itemsManagement/itemsManagementFormOptions';
 
 export const ListsPanel = () => {
   const dispatch = useAppDispatch();
   const lists = useAppSelector(listSelectors.selectLists);
 
-  const { openForm } = useContext(ItemsManagementFormContext);
   const { searchValue } = useContext(HeaderContext);
   const filteredLists = useMemo(() => {
     return searchValue
@@ -57,9 +56,10 @@ export const ListsPanel = () => {
       <div className="flex justify-end">
         <Button
           type={'button'}
-          onClick={() => openForm(
-            { mode: ItemsManagementFormMode.AddList },
-          )}>
+          onClick={() => dispatch(itemsManagementFormActions.openForm({
+            options: { mode: ItemsManagementFormMode.AddList },
+          }))
+          }>
           Create new list
         </Button>
       </div>

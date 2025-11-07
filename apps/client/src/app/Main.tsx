@@ -1,11 +1,11 @@
-import { type FC, useContext } from 'react';
 import { ListsPanel } from './features/listsPanel/ListsPanel';
 import { TasksPanel } from './features/tasksPanel/TasksPanel';
-import { ItemsManagementFormContext } from './features/forms/itemsManagement/ItemsManagementFormContextProvider';
 import { ItemsManagementForm } from './features/forms/itemsManagement/ItemsManagementForm';
+import { useAppSelector } from './redux';
+import { itemsManagementFormSelectors } from './features/forms/itemsManagement/formSlice';
 
-export const Main: FC = () => {
-  const { formState } = useContext(ItemsManagementFormContext);
+export const Main = () => {
+  const isFormOpen = useAppSelector(itemsManagementFormSelectors.isOpen)
 
   return (
     <>
@@ -13,7 +13,7 @@ export const Main: FC = () => {
         <ListsPanel />
         <TasksPanel />
       </main>
-      {formState.isOpen && <ItemsManagementForm />}
+      {isFormOpen && <ItemsManagementForm />}
     </>
   );
 };

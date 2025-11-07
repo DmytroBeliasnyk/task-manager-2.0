@@ -1,16 +1,17 @@
-import { addList, updateList } from '@api/lists';
-import { addTask, updateTask } from '@api/tasks';
+import { ItemsManagementFormMode } from './itemsManagementFormOptions';
+import { useEffect, useRef } from 'react';
+import { Button } from '@ui/Button';
+import { useAppDispatch, useAppSelector } from '../../../redux';
+import { listActions } from '../../listsPanel/listSlice';
+import { nanoid } from '@reduxjs/toolkit';
+import type { List } from '@shared/types/list';
+import { itemsManagementFormActions, itemsManagementFormSelectors } from './formSlice';
+import { taskActions } from '../../tasksPanel/taskSlice';
 import type { Task } from '@shared/types/task';
-import { ItemsManagementFormMode } from './formOptions';
-import { type FC, useContext, useEffect, useRef } from 'react';
-import { Button } from '../../../../ui/Button';
-import { ItemsManagementFormContext } from './ItemsManagementFormContextProvider';
-import { ListsContext } from '../../../../App';
 
-export const ItemsManagementForm: FC = () => {
-  const {addNewList, addNewTask, editList, editTask} = useContext(ListsContext)
-  const {formState, closeForm} = useContext(ItemsManagementFormContext)
-  const { options } = formState;
+export const ItemsManagementForm = () => {
+  const dispatch = useAppDispatch();
+  const options = useAppSelector(itemsManagementFormSelectors.selectOptions);
 
   const inputTitle = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
@@ -27,31 +28,40 @@ export const ItemsManagementForm: FC = () => {
     inputDescriptionValue = options.item.description;
   }
 
+  function closeForm() {
+    dispatch(itemsManagementFormActions.closeForm());
+  }
+
   function formAction(formData: FormData): void {
-    const title: string = String(formData.get('title'));
-    const description: string = String(formData.get('description'));
+    const title = String(formData.get('title'));
+    const description = String(formData.get('description'));
+
     try {
       switch (options.mode) {
-        case ItemsManagementFormMode.AddList:
-          addList(title, description).then((id) => {
-            addNewList({ id, title, description, tasks: [] });
-          });
+        case ItemsManagementFormMode.AddList: {
+          const list: List = { id: nanoid(), title, description };
+          dispatch(listActions.addList({ list }));
+
           break;
-        case ItemsManagementFormMode.AddTask:
-          addTask(title, description, options.listId).then((id) => {
-            addNewTask({ id, title, description }, options.listId);
-          });
+        }
+        case ItemsManagementFormMode.AddTask: {
+          const task: Task = { id: nanoid(), title, description, listId: options.listId };
+          dispatch(taskActions.addTask({ task }));
+
           break;
-        case ItemsManagementFormMode.EditList:
-          updateList(options.item.id, title, description).then(() => {
-            editList(options.item.id, title, description);
-          });
+        }
+        case ItemsManagementFormMode.EditList: {
+          const list: List = { ...options.item, title, description };
+          dispatch(listActions.editList({ list }));
+
           break;
-        case ItemsManagementFormMode.EditTask:
-          updateTask(options.item.id, title, description).then((task: Task) => {
-            editTask(task, options.listId);
-          });
+        }
+        case ItemsManagementFormMode.EditTask: {
+          const task: Task = { ...options.item, title, description };
+          dispatch(taskActions.editTask({ task }));
+
           break;
+        }
         default:
           console.log('Unknown form mode');
       }

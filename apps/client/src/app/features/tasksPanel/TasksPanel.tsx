@@ -1,22 +1,29 @@
 import type { Task } from '@shared/types/task.ts';
 import clsx from 'clsx/lite';
-import { type JSX, useContext } from 'react';
+import { type JSX } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Button } from '@ui/Button';
 import { ItemCard } from '@ui/ItemCard';
-import { ItemsManagementFormContext } from '../forms/itemsManagement/ItemsManagementFormContextProvider';
-import { ItemsManagementFormMode } from '../forms/itemsManagement/formOptions';
-import { useAppSelector } from '../../redux';
+import { useAppDispatch, useAppSelector, useAppStore } from '../../redux';
 import { listSelectors } from '../listsPanel/listSlice';
 import { taskSelectors } from './taskSlice';
+import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
+import {
+  ItemsManagementFormMode,
+  type ItemsManagementFormOptions,
+} from '../forms/itemsManagement/itemsManagementFormOptions';
 
 export const TasksPanel = () => {
+  const dispatch = useAppDispatch();
+  const appStore = useAppStore()
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
   const tasks = selectedList
-    ? useAppSelector(state => taskSelectors.selectTasks(state, selectedList.id))
+    ? taskSelectors.selectTasks(appStore.getState(), selectedList.id)
     : [];
 
-  const { openForm } = useContext(ItemsManagementFormContext);
+  function openForm(options: ItemsManagementFormOptions) {
+    dispatch(itemsManagementFormActions.openForm({ options }));
+  }
 
   const tasksSectionClassName: string = clsx(
     'flex flex-col flex-1 bg-secondary-bg rounded-md',
@@ -63,7 +70,6 @@ export const TasksPanel = () => {
                       openForm({
                         mode: ItemsManagementFormMode.EditTask,
                         item: task,
-                        listId: selectedList.id,
                       })
                     }
                   />
