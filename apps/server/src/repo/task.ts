@@ -25,6 +25,16 @@ export async function saveTaskInDB(taskId: string,
   }
 }
 
+export async function getTasksFromDB(): Promise<Task[]> {
+  try{
+    const res = await db.query<Task>('SELECT * from tasks')
+    return res.rows
+  }catch(err){
+    console.log(err);
+    throw new Error('DB error while fetching lists');
+  }
+}
+
 export async function saveUpdatedTask(id: string, title: string, description: string): Promise<Task> {
   const client = await db.connect();
   const query = `

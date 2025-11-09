@@ -24,25 +24,8 @@ export async function saveListInDB(id: string, title: string, description: strin
 
 export async function getListsFromDB(): Promise<List[]> {
   try {
-    const res = await db.query<List>(`
-        SELECT l.id,
-               l.title,
-               l.description,
-               COALESCE(
-                       json_agg(
-                               json_build_object(
-                                       'id', t.id,
-                                       'title', t.title,
-                                       'description', t.description
-                               )
-                       ) FILTER(WHERE t.id IS NOT NULL),
-                       '[]'
-               ) AS tasks
-        FROM lists l
-                 LEFT JOIN tasks t ON t.list_id = l.id
-        GROUP BY l.id, l.title, l.description
-        ORDER BY l.title;
-    `);
+    const res = await db.query<List>(`SELECT *
+                                      from lists`);
 
     return res.rows;
   } catch (err) {
@@ -57,7 +40,8 @@ export async function saveUpdatedList(id: string, title: string, description: st
       UPDATE lists
       SET title=$1,
           description=$2
-      WHERE id = $3 RETURNING *`;
+      WHERE id = $3
+      RETURNING *`;
 
   try {
     await client.query('BEGIN');
