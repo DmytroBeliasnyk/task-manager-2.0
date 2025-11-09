@@ -1,33 +1,33 @@
 import type { List } from '@shared/types/list';
 
-// TODO: implement error handling
+export const listsApi = {
+  add: async (title: string, description: string) => {
+    const res = await fetch('api/add_list', {
+      method: 'POST',
+      body: JSON.stringify({ title, description }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data: { id: string } = await res.json();
 
-export async function addList(title: string, description: string): Promise<string> {
-  const res: Response = await fetch('api/add_list', {
-    method: 'POST',
-    body: JSON.stringify({ title, description }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  const data: { id: string } = await res.json();
+    return data.id;
+  },
+  getAll: async () => {
+    const res = await fetch('api/lists');
+    const data: { lists: List[] } = await res.json();
 
-  return data.id;
-}
-
-export async function getAllLists(): Promise<List[]> {
-  const res: Response = await fetch('api/lists');
-  const data: { lists: List[] } = await res.json();
-
-  return data.lists;
-}
-
-export async function updateList(id: string, title: string, description: string): Promise<void> {
-  await fetch('api/update_list', {
-    method: 'POST',
-    body: JSON.stringify({ id, title, description }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-}
+    return data.lists;
+  },
+  update: async (id: string, title: string, description: string) => {
+    await fetch('api/update_list', {
+      method: 'POST',
+      body: JSON.stringify({ id, title, description }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  },
+  delete: async () => {
+  },
+};

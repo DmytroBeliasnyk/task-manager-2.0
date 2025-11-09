@@ -1,29 +1,56 @@
 import type { Task } from '@shared/types/task';
 
-// TODO: implement error handling
-
-export async function addTask(title: string, description: string, listId: string): Promise<string> {
-  const res: Response = await fetch('api/add_task', {
-    method: 'POST',
-    body: JSON.stringify({ title, description, listId }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  const data: { id: string } = await res.json();
-
-  return data.id;
+type ServerTask = {
+  id: string;
+  title: string;
+  description: string;
+  list_id: string;
 }
 
-export async function updateTask(id: string, title: string, description: string): Promise<Task> {
-  const res: Response = await fetch('api/update_task', {
-    method: 'POST',
-    body: JSON.stringify({ id, title, description }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  const data: {updatedTask: Task} = await res.json()
+export const tasksApi = {
+  add: async (title: string, description: string, listId: string) => {
+    const res = await fetch('api/add_task', {
+      method: 'POST',
+      body: JSON.stringify({ title, description, listId }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data: { id: string } = await res.json();
 
-  return data.updatedTask
-}
+    return data.id;
+  },
+  getAll: async () => {
+    const res = await fetch('api/tasks');
+    const data: { tasks: ServerTask[] } = await res.json();
+
+    return data.tasks.map((serverTask): Task => (
+      {
+        id: serverTask.id,
+        title: serverTask.title,
+        description: serverTask.description,
+        listId: serverTask.list_id,
+      }
+    ));
+  },
+  update: async (id: string, title: string, description: string) => {
+    const res: Response = await fetch('api/update_task', {
+      method: 'POST',
+      body: JSON.stringify({ id, title, description }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data: { updatedTask: ServerTask } = await res.json();
+    const serverTask = data.updatedTask;
+
+    return {
+      id: serverTask.id,
+      title: serverTask.title,
+      description: serverTask.description,
+      listId: serverTask.list_id,
+    };
+  },
+  delete: async () => {
+  },
+};

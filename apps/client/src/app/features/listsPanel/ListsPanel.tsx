@@ -1,17 +1,23 @@
 import type { List } from '@shared/types/list.ts';
 import clsx from 'clsx/lite';
-import { type JSX, useContext, useMemo } from 'react';
+import { type JSX, useContext, useEffect, useMemo } from 'react';
 import { Button } from '@ui/Button';
 import { ItemCard } from '@ui/ItemCard';
 import { HeaderContext } from '@ui/header/HeaderContextProvider';
-import { useAppDispatch, useAppSelector } from '../../redux';
+import { useAppDispatch, useAppSelector, useAppStore } from '../../redux';
 import { listActions, listSelectors } from './listSlice';
 import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
 import { ItemsManagementFormMode } from '../forms/itemsManagement/itemsManagementFormOptions';
+import { fetchLists } from './model/fetchLists';
 
 export const ListsPanel = () => {
   const dispatch = useAppDispatch();
+  const appStore = useAppStore();
   const lists = useAppSelector(listSelectors.selectLists);
+
+  useEffect(() => {
+    fetchLists(dispatch, appStore.getState)
+  }, []);
 
   const { searchValue } = useContext(HeaderContext);
   const filteredLists = useMemo(() => {

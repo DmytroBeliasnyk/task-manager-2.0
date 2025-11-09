@@ -5,10 +5,12 @@ import { rootReducer } from '../../redux';
 
 type TasksState = {
   entities: Record<TaskId, Task>
+  fetchTasksStatus: 'idle' | 'pending' | 'success' | 'failed';
 }
 
 const initialState: TasksState = {
   entities: {},
+  fetchTasksStatus: 'idle',
 };
 
 const taskSlice = createSlice({
@@ -21,8 +23,20 @@ const taskSlice = createSlice({
       (entities, listId: ListId) =>
         Object.values(entities).filter(task => task.listId === listId),
     ),
+    selectIsFetchTasksIdle: state => state.fetchTasksStatus === 'idle',
+    selectIsFetchTasksPending: state => state.fetchTasksStatus === 'pending',
   },
   reducers: {
+    fetchTasksSuccess: (state, action: PayloadAction<{ tasks: Task[] }>) => {
+      action.payload.tasks.forEach(task => state.entities[task.id] = task);
+      state.fetchTasksStatus = 'success';
+    },
+    fetchTasksPending: state => {
+      state.fetchTasksStatus = 'pending';
+    },
+    fetchTasksFailed: state => {
+      state.fetchTasksStatus = 'failed';
+    },
     addTask: (state, action: PayloadAction<{ task: Task }>) => {
       const task = action.payload.task;
       state.entities[task.id] = task;
