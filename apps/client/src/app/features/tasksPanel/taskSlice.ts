@@ -41,9 +41,12 @@ const taskSlice = createSlice({
       const task = action.payload.task;
       state.entities[task.id] = task;
     },
-    editTask: (state, action: PayloadAction<{ task: Task }>) => {
-      const task = action.payload.task;
-      state.entities[task.id] = task;
+    editTask: (state, action: PayloadAction<{ id: TaskId, title: string, description: string }>) => {
+      const { id, title, description } = action.payload;
+      const task = state.entities[id];
+
+      task.title = title;
+      task.description = description;
     },
     removeTask: (state, action: PayloadAction<{ taskId: TaskId }>) => {
       delete state.entities[action.payload.taskId];

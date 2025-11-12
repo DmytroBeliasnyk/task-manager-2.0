@@ -4,7 +4,7 @@ import { type JSX } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Button } from '@ui/Button';
 import { ItemCard } from '@ui/ItemCard';
-import { useAppDispatch, useAppSelector, useAppStore } from '../../redux';
+import { useAppDispatch, useAppSelector } from '../../redux';
 import { listSelectors } from '../listsPanel/listSlice';
 import { taskSelectors } from './taskSlice';
 import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
@@ -15,11 +15,8 @@ import {
 
 export const TasksPanel = () => {
   const dispatch = useAppDispatch();
-  const appStore = useAppStore()
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
-  const tasks = selectedList
-    ? taskSelectors.selectTasks(appStore.getState(), selectedList.id)
-    : [];
+  const tasks = useAppSelector(state => taskSelectors.selectTasks(state, selectedList?.id));
 
   function openForm(options: ItemsManagementFormOptions) {
     dispatch(itemsManagementFormActions.openForm({ options }));

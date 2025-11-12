@@ -2,12 +2,11 @@ import { ItemsManagementFormMode } from './itemsManagementFormOptions';
 import { useEffect, useRef } from 'react';
 import { Button } from '@ui/Button';
 import { useAppDispatch, useAppSelector } from '../../../redux';
-import { listActions } from '../../listsPanel/listSlice';
-import { nanoid } from '@reduxjs/toolkit';
-import type { List } from '@shared/types/list';
 import { itemsManagementFormActions, itemsManagementFormSelectors } from './formSlice';
-import { taskActions } from '../../tasksPanel/taskSlice';
-import type { Task } from '@shared/types/task';
+import { addList } from '../../listsPanel/model/addList';
+import { editList } from '../../listsPanel/model/editList';
+import { addTask } from '../../tasksPanel/model/addTask';
+import { editTask } from '../../tasksPanel/model/editTask';
 
 export const ItemsManagementForm = () => {
   const dispatch = useAppDispatch();
@@ -39,27 +38,19 @@ export const ItemsManagementForm = () => {
     try {
       switch (options.mode) {
         case ItemsManagementFormMode.AddList: {
-          const list: List = { id: nanoid(), title, description };
-          dispatch(listActions.addList({ list }));
-
-          break;
-        }
-        case ItemsManagementFormMode.AddTask: {
-          const task: Task = { id: nanoid(), title, description, listId: options.listId };
-          dispatch(taskActions.addTask({ task }));
-
+          addList(title, description, dispatch);
           break;
         }
         case ItemsManagementFormMode.EditList: {
-          const list: List = { ...options.item, title, description };
-          dispatch(listActions.editList({ list }));
-
+          editList(options.item.id, title, description, dispatch)
+          break;
+        }
+        case ItemsManagementFormMode.AddTask: {
+          addTask(title,description,options.listId,dispatch)
           break;
         }
         case ItemsManagementFormMode.EditTask: {
-          const task: Task = { ...options.item, title, description };
-          dispatch(taskActions.editTask({ task }));
-
+          editTask(options.item.id, title,description,dispatch)
           break;
         }
         default:

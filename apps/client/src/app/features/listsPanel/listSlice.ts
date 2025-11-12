@@ -47,9 +47,12 @@ const listSlice = createSlice({
       const list = action.payload.list;
       state.entities[list.id] = list;
     },
-    editList: (state, action: PayloadAction<{ list: List }>) => {
-      const list = action.payload.list;
-      state.entities[list.id] = list;
+    editList: (state, action: PayloadAction<{ id: ListId, title: string, description: string }>) => {
+      const { id, title, description } = action.payload;
+      const list = state.entities[id];
+
+      list.title = title;
+      list.description = description;
     },
     removeList: (state, action: PayloadAction<{ listId: ListId }>) => {
       delete state.entities[action.payload.listId];

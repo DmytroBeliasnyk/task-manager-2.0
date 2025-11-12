@@ -1,4 +1,4 @@
-import type { ListId } from './list';
+import type { ListId } from './list.js';
 
 export type TaskId = string
 
