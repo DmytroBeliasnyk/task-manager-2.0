@@ -1,11 +1,11 @@
-import { List } from '@shared/types/list';
+import { List, ListId } from '@shared/types/list';
 import { db } from '../db/db';
 import NonExistentIDError from '../utils/errors/NonExistentIDError';
 
-export async function saveListInDB(id: string, title: string, description: string): Promise<void> {
+export async function saveListInDB(id: ListId, title: string, description: string) {
   const client = await db.connect();
 
-  const query: string = `
+  const query = `
       INSERT INTO lists (id, title, description)
       values ($1, $2, $3)`;
 
@@ -22,11 +22,10 @@ export async function saveListInDB(id: string, title: string, description: strin
   }
 }
 
-export async function getListsFromDB(): Promise<List[]> {
+export async function getListsFromDB() {
   try {
     const res = await db.query<List>(`SELECT *
                                       from lists`);
-
     return res.rows;
   } catch (err) {
     console.log(err);
@@ -34,7 +33,7 @@ export async function getListsFromDB(): Promise<List[]> {
   }
 }
 
-export async function saveUpdatedList(id: string, title: string, description: string): Promise<void> {
+export async function saveUpdatedList(id: ListId, title: string, description: string) {
   const client = await db.connect();
   const query = `
       UPDATE lists
@@ -51,6 +50,22 @@ export async function saveUpdatedList(id: string, title: string, description: st
       throw new NonExistentIDError('Error update list: non-existent id');
     }
 
+    await client.query('COMMIT');
+  } catch (err) {
+    console.error(err);
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+export async function deleteListFromDB(id: ListId) {
+  const client = await db.connect();
+
+  try {
+    await client.query('BEGIN');
+    await client.query('DELETE FROM lists WHERE id = $1', [id]);
     await client.query('COMMIT');
   } catch (err) {
     console.error(err);

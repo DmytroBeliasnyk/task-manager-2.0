@@ -1,14 +1,15 @@
-import { Task } from '@shared/types/task';
+import { Task, TaskId } from '@shared/types/task';
 import { db } from '../db/db';
 import NonExistentIDError from '../utils/errors/NonExistentIDError';
+import { ListId } from '@shared/types/list';
 
-export async function saveTaskInDB(taskId: string,
+export async function saveTaskInDB(taskId: TaskId,
                                    title: string,
                                    description: string,
-                                   listId: string): Promise<void> {
+                                   listId: ListId) {
   const client = await db.connect();
 
-  const query: string = `
+  const query = `
       INSERT INTO tasks (id, title, description, list_id)
       values ($1, $2, $3, $4)`;
 
@@ -25,17 +26,17 @@ export async function saveTaskInDB(taskId: string,
   }
 }
 
-export async function getTasksFromDB(): Promise<Task[]> {
-  try{
-    const res = await db.query<Task>('SELECT * from tasks')
-    return res.rows
-  }catch(err){
+export async function getTasksFromDB() {
+  try {
+    const res = await db.query<Task>('SELECT * from tasks');
+    return res.rows;
+  } catch (err) {
     console.log(err);
     throw new Error('DB error while fetching lists');
   }
 }
 
-export async function saveUpdatedTask(id: string, title: string, description: string): Promise<Task> {
+export async function saveUpdatedTask(id: TaskId, title: string, description: string) {
   const client = await db.connect();
   const query = `
       UPDATE tasks
@@ -54,6 +55,22 @@ export async function saveUpdatedTask(id: string, title: string, description: st
 
     await client.query('COMMIT');
     return res.rows[0];
+  } catch (err) {
+    console.error(err);
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+export async function deleteTaskFromDB(id: TaskId) {
+  const client = await db.connect();
+
+  try {
+    await client.query('BEGIN');
+    await client.query('DELETE FROM tasks WHERE id = $1', [id]);
+    await client.query('COMMIT');
   } catch (err) {
     console.error(err);
     await client.query('ROLLBACK');
