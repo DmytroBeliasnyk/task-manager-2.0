@@ -37,7 +37,14 @@ export const api = {
         },
       });
     },
-    delete: async () => {
+    delete: async (id: ListId) => {
+      await fetch('api/list', {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
     },
   },
   tasks: {
@@ -84,7 +91,14 @@ export const api = {
         listId: serverTask.list_id,
       };
     },
-    delete: async () => {
+    delete: async (id: TaskId) => {
+      await fetch('api/task', {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
     },
-  }
+  },
 };

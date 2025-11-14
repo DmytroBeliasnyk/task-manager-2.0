@@ -1,17 +1,17 @@
-import type { AppDispatch, AppState } from '../../../redux';
+import type { AppThunk } from '../../../redux';
 import { taskActions, taskSelectors } from '../taskSlice';
-import { api } from '@api/api';
 
-export function fetchTasks(dispatch: AppDispatch, getState: () => AppState) {
-  if (!taskSelectors.selectIsFetchTasksIdle(getState())) return;
+export const fetchTasks = (): AppThunk =>
+  (dispatch, getState, { api }) => {
+    if (!taskSelectors.selectIsFetchTasksIdle(getState())) return;
 
-  dispatch(taskActions.fetchTasksPending());
-  api.tasks
-    .getAll()
-    .then(tasks => {
-      dispatch(taskActions.fetchTasksSuccess({ tasks }));
-    })
-    .catch(() => {
-      dispatch(taskActions.fetchTasksFailed());
-    });
-}
+    dispatch(taskActions.fetchTasksPending());
+    api.tasks
+      .getAll()
+      .then(tasks => {
+        dispatch(taskActions.fetchTasksSuccess({ tasks }));
+      })
+      .catch(() => {
+        dispatch(taskActions.fetchTasksFailed());
+      });
+  };

@@ -4,7 +4,7 @@ import { type JSX, useContext, useEffect, useMemo } from 'react';
 import { Button } from '@ui/Button';
 import { ItemCard } from '@ui/ItemCard';
 import { HeaderContext } from '@ui/header/HeaderContextProvider';
-import { useAppDispatch, useAppSelector, useAppStore } from '../../redux';
+import { useAppDispatch, useAppSelector } from '../../redux';
 import { listActions, listSelectors } from './listSlice';
 import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
 import { ItemsManagementFormMode } from '../forms/itemsManagement/itemsManagementFormOptions';
@@ -12,11 +12,10 @@ import { fetchLists } from './model/fetchLists';
 
 export const ListsPanel = () => {
   const dispatch = useAppDispatch();
-  const appStore = useAppStore();
   const lists = useAppSelector(listSelectors.selectLists);
 
   useEffect(() => {
-    fetchLists(dispatch, appStore.getState)
+    dispatch(fetchLists());
   }, []);
 
   const { searchValue } = useContext(HeaderContext);

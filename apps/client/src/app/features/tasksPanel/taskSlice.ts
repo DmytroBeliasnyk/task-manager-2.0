@@ -19,9 +19,14 @@ const taskSlice = createSlice({
   selectors: {
     selectTasks: createSelector(
       (state: TasksState) => state.entities,
-      (_: TasksState, listId: ListId) => listId,
-      (entities, listId: ListId) =>
-        Object.values(entities).filter(task => task.listId === listId),
+      (_: TasksState, listId: ListId | undefined) => listId,
+      (entities, listId: ListId | undefined) => {
+        let tasks: Task[] = [];
+        if (listId) {
+          tasks = Object.values(entities).filter(task => task.listId === listId);
+        }
+        return tasks;
+      },
     ),
     selectIsFetchTasksIdle: state => state.fetchTasksStatus === 'idle',
     selectIsFetchTasksPending: state => state.fetchTasksStatus === 'pending',

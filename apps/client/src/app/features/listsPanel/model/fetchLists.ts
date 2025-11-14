@@ -1,17 +1,18 @@
 import { listActions, listSelectors } from '../listSlice';
-import type { AppDispatch, AppState } from '../../../redux';
-import { api } from '@api/api';
+import type { AppThunk } from '../../../redux';
 
-export function fetchLists(dispatch: AppDispatch, getState: () => AppState) {
-  if (!listSelectors.selectIsFetchListsIdle(getState())) return;
+export const fetchLists =
+  (): AppThunk =>
+    (dispatch, getState, { api }) => {
+      if (!listSelectors.selectIsFetchListsIdle(getState())) return;
 
-  dispatch(listActions.fetchListsPending());
-  api.lists
-    .getAll()
-    .then(lists => {
-      dispatch(listActions.fetchListsSuccess({ lists }));
-    })
-    .catch(() => {
-      dispatch(listActions.fetchListsFailed());
-    });
-}
+      dispatch(listActions.fetchListsPending());
+      api.lists
+        .getAll()
+        .then(lists => {
+          dispatch(listActions.fetchListsSuccess({ lists }));
+        })
+        .catch(() => {
+          dispatch(listActions.fetchListsFailed());
+        });
+    };

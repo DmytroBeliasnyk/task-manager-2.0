@@ -1,12 +1,13 @@
-import type { AppDispatch } from '../../../redux';
 import { listActions } from '../listSlice';
 import type { ListId } from '@shared/types/list';
-import { api } from '@api/api';
+import type { AppThunk } from '../../../redux';
 
-export function editList(id: ListId, title: string, description: string, dispatch: AppDispatch) {
-  api.lists
-    .edit(id, title, description)
-    .then(() => {
-      dispatch(listActions.editList({ id, title, description }));
-    });
-}
+export const editList =
+  (id: ListId, title: string, description: string): AppThunk =>
+    (dispatch, _, { api }) => {
+      api.lists
+        .edit(id, title, description)
+        .then(() => {
+          dispatch(listActions.editList({ id, title, description }));
+        });
+    };
