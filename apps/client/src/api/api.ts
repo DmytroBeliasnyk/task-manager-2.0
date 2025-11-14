@@ -1,6 +1,12 @@
 import type { List, ListId } from '@shared/types/list';
 import type { Task, TaskId } from '@shared/types/task';
 
+type ServerList = {
+  id: string;
+  title: string;
+  description: string;
+}
+
 type ServerTask = {
   id: string;
   title: string;
@@ -24,9 +30,16 @@ export const api = {
     },
     getAll: async () => {
       const res = await fetch('api/lists');
-      const data: { lists: List[] } = await res.json();
+      const data: { lists: ServerList[] } = await res.json();
 
-      return data.lists;
+      return data.lists.map((serverList): List => (
+        {
+          id: serverList.id,
+          title: serverList.title,
+          description: serverList.description,
+          tasksIds: [],
+        }
+      ));
     },
     edit: async (id: ListId, title: string, description: string) => {
       await fetch('api/update_list', {
