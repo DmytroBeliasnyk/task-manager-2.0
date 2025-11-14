@@ -1,6 +1,5 @@
 import type { Task, TaskId } from '@shared/types/task';
 import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { ListId } from '@shared/types/list';
 import { rootReducer } from '../../redux';
 
 type TasksState = {
@@ -19,14 +18,9 @@ const taskSlice = createSlice({
   selectors: {
     selectTasks: createSelector(
       (state: TasksState) => state.entities,
-      (_: TasksState, listId: ListId | undefined) => listId,
-      (entities, listId: ListId | undefined) => {
-        let tasks: Task[] = [];
-        if (listId) {
-          tasks = Object.values(entities).filter(task => task.listId === listId);
-        }
-        return tasks;
-      },
+      (_: TasksState, tasksIds: TaskId[] | undefined) => tasksIds,
+      (entities, tasksIds) =>
+        tasksIds?.map(id => entities[id]) ?? [],
     ),
     selectIsFetchTasksIdle: state => state.fetchTasksStatus === 'idle',
     selectIsFetchTasksPending: state => state.fetchTasksStatus === 'pending',

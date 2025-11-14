@@ -1,7 +1,7 @@
+import { rootReducer } from '../../redux';
 import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { List, ListId } from '@shared/types/list';
-import { rootReducer } from '../../redux';
-import type { Task } from '@shared/types/task';
+import type { Task, TaskId } from '@shared/types/task';
 
 type ListsState = {
   entities: Record<ListId, List>;
@@ -47,12 +47,25 @@ const listSlice = createSlice({
       const list = action.payload.list;
       state.entities[list.id] = list;
     },
+    addTaskId: (state, action: PayloadAction<{ listId: ListId, taskId: TaskId }>) => {
+      const { listId, taskId } = action.payload;
+      const list = state.entities[listId]
+      list.tasksIds.push(taskId);
+
+      if (state.selectedList?.id === listId) {
+        state.selectedList = list;
+      }
+    },
     editList: (state, action: PayloadAction<{ id: ListId, title: string, description: string }>) => {
       const { id, title, description } = action.payload;
       const list = state.entities[id];
 
       list.title = title;
       list.description = description;
+
+      if (state.selectedList?.id === id) {
+        state.selectedList = list;
+      }
     },
     removeList: (state, action: PayloadAction<{ listId: ListId }>) => {
       delete state.entities[action.payload.listId];

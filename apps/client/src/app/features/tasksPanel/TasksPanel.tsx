@@ -16,7 +16,7 @@ import {
 export const TasksPanel = () => {
   const dispatch = useAppDispatch();
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
-  const tasks = useAppSelector(state => taskSelectors.selectTasks(state, selectedList?.id));
+  const tasks = useAppSelector(state => taskSelectors.selectTasks(state, selectedList?.tasksIds));
 
   function openForm(options: ItemsManagementFormOptions) {
     dispatch(itemsManagementFormActions.openForm({ options }));
