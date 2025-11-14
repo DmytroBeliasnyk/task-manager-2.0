@@ -5,9 +5,10 @@ import { store } from './store';
 import { StrictMode } from 'react';
 import { fetchLists } from './app/features/listsPanel/model/fetchLists';
 import { fetchTasks } from './app/features/tasksPanel/model/fetchTasks';
+import type { AppThunk } from './app/redux';
+import { listActions } from './app/features/listsPanel/listSlice';
 
-store.dispatch(fetchLists());
-store.dispatch(fetchTasks());
+store.dispatch(fetchData());
 
 createRoot(document.getElementById('root')!)
   .render(
@@ -17,3 +18,15 @@ createRoot(document.getElementById('root')!)
       </Provider>
     </StrictMode>,
   );
+
+
+function fetchData(): AppThunk {
+  return async (dispatch) => {
+    await dispatch(fetchLists());
+    const tasks = await dispatch(fetchTasks());
+
+    if (tasks) {
+      dispatch(listActions.attachTasksToList({ tasks }));
+    }
+  };
+}
