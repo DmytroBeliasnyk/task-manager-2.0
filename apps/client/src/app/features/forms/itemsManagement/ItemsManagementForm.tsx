@@ -38,19 +38,19 @@ export const ItemsManagementForm = () => {
     try {
       switch (options.mode) {
         case ItemsManagementFormMode.AddList: {
-          dispatch(addList(title, description))
+          dispatch(addList({ title, description }));
           break;
         }
         case ItemsManagementFormMode.EditList: {
-          dispatch(editList(options.item.id, title, description))
+          dispatch(editList({ id: options.item.id, title, description }));
           break;
         }
         case ItemsManagementFormMode.AddTask: {
-          dispatch(addTask(title,description,options.listId))
+          dispatch(addTask({ title, description, listId: options.listId }));
           break;
         }
         case ItemsManagementFormMode.EditTask: {
-          dispatch(editTask(options.item.id, title,description))
+          dispatch(editTask({ id: options.item.id, title, description }));
           break;
         }
         default:

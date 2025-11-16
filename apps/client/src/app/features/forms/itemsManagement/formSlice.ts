@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { ItemsManagementFormMode, type ItemsManagementFormOptions } from './itemsManagementFormOptions';
-import { rootReducer } from '../../../redux';
+import { rootReducer } from '../../../../store';
 
 type FormState = {
   options: ItemsManagementFormOptions;
