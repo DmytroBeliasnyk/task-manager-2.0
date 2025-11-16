@@ -1,13 +1,12 @@
 import type { TaskId } from '@shared/types/task';
-import type { AppThunk } from '../../../redux';
-import { taskActions } from '../taskSlice';
+import { createAppAsyncThunk } from '../../../redux';
 
-export const removeTask =
-  (taskId: TaskId): AppThunk =>
-    (dispatch, _, { api }) => {
-      api.tasks
-        .delete(taskId)
-        .then(() => {
-          dispatch(taskActions.removeTask({ taskId }));
-        });
-    };
+type RemoveTaskParams = {
+  id: TaskId;
+}
+
+export const removeTask = createAppAsyncThunk(
+  'tasks/removeTask',
+  async ({ id }: RemoveTaskParams, thunkApi) =>
+    thunkApi.extra.api.tasks.delete(id),
+);

@@ -1,13 +1,14 @@
-import type { AppThunk } from '../../../redux';
-import { taskActions } from '../taskSlice';
+import { createAppAsyncThunk } from '../../../redux';
 import type { TaskId } from '@shared/types/task';
 
-export const editTask =
-  (id: TaskId, title: string, description: string): AppThunk =>
-    (dispatch, _, { api }) => {
-      api.tasks
-        .edit(id, title, description)
-        .then(() => {
-          dispatch(taskActions.editTask({ id, title, description }));
-        });
-    };
+type EditTaskParams = {
+  id: TaskId;
+  title: string;
+  description: string;
+}
+
+export const editTask = createAppAsyncThunk(
+  'tasks/editTasks',
+  async ({ id, title, description }: EditTaskParams, thunkApi) =>
+    thunkApi.extra.api.tasks.edit(id, title, description),
+);
