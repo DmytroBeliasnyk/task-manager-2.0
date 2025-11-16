@@ -1,13 +1,12 @@
 import type { ListId } from '@shared/types/list';
-import type { AppThunk } from '../../../redux';
-import { listActions } from '../listSlice';
+import { createAppAsyncThunk } from '../../../redux';
 
-export const removeList =
-  (listId: ListId): AppThunk =>
-    (dispatch, _, { api }) => {
-      api.lists
-        .delete(listId)
-        .then(() => {
-          dispatch(listActions.removeList({ listId }));
-        });
-    };
+type RemoveListParams = {
+  id: ListId;
+}
+
+export const removeList = createAppAsyncThunk(
+  'lists/removeList',
+  async ({ id }: RemoveListParams, thunkApi) =>
+    thunkApi.extra.api.lists.delete(id),
+);

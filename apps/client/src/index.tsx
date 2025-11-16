@@ -19,7 +19,6 @@ createRoot(document.getElementById('root')!)
     </StrictMode>,
   );
 
-
 function fetchData(): AppThunk {
   return async (dispatch) => {
     await dispatch(fetchLists());
