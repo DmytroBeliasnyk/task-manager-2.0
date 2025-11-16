@@ -5,6 +5,8 @@ export const extraArgument = {
   api,
 };
 
+export type ExtraArgument = typeof extraArgument
+
 export const rootReducer = combineSlices();
 
 export const store = configureStore({

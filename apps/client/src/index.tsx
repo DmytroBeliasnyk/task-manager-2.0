@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')!)
 function fetchData(): AppThunk {
   return async (dispatch) => {
     await dispatch(fetchLists());
-    const tasks = await dispatch(fetchTasks());
+    const tasks = await dispatch(fetchTasks()).unwrap();
 
     if (tasks) {
       dispatch(listActions.attachTasksToList({ tasks }));

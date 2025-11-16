@@ -2,17 +2,28 @@ import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolki
 import type { List, ListId } from '@shared/types/list';
 import type { Task, TaskId } from '@shared/types/task';
 import { rootReducer } from '../../../store';
+import { fetchLists } from './model/fetchLists';
+import type { RequestStatus } from '../../redux';
+import { addList } from './model/addList';
+import { editList } from './model/editList';
+import { removeList } from './model/removeList';
 
 type ListsState = {
   entities: Record<ListId, List>;
   selectedList: List | undefined;
-  fetchListsStatus: 'idle' | 'pending' | 'success' | 'failed';
+  addListStatus: RequestStatus;
+  fetchListsStatus: RequestStatus;
+  editListStatus: RequestStatus;
+  removeListStatus: RequestStatus;
 }
 
 const initialState: ListsState = {
   entities: {},
   selectedList: undefined,
+  addListStatus: 'idle',
   fetchListsStatus: 'idle',
+  editListStatus: 'idle',
+  removeListStatus: 'idle',
 };
 
 const listSlice = createSlice({
@@ -25,38 +36,53 @@ const listSlice = createSlice({
     ),
     selectList: (state, listId: ListId) => state.entities[listId],
     selectSelectedList: state => state.selectedList,
-    selectIsFetchListsIdle: state => state.fetchListsStatus === 'idle',
-    selectIsFetchListsPending: state => state.fetchListsStatus === 'pending',
   },
   reducers: {
-    fetchListsSuccess: (state, action: PayloadAction<{ lists: List[] }>) => {
-      action.payload.lists.forEach(list => state.entities[list.id] = list);
-      state.fetchListsStatus = 'success';
-    },
     attachTasksToList: (state, action: PayloadAction<{ tasks: Task[] }>) => {
       action.payload.tasks.forEach(({ id, listId }) =>
         state.entities[listId].tasksIds.push(id));
     },
-    fetchListsPending: state => {
-      state.fetchListsStatus = 'pending';
-    },
-    fetchListsFailed: state => {
-      state.fetchListsStatus = 'failed';
-    },
-    addList: (state, action: PayloadAction<{ list: List }>) => {
-      const list = action.payload.list;
-      state.entities[list.id] = list;
-    },
     addTaskId: (state, action: PayloadAction<{ listId: ListId, taskId: TaskId }>) => {
       const { listId, taskId } = action.payload;
-      const list = state.entities[listId]
+      const list = state.entities[listId];
       list.tasksIds.push(taskId);
 
       if (state.selectedList?.id === listId) {
         state.selectedList = list;
       }
     },
-    editList: (state, action: PayloadAction<{ id: ListId, title: string, description: string }>) => {
+    setSelectedList: (state, action: PayloadAction<{ list: List }>) => {
+      state.selectedList = action.payload.list;
+    },
+  },
+  extraReducers: builder => {
+    builder.addCase(addList.pending, (state) => {
+      state.addListStatus = 'pending';
+    });
+    builder.addCase(addList.fulfilled, (state, action) => {
+      const list = action.payload;
+      state.entities[list.id] = list;
+      state.addListStatus = 'success';
+    });
+    builder.addCase(addList.rejected, (state) => {
+      state.addListStatus = 'failed';
+    });
+
+    builder.addCase(fetchLists.pending, (state) => {
+      state.fetchListsStatus = 'pending';
+    });
+    builder.addCase(fetchLists.fulfilled, (state, action) => {
+      action.payload.forEach(list => state.entities[list.id] = list);
+      state.fetchListsStatus = 'success';
+    });
+    builder.addCase(fetchLists.rejected, (state) => {
+      state.fetchListsStatus = 'failed';
+    });
+
+    builder.addCase(editList.pending, (state) => {
+      state.editListStatus = 'pending';
+    });
+    builder.addCase(editList.fulfilled, (state, action) => {
       const { id, title, description } = action.payload;
       const list = state.entities[id];
 
@@ -66,13 +92,23 @@ const listSlice = createSlice({
       if (state.selectedList?.id === id) {
         state.selectedList = list;
       }
-    },
-    removeList: (state, action: PayloadAction<{ listId: ListId }>) => {
-      delete state.entities[action.payload.listId];
-    },
-    setSelectedList: (state, action: PayloadAction<{ list: List }>) => {
-      state.selectedList = action.payload.list;
-    },
+
+      state.editListStatus = 'success';
+    });
+    builder.addCase(editList.rejected, (state) => {
+      state.editListStatus = 'failed';
+    });
+
+    builder.addCase(removeList.pending, (state) => {
+      state.removeListStatus = 'pending';
+    });
+    builder.addCase(removeList.fulfilled, (state, action) => {
+      delete state.entities[action.payload];
+      state.removeListStatus = 'success';
+    });
+    builder.addCase(removeList.rejected, (state) => {
+      state.removeListStatus = 'failed';
+    });
   },
 }).injectInto(rootReducer);
 
