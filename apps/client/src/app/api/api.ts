@@ -16,7 +16,7 @@ type ServerTask = {
 
 export const api = {
   lists: {
-    add: async (title: string, description: string) => {
+    add: async (title: string, description: string): Promise<List> => {
       const res = await fetch('api/add_list', {
         method: 'POST',
         body: JSON.stringify({ title, description }),
@@ -26,7 +26,12 @@ export const api = {
       });
       const data: { id: string } = await res.json();
 
-      return data.id;
+      return {
+        id: data.id,
+        title: title,
+        description: description,
+        tasksIds: [],
+      };
     },
     getAll: async () => {
       const res = await fetch('api/lists');
@@ -41,7 +46,11 @@ export const api = {
         }
       ));
     },
-    edit: async (id: ListId, title: string, description: string) => {
+    edit: async (id: ListId, title: string, description: string): Promise<{
+      id: ListId;
+      title: string;
+      description: string;
+    }> => {
       await fetch('api/update_list', {
         method: 'POST',
         body: JSON.stringify({ id, title, description }),
@@ -49,6 +58,12 @@ export const api = {
           'Content-Type': 'application/json',
         },
       });
+
+      return {
+        id: id,
+        title: title,
+        description: description,
+      };
     },
     delete: async (id: ListId) => {
       await fetch('api/list', {
@@ -58,10 +73,12 @@ export const api = {
           'Content-Type': 'application/json',
         },
       });
+
+      return id;
     },
   },
   tasks: {
-    add: async (title: string, description: string, listId: ListId) => {
+    add: async (title: string, description: string, listId: ListId): Promise<Task> => {
       const res = await fetch('api/add_task', {
         method: 'POST',
         body: JSON.stringify({ title, description, listId }),
@@ -71,7 +88,12 @@ export const api = {
       });
       const data: { id: string } = await res.json();
 
-      return data.id;
+      return {
+        id: data.id,
+        title: title,
+        description: description,
+        listId: listId,
+      };
     },
     getAll: async () => {
       const res = await fetch('api/tasks');
@@ -86,7 +108,7 @@ export const api = {
         }
       ));
     },
-    edit: async (id: TaskId, title: string, description: string) => {
+    edit: async (id: TaskId, title: string, description: string): Promise<Task> => {
       const res: Response = await fetch('api/update_task', {
         method: 'POST',
         body: JSON.stringify({ id, title, description }),
@@ -112,6 +134,8 @@ export const api = {
           'Content-Type': 'application/json',
         },
       });
+
+      return id;
     },
   },
 };
