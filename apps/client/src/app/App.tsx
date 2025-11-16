@@ -1,5 +1,5 @@
 import { Header } from '@ui/header/Header';
-import { Main } from './app/Main';
+import { Main } from './features/Main';
 import { Sidebar } from '@ui/sidebar/Sidebar';
 import { HeaderContextProvider } from '@ui/header/HeaderContextProvider';
 

@@ -1,7 +1,7 @@
-import { rootReducer } from '../../redux';
 import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { List, ListId } from '@shared/types/list';
 import type { Task, TaskId } from '@shared/types/task';
+import { rootReducer } from '../../../store';
 
 type ListsState = {
   entities: Record<ListId, List>;

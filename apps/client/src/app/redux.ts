@@ -1,13 +1,6 @@
-import { combineSlices, createSelector, type ThunkAction, type UnknownAction } from '@reduxjs/toolkit';
-import { store } from '../store';
+import { createSelector, type ThunkAction, type UnknownAction } from '@reduxjs/toolkit';
+import { extraArgument, rootReducer, store } from '../store';
 import { useDispatch, useSelector, useStore } from 'react-redux';
-import { api } from '../api/api';
-
-export const extraArgument = {
-  api,
-};
-
-export const rootReducer = combineSlices();
 
 export type AppState = ReturnType<typeof rootReducer>
 export type AppDispatch = typeof store.dispatch

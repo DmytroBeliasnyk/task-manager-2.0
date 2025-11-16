@@ -1,5 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { extraArgument, rootReducer } from './app/redux';
+import { combineSlices, configureStore } from '@reduxjs/toolkit';
+import { api } from './app/api/api';
+
+export const extraArgument = {
+  api,
+};
+
+export const rootReducer = combineSlices();
 
 export const store = configureStore({
   reducer: rootReducer,
