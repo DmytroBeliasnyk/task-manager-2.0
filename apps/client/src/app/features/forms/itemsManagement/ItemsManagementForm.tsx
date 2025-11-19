@@ -3,14 +3,17 @@ import { useEffect, useRef } from 'react';
 import { Button } from '@ui/Button';
 import { useAppDispatch, useAppSelector } from '../../../redux';
 import { itemsManagementFormActions, itemsManagementFormSelectors } from './formSlice';
-import { addList } from '../../listsPanel/model/addList';
-import { editList } from '../../listsPanel/model/editList';
-import { addTask } from '../../tasksPanel/model/addTask';
-import { editTask } from '../../tasksPanel/model/editTask';
+import { useAddListMutation, useEditListMutation } from '@api/lists/api';
+import { useAddTaskMutation, useEditTaskMutation } from '@api/tasks/api';
 
 export const ItemsManagementForm = () => {
   const dispatch = useAppDispatch();
   const options = useAppSelector(itemsManagementFormSelectors.selectOptions);
+
+  const [addList] = useAddListMutation();
+  const [editList] = useEditListMutation();
+  const [addTask] = useAddTaskMutation();
+  const [editTask] = useEditTaskMutation();
 
   const inputTitle = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
@@ -38,19 +41,19 @@ export const ItemsManagementForm = () => {
     try {
       switch (options.mode) {
         case ItemsManagementFormMode.AddList: {
-          dispatch(addList({ title, description }));
+          addList({ title, description });
           break;
         }
         case ItemsManagementFormMode.EditList: {
-          dispatch(editList({ id: options.item.id, title, description }));
+          editList({ id: options.item.id, title, description });
           break;
         }
         case ItemsManagementFormMode.AddTask: {
-          dispatch(addTask({ title, description, listId: options.listId }));
+          addTask({ title, description, listId: options.listId });
           break;
         }
         case ItemsManagementFormMode.EditTask: {
-          dispatch(editTask({ id: options.item.id, title, description }));
+          editTask({ id: options.item.id, title, description });
           break;
         }
         default:

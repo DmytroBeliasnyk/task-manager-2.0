@@ -6,17 +6,24 @@ import { Button } from '@ui/Button';
 import { ItemCard } from '@ui/ItemCard';
 import { useAppDispatch, useAppSelector } from '../../redux';
 import { listSelectors } from '../listsPanel/listSlice';
-import { taskSelectors } from './taskSlice';
 import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
 import {
   ItemsManagementFormMode,
   type ItemsManagementFormOptions,
 } from '../forms/itemsManagement/itemsManagementFormOptions';
+import { useGetTasksQuery } from '@api/tasks/api';
 
 export const TasksPanel = () => {
   const dispatch = useAppDispatch();
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
-  const tasks = useAppSelector(state => taskSelectors.selectTasks(state, selectedList?.tasksIds));
+
+  const { data } = useGetTasksQuery();
+  const allTasks = data?.tasks ?? [];
+  const tasks = selectedList?.id
+    ? allTasks.filter(task => {
+      return task.listId === selectedList.id
+    })
+    : [];
 
   function openForm(options: ItemsManagementFormOptions) {
     dispatch(itemsManagementFormActions.openForm({ options }));

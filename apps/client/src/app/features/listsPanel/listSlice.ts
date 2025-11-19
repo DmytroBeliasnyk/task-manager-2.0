@@ -1,12 +1,7 @@
 import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { List, ListId } from '@shared/types/list';
 import type { Task, TaskId } from '@shared/types/task';
-import { rootReducer } from '../../../store';
-import { fetchLists } from './model/fetchLists';
 import type { RequestStatus } from '../../redux';
-import { addList } from './model/addList';
-import { editList } from './model/editList';
-import { removeList } from './model/removeList';
 
 type ListsState = {
   entities: Record<ListId, List>;
@@ -26,7 +21,7 @@ const initialState: ListsState = {
   removeListStatus: 'idle',
 };
 
-const listSlice = createSlice({
+export const listSlice = createSlice({
   name: 'list',
   initialState,
   selectors: {
@@ -55,62 +50,7 @@ const listSlice = createSlice({
       state.selectedList = action.payload.list;
     },
   },
-  extraReducers: builder => {
-    builder.addCase(addList.pending, (state) => {
-      state.addListStatus = 'pending';
-    });
-    builder.addCase(addList.fulfilled, (state, action) => {
-      const list = action.payload;
-      state.entities[list.id] = list;
-      state.addListStatus = 'success';
-    });
-    builder.addCase(addList.rejected, (state) => {
-      state.addListStatus = 'failed';
-    });
-
-    builder.addCase(fetchLists.pending, (state) => {
-      state.fetchListsStatus = 'pending';
-    });
-    builder.addCase(fetchLists.fulfilled, (state, action) => {
-      action.payload.forEach(list => state.entities[list.id] = list);
-      state.fetchListsStatus = 'success';
-    });
-    builder.addCase(fetchLists.rejected, (state) => {
-      state.fetchListsStatus = 'failed';
-    });
-
-    builder.addCase(editList.pending, (state) => {
-      state.editListStatus = 'pending';
-    });
-    builder.addCase(editList.fulfilled, (state, action) => {
-      const { id, title, description } = action.payload;
-      const list = state.entities[id];
-
-      list.title = title;
-      list.description = description;
-
-      if (state.selectedList?.id === id) {
-        state.selectedList = list;
-      }
-
-      state.editListStatus = 'success';
-    });
-    builder.addCase(editList.rejected, (state) => {
-      state.editListStatus = 'failed';
-    });
-
-    builder.addCase(removeList.pending, (state) => {
-      state.removeListStatus = 'pending';
-    });
-    builder.addCase(removeList.fulfilled, (state, action) => {
-      delete state.entities[action.payload];
-      state.removeListStatus = 'success';
-    });
-    builder.addCase(removeList.rejected, (state) => {
-      state.removeListStatus = 'failed';
-    });
-  },
-}).injectInto(rootReducer);
+});
 
 export const listSelectors = listSlice.selectors;
 export const listActions = listSlice.actions;
