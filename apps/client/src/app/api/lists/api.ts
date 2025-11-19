@@ -1,5 +1,16 @@
 import type { List, ListId } from '@shared/types/list';
 import { baseApi } from '../baseApi';
+import { z } from 'zod';
+
+const ListSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string() ?? '',
+});
+
+const ListResponseSchema = z.object({
+  lists: ListSchema.array(),
+});
 
 const listsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -16,6 +27,7 @@ const listsApi = baseApi.injectEndpoints({
     }),
     getLists: builder.query<{ lists: List[] }, void>({
       query: () => '/lists',
+      transformResponse: (res: unknown) => ListResponseSchema.parse(res),
       providesTags: ['lists'],
     }),
     editList: builder.mutation<void, { id: ListId, title: string, description: string }>({
