@@ -1,24 +1,15 @@
 import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { List, ListId } from '@shared/types/list';
 import type { Task, TaskId } from '@shared/types/task';
-import type { RequestStatus } from '../../redux';
 
 type ListsState = {
   entities: Record<ListId, List>;
   selectedList: List | undefined;
-  addListStatus: RequestStatus;
-  fetchListsStatus: RequestStatus;
-  editListStatus: RequestStatus;
-  removeListStatus: RequestStatus;
 }
 
 const initialState: ListsState = {
   entities: {},
   selectedList: undefined,
-  addListStatus: 'idle',
-  fetchListsStatus: 'idle',
-  editListStatus: 'idle',
-  removeListStatus: 'idle',
 };
 
 export const listSlice = createSlice({
@@ -48,6 +39,9 @@ export const listSlice = createSlice({
     },
     setSelectedList: (state, action: PayloadAction<{ list: List }>) => {
       state.selectedList = action.payload.list;
+    },
+    removeSelectedList: (state) => {
+      state.selectedList = undefined;
     },
   },
 });

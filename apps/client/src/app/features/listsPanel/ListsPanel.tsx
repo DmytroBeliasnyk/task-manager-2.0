@@ -2,13 +2,12 @@ import type { List } from '@shared/types/list.ts';
 import clsx from 'clsx/lite';
 import { type JSX, useContext, useMemo } from 'react';
 import { Button } from '@ui/Button';
-import { ItemCard } from '@ui/ItemCard';
 import { HeaderContext } from '@ui/header/HeaderContextProvider';
 import { useAppDispatch } from '../../redux';
-import { listActions } from './listSlice';
 import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
 import { ItemsManagementFormMode } from '../forms/itemsManagement/itemsManagementFormOptions';
 import { useGetListsQuery } from '@api/lists/api';
+import { ListCard } from './ListCard';
 
 export const ListsPanel = () => {
   const dispatch = useAppDispatch();
@@ -39,12 +38,9 @@ export const ListsPanel = () => {
         {filteredLists.length ? (
           filteredLists.map(
             (list: List): JSX.Element => (
-              <ItemCard
+              <ListCard
                 key={list.id}
-                item={list}
-                clickHandler={() =>
-                  dispatch(listActions.setSelectedList({ list }))
-                }
+                list={list}
               />
             ))
         ) : (
