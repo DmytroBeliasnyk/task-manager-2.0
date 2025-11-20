@@ -19,7 +19,7 @@ const TaskResponseSchema = z.object({
   tasks: TaskSchema.array(),
 });
 
-const tasksApi = baseApi.injectEndpoints({
+export const tasksApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     addTask: builder.mutation<void, { title: string, description: string, listId: ListId }>({
       query: ({ title, description, listId }) => ({

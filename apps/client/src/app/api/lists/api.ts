@@ -12,7 +12,7 @@ const ListResponseSchema = z.object({
   lists: ListSchema.array(),
 });
 
-const listsApi = baseApi.injectEndpoints({
+export const listsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     addList: builder.mutation<void, { title: string, description: string }>({
       query: ({ title, description }) => ({
