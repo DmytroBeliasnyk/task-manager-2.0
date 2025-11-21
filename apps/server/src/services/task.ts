@@ -10,8 +10,8 @@ export async function saveTask(title: string, description: string, listId: ListI
   return taskId;
 }
 
-export async function getTasks() {
-  return await getTasksFromDB();
+export async function getTasks(listId: ListId) {
+  return await getTasksFromDB(listId);
 }
 
 export async function updateTask(id: TaskId, title: string, description: string) {
