@@ -4,13 +4,14 @@ import {
   type ItemsManagementFormOptions,
 } from '../forms/itemsManagement/itemsManagementFormOptions';
 import { FaTrash } from 'react-icons/fa';
+import { memo } from 'react';
 
 type TaskCardProps = {
   task: Task;
   openForm: (options: ItemsManagementFormOptions) => void;
 }
 
-export const TaskCard = ({ task, openForm }: TaskCardProps) => {
+export const TaskCard = memo(({ task, openForm }: TaskCardProps) => {
   return (
     <>
       <div
@@ -37,4 +38,4 @@ export const TaskCard = ({ task, openForm }: TaskCardProps) => {
       </div>
     </>
   );
-};
+});

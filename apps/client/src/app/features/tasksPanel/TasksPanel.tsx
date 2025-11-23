@@ -1,6 +1,6 @@
 import type { Task } from '@shared/types/task.ts';
 import clsx from 'clsx/lite';
-import { type JSX } from 'react';
+import { type JSX, memo } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Button } from '@ui/Button';
 import { useAppDispatch, useAppSelector } from '../../redux';
@@ -14,7 +14,7 @@ import { useGetTasksQuery } from '@api/tasks/api';
 import { TaskCard } from './TaskCard';
 import { skipToken } from '@reduxjs/toolkit/query';
 
-export const TasksPanel = () => {
+export const TasksPanel = memo(() => {
   const dispatch = useAppDispatch();
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
 
@@ -100,4 +100,4 @@ export const TasksPanel = () => {
       )}
     </section>
   );
-};
+});

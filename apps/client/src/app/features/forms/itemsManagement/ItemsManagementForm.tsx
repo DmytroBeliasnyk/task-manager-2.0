@@ -65,11 +65,11 @@ export const ItemsManagementForm = () => {
           break;
         }
         case ItemsManagementFormMode.EditTask: {
-          editTask({ id: options.item.id, title, description });
+          editTask({ id: options.item.id, title, description, listId: options.item.listId });
           break;
         }
         case ItemsManagementFormMode.DeleteTask: {
-          deleteTask(options.item.id);
+          deleteTask({id: options.item.id, listId: options.item.listId  });
           break;
         }
         default:

@@ -1,6 +1,6 @@
 import type { List } from '@shared/types/list.ts';
 import clsx from 'clsx/lite';
-import { type JSX, useContext, useMemo } from 'react';
+import { type JSX, memo, useContext, useMemo } from 'react';
 import { Button } from '@ui/Button';
 import { HeaderContext } from '@ui/header/HeaderContextProvider';
 import { useAppDispatch } from '../../redux';
@@ -9,7 +9,7 @@ import { ItemsManagementFormMode } from '../forms/itemsManagement/itemsManagemen
 import { useGetListsQuery } from '@api/lists/api';
 import { ListCard } from './ListCard';
 
-export const ListsPanel = () => {
+export const ListsPanel = memo(() => {
   const dispatch = useAppDispatch();
   const { data } = useGetListsQuery();
   const lists = data?.lists ?? []
@@ -63,4 +63,4 @@ export const ListsPanel = () => {
       </div>
     </section>
   );
-};
+});

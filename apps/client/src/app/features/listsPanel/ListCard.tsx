@@ -1,8 +1,9 @@
 import type { List } from '@shared/types/list';
 import { useAppDispatch } from '../../redux';
 import { listActions } from './listSlice';
+import { memo } from 'react';
 
-export const ListCard = ({ list }: { list: List }) => {
+export const ListCard = memo(({ list }: { list: List }) => {
   const dispatch = useAppDispatch();
 
   return (
@@ -18,4 +19,4 @@ export const ListCard = ({ list }: { list: List }) => {
       </div>
     </>
   );
-};
+});
