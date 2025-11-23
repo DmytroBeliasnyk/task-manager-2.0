@@ -19,7 +19,7 @@ const TaskResponseSchema = z.object({
   tasks: TaskSchema.array(),
 });
 
-export const tasksApi = baseApi.injectEndpoints({
+const tasksApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     addTask: builder.mutation<void, { title: string, description: string, listId: ListId }>({
       query: ({ title, description, listId }) => ({
@@ -30,15 +30,17 @@ export const tasksApi = baseApi.injectEndpoints({
           'Content-Type': 'application/json',
         },
       }),
-      invalidatesTags: ['tasks'],
+      invalidatesTags:(_,__,{listId})=>
+        [{ type: 'tasks', id: listId }],
     }),
-    getTasks: builder.query<{ tasks: Task[] }, void>({
-      query: () => '/tasks',
-      providesTags: ['tasks'],
+    getTasks: builder.query<Task[], ListId>({
+      query: (listId) => `/tasks?list_id=${listId}`,
+      providesTags: (_, __, listId) =>
+        [{ type: 'tasks', id: listId }],
       transformResponse: (res: unknown) =>
-        TaskResponseSchema.parse(res),
+        TaskResponseSchema.parse(res).tasks,
     }),
-    editTask: builder.mutation<void, { id: TaskId, title: string, description: string }>({
+    editTask: builder.mutation<void, { id: TaskId, title: string, description: string, listId: ListId }>({
       query: ({ id, title, description }) => ({
         url: '/update_task',
         method: 'POST',
@@ -47,10 +49,11 @@ export const tasksApi = baseApi.injectEndpoints({
           'Content-Type': 'application/json',
         },
       }),
-      invalidatesTags: ['tasks'],
+      invalidatesTags: (_,__,{listId})=>
+        [{ type: 'tasks', id: listId }],
     }),
-    deleteTask: builder.mutation<void, TaskId>({
-      query: (id) => ({
+    deleteTask: builder.mutation<void, {id: TaskId, listId: ListId }>({
+      query: ({ id }) => ({
         url: '/task',
         method: 'DELETE',
         body: JSON.stringify({ id }),
@@ -58,7 +61,8 @@ export const tasksApi = baseApi.injectEndpoints({
           'Content-Type': 'application/json',
         },
       }),
-      invalidatesTags: ['tasks'],
+      invalidatesTags: (_,__,{listId})=>
+        [{ type: 'tasks', id: listId }],
     }),
   }),
 });

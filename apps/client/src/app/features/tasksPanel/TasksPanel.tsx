@@ -12,18 +12,13 @@ import {
 } from '../forms/itemsManagement/itemsManagementFormOptions';
 import { useGetTasksQuery } from '@api/tasks/api';
 import { TaskCard } from './TaskCard';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 export const TasksPanel = () => {
   const dispatch = useAppDispatch();
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
 
-  const { data } = useGetTasksQuery();
-  const allTasks = data?.tasks ?? [];
-  const tasks = selectedList?.id
-    ? allTasks.filter(task => {
-      return task.listId === selectedList.id;
-    })
-    : [];
+  const { data: tasks = [] } = useGetTasksQuery(selectedList?.id ?? skipToken);
 
   function openForm(options: ItemsManagementFormOptions) {
     dispatch(itemsManagementFormActions.openForm({ options }));
