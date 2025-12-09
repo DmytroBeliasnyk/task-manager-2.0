@@ -1,8 +1,10 @@
-import type { Task } from './task';
+import type { TaskId } from './task.js';
+
+export type ListId = string
 
 export type List = {
-  id: string;
+  id: ListId;
   title: string;
   description: string;
-  tasks: Array<Task>;
+  tasksIds: TaskId[];
 };

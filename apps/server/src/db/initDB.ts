@@ -19,7 +19,7 @@ export async function initDB(): Promise<void> {
             id          TEXT PRIMARY KEY,
             title       TEXT NOT NULL,
             description TEXT,
-            list_id     TEXT REFERENCES lists (id)
+            list_id     TEXT REFERENCES lists (id) ON DELETE CASCADE 
         );`);
 
     await client.query('COMMIT');

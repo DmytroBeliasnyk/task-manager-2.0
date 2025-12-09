@@ -1,7 +1,8 @@
 import { Task } from '@shared/types/task';
 import { RequestHandler } from 'express';
-import { saveTask, updateTask } from '../services/task';
+import { getTasks, saveTask, updateTask } from '../services/task';
 import NonExistentIDError from '../utils/errors/NonExistentIDError';
+import { deleteTaskFromDB } from '../repo/task';
 
 export const addTaskController: RequestHandler = async (req, res) => {
   try {
@@ -18,6 +19,15 @@ export const addTaskController: RequestHandler = async (req, res) => {
   }
 };
 
+export const getTasksController: RequestHandler = async (req, res) => {
+  try {
+    const tasks = await getTasks();
+    res.status(200).json({ tasks: tasks });
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+};
+
 export const updateTaskController: RequestHandler = async (req, res) => {
   try {
     const { id, title, description } = req.body;
@@ -28,11 +38,26 @@ export const updateTaskController: RequestHandler = async (req, res) => {
 
     const updatedTask: Task = await updateTask(id, title, description);
 
-    res.status(201).json({updatedTask: updatedTask});
+    res.status(201).json({ updatedTask: updatedTask });
   } catch (err) {
     const status: number = err instanceof NonExistentIDError
       ? 400 : 500;
 
-    res.status(status).json({message: err});
+    res.status(status).json({ message: err });
+  }
+};
+
+export const deleteTaskController: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id) {
+      res.status(400).json({ messages: 'parameter "id" is required' });
+      return;
+    }
+
+    await deleteTaskFromDB(id);
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).json({ message: err });
   }
 };

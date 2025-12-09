@@ -1,20 +1,23 @@
 import type { List } from '@shared/types/list.ts';
-import { ItemsManagementFormMode } from '@forms/itemsManagement/formOptions';
-import { ItemsManagementFormContext } from '@forms/itemsManagement/ItemsManagementFormContextProvider';
 import clsx from 'clsx/lite';
-import { type FC, type JSX, useContext, useMemo } from 'react';
-import { ListsContext } from '../../App';
-import { Button } from '../../button/Button';
-import { ItemCard } from './common/ItemCard';
-import { HeaderContext } from '../../header/HeaderContextProvider';
+import { type JSX, useContext, useEffect, useMemo } from 'react';
+import { Button } from '@ui/Button';
+import { ItemCard } from '@ui/ItemCard';
+import { HeaderContext } from '@ui/header/HeaderContextProvider';
+import { useAppDispatch, useAppSelector } from '../../redux';
+import { listActions, listSelectors } from './listSlice';
+import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
+import { ItemsManagementFormMode } from '../forms/itemsManagement/itemsManagementFormOptions';
+import { fetchLists } from './model/fetchLists';
 
-type ListsSectionProps = {
-  selectList: (listId: string) => void;
-};
+export const ListsPanel = () => {
+  const dispatch = useAppDispatch();
+  const lists = useAppSelector(listSelectors.selectLists);
 
-export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
-  const { openForm } = useContext(ItemsManagementFormContext);
-  const { lists } = useContext(ListsContext);
+  useEffect(() => {
+    dispatch(fetchLists());
+  }, []);
+
   const { searchValue } = useContext(HeaderContext);
   const filteredLists = useMemo(() => {
     return searchValue
@@ -23,7 +26,7 @@ export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
       : lists;
   }, [lists, searchValue]);
 
-  const listsSectionClassName= clsx(
+  const listsSectionClassName = clsx(
     'flex flex-col flex-1',
     filteredLists.length
       ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent'
@@ -42,23 +45,26 @@ export const ListsPanel: FC<ListsSectionProps> = ({ selectList }) => {
               <ItemCard
                 key={list.id}
                 item={list}
-                clickHandler={() => selectList(list.id)}
+                clickHandler={() =>
+                  dispatch(listActions.setSelectedList({ list }))
+                }
               />
             ))
         ) : (
           <span className="inline-block w-3/4 text-4xl text-gray-400">
             {lists.length
               ? 'No lists match your search...'
-              : "You don't have any lists..."}
+              : 'You don\'t have any lists...'}
           </span>
         )}
       </section>
       <div className="flex justify-end">
         <Button
           type={'button'}
-          onClick={() => openForm(
-            { mode: ItemsManagementFormMode.AddList },
-          )}>
+          onClick={() => dispatch(itemsManagementFormActions.openForm({
+            options: { mode: ItemsManagementFormMode.AddList },
+          }))
+          }>
           Create new list
         </Button>
       </div>
