@@ -7,6 +7,8 @@ import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { listsApi } from '@api/lists/api';
 import { ListCard } from '@features/listsPanel/ListCard';
 import { useOpenForm } from '@hooks/useOpenForm';
+import { EmptyPanel } from '@ui/EmptyPanel/EmptyPanel';
+import { LIST_PANEL_TEXT } from '@utils/constants';
 
 export const ListsPanel = memo(() => {
   const { data } = listsApi.useGetListsQuery();
@@ -36,9 +38,9 @@ export const ListsPanel = memo(() => {
         {filteredLists.length ? (
           filteredLists.map((list: List): JSX.Element => <ListCard key={list.id} list={list} />)
         ) : (
-          <span className="inline-block w-3/4 text-4xl text-gray-400">
-            {lists.length ? 'No lists match your search...' : "You don't have any lists..."}
-          </span>
+          <EmptyPanel>
+            {lists.length ? LIST_PANEL_TEXT.SEARCH_NO_MATCH : LIST_PANEL_TEXT.NO_LISTS}
+          </EmptyPanel>
         )}
       </section>
       <div className="flex justify-end">

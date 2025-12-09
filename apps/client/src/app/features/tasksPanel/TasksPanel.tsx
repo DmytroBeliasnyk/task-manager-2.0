@@ -10,6 +10,8 @@ import { tasksApi } from '@api/tasks/api';
 import { TaskCard } from './TaskCard';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useOpenForm } from '@hooks/useOpenForm';
+import { EmptyPanel } from '@ui/EmptyPanel/EmptyPanel';
+import { TASK_PANEL_TEXT } from '@utils/constants';
 
 export const TasksPanel = memo(() => {
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
@@ -66,9 +68,7 @@ export const TasksPanel = memo(() => {
                 ),
               )
             ) : (
-              <span className="inline-block w-3/4 text-4xl text-gray-400">
-                You don't have any tasks...
-              </span>
+              <EmptyPanel>{TASK_PANEL_TEXT.NO_TASKS}</EmptyPanel>
             )}
           </section>
           <div className="flex justify-end">
@@ -86,9 +86,7 @@ export const TasksPanel = memo(() => {
           </div>
         </>
       ) : (
-        <span className="inline-block w-3/4 text-4xl text-gray-400">
-          Choose a task list to see its tasks...
-        </span>
+        <EmptyPanel>{TASK_PANEL_TEXT.NO_LIST_SELECTED}</EmptyPanel>
       )}
     </section>
   );
