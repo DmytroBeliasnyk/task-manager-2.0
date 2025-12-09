@@ -1,24 +1,23 @@
 import type { List } from '@shared/types/list.ts';
 import clsx from 'clsx/lite';
 import { type JSX, memo, useContext, useMemo } from 'react';
-import { Button } from '@ui/Button';
-import { HeaderContext } from '@ui/header/HeaderContextProvider';
-import { useAppDispatch } from '../../redux';
-import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
-import { ItemsManagementFormMode } from '../forms/itemsManagement/itemsManagementFormOptions';
-import { useGetListsQuery } from '@api/lists/api';
-import { ListCard } from './ListCard';
+import { Button } from '@ui/Button/Button';
+import { HeaderContext } from '@ui/Header/HeaderContextProvider';
+import { useAppDispatch } from '@store/redux';
+import { itemsManagementFormActions } from '@store/slices/formSlice';
+import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
+import { listsApi } from '@api/lists/api';
+import { ListCard } from '@features/listsPanel/ListCard';
 
 export const ListsPanel = memo(() => {
   const dispatch = useAppDispatch();
-  const { data } = useGetListsQuery();
-  const lists = data?.lists ?? []
+  const { data } = listsApi.useGetListsQuery();
+  const lists = data?.lists ?? [];
 
   const { searchValue } = useContext(HeaderContext);
   const filteredLists = useMemo(() => {
     return searchValue
-      ? lists.filter(list =>
-        list.title.toLowerCase().includes(searchValue.toLowerCase()))
+      ? lists.filter((list) => list.title.toLowerCase().includes(searchValue.toLowerCase()))
       : lists;
   }, [lists, searchValue]);
 
@@ -36,28 +35,24 @@ export const ListsPanel = memo(() => {
       </h2>
       <section className={listsSectionClassName}>
         {filteredLists.length ? (
-          filteredLists.map(
-            (list: List): JSX.Element => (
-              <ListCard
-                key={list.id}
-                list={list}
-              />
-            ))
+          filteredLists.map((list: List): JSX.Element => <ListCard key={list.id} list={list} />)
         ) : (
           <span className="inline-block w-3/4 text-4xl text-gray-400">
-            {lists.length
-              ? 'No lists match your search...'
-              : 'You don\'t have any lists...'}
+            {lists.length ? 'No lists match your search...' : "You don't have any lists..."}
           </span>
         )}
       </section>
       <div className="flex justify-end">
         <Button
           type={'button'}
-          onClick={() => dispatch(itemsManagementFormActions.openForm({
-            options: { mode: ItemsManagementFormMode.AddList },
-          }))
-          }>
+          onClick={() =>
+            dispatch(
+              itemsManagementFormActions.openForm({
+                options: { mode: ItemsManagementFormMode.AddList },
+              }),
+            )
+          }
+        >
           Create new list
         </Button>
       </div>

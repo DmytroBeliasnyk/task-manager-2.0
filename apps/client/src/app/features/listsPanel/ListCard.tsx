@@ -1,6 +1,6 @@
 import type { List } from '@shared/types/list';
-import { useAppDispatch } from '../../redux';
-import { listActions } from './listSlice';
+import { useAppDispatch } from '@store/redux';
+import { listActions } from '@store/slices/listSlice';
 import { memo } from 'react';
 
 export const ListCard = memo(({ list }: { list: List }) => {
