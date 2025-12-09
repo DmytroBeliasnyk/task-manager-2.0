@@ -14,7 +14,8 @@
       "@api/*": ["src/app/api/*"],
       "@ui/*": ["src/app/ui/*"],
       "@features/*": ["src/app/features/*"],
-      "@utils/*": ["src/app/utils/*"]
+      "@utils/*": ["src/app/utils/*"],
+      "@hooks/*": ["src/app/hooks/*"]
     },
 
     /* Bundler mode */

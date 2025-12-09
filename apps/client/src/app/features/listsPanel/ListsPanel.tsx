@@ -3,16 +3,15 @@ import clsx from 'clsx/lite';
 import { type JSX, memo, useContext, useMemo } from 'react';
 import { Button } from '@ui/Button/Button';
 import { HeaderContext } from '@ui/Header/HeaderContextProvider';
-import { useAppDispatch } from '@store/redux';
-import { itemsManagementFormActions } from '@store/slices/formSlice';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { listsApi } from '@api/lists/api';
 import { ListCard } from '@features/listsPanel/ListCard';
+import { useOpenForm } from '@hooks/useOpenForm';
 
 export const ListsPanel = memo(() => {
-  const dispatch = useAppDispatch();
   const { data } = listsApi.useGetListsQuery();
   const lists = data?.lists ?? [];
+  const openForm = useOpenForm();
 
   const { searchValue } = useContext(HeaderContext);
   const filteredLists = useMemo(() => {
@@ -46,11 +45,9 @@ export const ListsPanel = memo(() => {
         <Button
           type={'button'}
           onClick={() =>
-            dispatch(
-              itemsManagementFormActions.openForm({
-                options: { mode: ItemsManagementFormMode.AddList },
-              }),
-            )
+            openForm({
+              mode: ItemsManagementFormMode.AddList,
+            })
           }
         >
           Create new list

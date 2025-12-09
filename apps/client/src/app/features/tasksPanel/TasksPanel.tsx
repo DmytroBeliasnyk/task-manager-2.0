@@ -3,26 +3,19 @@ import clsx from 'clsx/lite';
 import { type JSX, memo } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Button } from '@ui/Button/Button';
-import { useAppDispatch, useAppSelector } from '@store/redux';
+import { useAppSelector } from '@store/redux';
 import { listSelectors } from '@store/slices/listSlice';
-import { itemsManagementFormActions } from '@store/slices/formSlice';
-import {
-  ItemsManagementFormMode,
-  type ItemsManagementFormOptions,
-} from '@utils/itemsManagementFormOptions';
+import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { tasksApi } from '@api/tasks/api';
 import { TaskCard } from './TaskCard';
 import { skipToken } from '@reduxjs/toolkit/query';
+import { useOpenForm } from '@hooks/useOpenForm';
 
 export const TasksPanel = memo(() => {
-  const dispatch = useAppDispatch();
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
+  const openForm = useOpenForm();
 
   const { data: tasks = [] } = tasksApi.useGetTasksQuery(selectedList?.id ?? skipToken);
-
-  function openForm(options: ItemsManagementFormOptions) {
-    dispatch(itemsManagementFormActions.openForm({ options }));
-  }
 
   const tasksSectionClassName = clsx(
     'flex flex-col flex-1 bg-secondary-bg rounded-md',
