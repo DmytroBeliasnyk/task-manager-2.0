@@ -4,6 +4,7 @@ import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { listsApi } from '@api/lists/api';
 import { tasksApi } from '@api/tasks/api';
 import { listActions } from '@store/slices/listSlice';
+import type { List } from '@shared/types/list';
 
 export const useFormActions = (closeForm: () => void) => {
   const options = useAppSelector(itemsManagementFormSelectors.selectOptions);
@@ -27,7 +28,9 @@ export const useFormActions = (closeForm: () => void) => {
           break;
         }
         case ItemsManagementFormMode.EditList: {
-          editList({ id: options.item.id, title, description });
+          const list: List = { id: options.item.id, title, description };
+          editList(list);
+          dispatch(listActions.setSelectedList({ list }));
           break;
         }
         case ItemsManagementFormMode.DeleteList: {
