@@ -1,14 +1,14 @@
 import type { List } from '@shared/types/list.ts';
 import clsx from 'clsx/lite';
 import { type JSX, memo, useContext, useMemo } from 'react';
-import { Button } from '@ui/Button/Button';
 import { HeaderContext } from '@ui/Header/HeaderContextProvider';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { listsApi } from '@api/lists/api';
 import { ListCard } from '@features/listsPanel/ListCard';
 import { useOpenForm } from '@hooks/useOpenForm';
-import { EmptyPanel } from '@ui/EmptyPanel/EmptyPanel';
+import { EmptyPanel } from '@ui/Panels/EmptyPanel';
 import { LIST_PANEL_TEXT } from '@utils/constants';
+import { PanelLayout } from '@ui/Panels/PanelLayout';
 
 export const ListsPanel = memo(() => {
   const { data } = listsApi.useGetListsQuery();
@@ -30,10 +30,13 @@ export const ListsPanel = memo(() => {
   );
 
   return (
-    <section className="flex flex-col flex-1 justify-between gap-2 bg-secondary-bg rounded-md p-4">
-      <h2 className="pb-2 border-b border-text-secondary text-2xl font-semibold text-text-primary">
+    <PanelLayout
+      buttonText="Create new list"
+      buttonHandler={() => openForm({ mode: ItemsManagementFormMode.AddList })}
+    >
+      <header className="pb-2 border-b border-text-secondary text-2xl font-semibold text-text-primary">
         My lists
-      </h2>
+      </header>
       <section className={listsSectionClassName}>
         {filteredLists.length ? (
           filteredLists.map((list: List): JSX.Element => <ListCard key={list.id} list={list} />)
@@ -43,18 +46,6 @@ export const ListsPanel = memo(() => {
           </EmptyPanel>
         )}
       </section>
-      <div className="flex justify-end">
-        <Button
-          type={'button'}
-          onClick={() =>
-            openForm({
-              mode: ItemsManagementFormMode.AddList,
-            })
-          }
-        >
-          Create new list
-        </Button>
-      </div>
-    </section>
+    </PanelLayout>
   );
 });

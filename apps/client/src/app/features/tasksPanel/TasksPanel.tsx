@@ -2,7 +2,6 @@ import type { Task } from '@shared/types/task';
 import clsx from 'clsx/lite';
 import { type JSX, memo } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { Button } from '@ui/Button/Button';
 import { useAppSelector } from '@store/redux';
 import { listSelectors } from '@store/slices/listSlice';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
@@ -10,8 +9,9 @@ import { tasksApi } from '@api/tasks/api';
 import { TaskCard } from './TaskCard';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useOpenForm } from '@hooks/useOpenForm';
-import { EmptyPanel } from '@ui/EmptyPanel/EmptyPanel';
 import { TASK_PANEL_TEXT } from '@utils/constants';
+import { PanelLayout } from '@ui/Panels/PanelLayout';
+import { EmptyPanel } from '@ui/Panels/EmptyPanel';
 
 export const TasksPanel = memo(() => {
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
@@ -20,23 +20,22 @@ export const TasksPanel = memo(() => {
   const { data: tasks = [] } = tasksApi.useGetTasksQuery(selectedList?.id ?? skipToken);
 
   const tasksSectionClassName = clsx(
-    'flex flex-col flex-1 bg-secondary-bg rounded-md',
-    selectedList ? 'justify-between gap-2 p-4' : 'justify-center items-center text-center',
+    'flex flex-col flex-1',
+    tasks.length
+      ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent'
+      : 'justify-center items-center text-center',
   );
-  const tasksListClassName = selectedList
-    ? clsx(
-        'flex flex-col flex-1',
-        tasks.length
-          ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent'
-          : 'justify-center items-center text-center',
-      )
-    : null;
   const iconClassName = 'cursor-pointer hover:text-text-primary transition-colors duration-300';
 
   return (
-    <section className={tasksSectionClassName}>
+    <>
       {selectedList ? (
-        <>
+        <PanelLayout
+          buttonText="Add task"
+          buttonHandler={() =>
+            openForm({ mode: ItemsManagementFormMode.AddTask, listId: selectedList.id })
+          }
+        >
           <header className="flex justify-between items-center pb-2 border-b border-text-secondary text-2xl font-semibold text-text-primary">
             <h2>{selectedList.title}</h2>
             <section className="flex gap-2 text-base text-text-secondary">
@@ -60,7 +59,7 @@ export const TasksPanel = memo(() => {
               />
             </section>
           </header>
-          <section className={tasksListClassName ?? undefined}>
+          <section className={tasksSectionClassName}>
             {tasks.length ? (
               tasks.map(
                 (task: Task): JSX.Element => (
@@ -71,23 +70,12 @@ export const TasksPanel = memo(() => {
               <EmptyPanel>{TASK_PANEL_TEXT.NO_TASKS}</EmptyPanel>
             )}
           </section>
-          <div className="flex justify-end">
-            <Button
-              type={'button'}
-              onClick={() =>
-                openForm({
-                  mode: ItemsManagementFormMode.AddTask,
-                  listId: selectedList.id,
-                })
-              }
-            >
-              Add task
-            </Button>
-          </div>
-        </>
+        </PanelLayout>
       ) : (
-        <EmptyPanel>{TASK_PANEL_TEXT.NO_LIST_SELECTED}</EmptyPanel>
+        <section className="flex flex-col flex-1 justify-center items-center text-center">
+          <EmptyPanel>{TASK_PANEL_TEXT.NO_LIST_SELECTED}</EmptyPanel>
+        </section>
       )}
-    </section>
+    </>
   );
 });
