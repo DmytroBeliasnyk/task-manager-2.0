@@ -1,17 +1,12 @@
 import type { Task } from '@shared/types/task';
-import {
-  ItemsManagementFormMode,
-  type ItemsManagementFormOptions,
-} from '@utils/itemsManagementFormOptions';
+import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { FaTrash } from 'react-icons/fa';
 import { memo } from 'react';
+import { useOpenForm } from '@hooks/useOpenForm';
 
-type TaskCardProps = {
-  task: Task;
-  openForm: (options: ItemsManagementFormOptions) => void;
-};
+export const TaskCard = memo(({ task }: { task: Task }) => {
+  const openForm = useOpenForm();
 
-export const TaskCard = memo(({ task, openForm }: TaskCardProps) => {
   return (
     <>
       <div

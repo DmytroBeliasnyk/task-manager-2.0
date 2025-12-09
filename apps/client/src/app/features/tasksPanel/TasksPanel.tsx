@@ -1,7 +1,5 @@
 import type { Task } from '@shared/types/task';
-import clsx from 'clsx/lite';
-import { type JSX, memo } from 'react';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { memo } from 'react';
 import { useAppSelector } from '@store/redux';
 import { listSelectors } from '@store/slices/listSlice';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
@@ -11,19 +9,13 @@ import { TASK_PANEL_TEXT } from '@utils/constants';
 import { PanelLayout } from '@ui/Panels/PanelLayout';
 import { EmptyPanel } from '@ui/Panels/EmptyPanel';
 import { useTasks } from './hooks/useTasks';
+import { ScrollableList } from '@ui/ScrollableList/ScrollableList';
+import { TasksPanelHeader } from './TasksPanelHeader';
 
 export const TasksPanel = memo(() => {
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
   const openForm = useOpenForm();
   const tasks = useTasks(selectedList?.id);
-
-  const tasksSectionClassName = clsx(
-    'flex flex-col flex-1',
-    tasks.length
-      ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent'
-      : 'justify-center items-center text-center',
-  );
-  const iconClassName = 'cursor-pointer hover:text-text-primary transition-colors duration-300';
 
   return (
     <>
@@ -34,40 +26,12 @@ export const TasksPanel = memo(() => {
             openForm({ mode: ItemsManagementFormMode.AddTask, listId: selectedList.id })
           }
         >
-          <header className="flex justify-between items-center pb-2 border-b border-text-secondary text-2xl font-semibold text-text-primary">
-            <h2>{selectedList.title}</h2>
-            <section className="flex gap-2 text-base text-text-secondary">
-              <FaEdit
-                className={iconClassName}
-                onClick={() =>
-                  openForm({
-                    mode: ItemsManagementFormMode.EditList,
-                    item: selectedList,
-                  })
-                }
-              />
-              <FaTrash
-                className={iconClassName}
-                onClick={() =>
-                  openForm({
-                    mode: ItemsManagementFormMode.DeleteList,
-                    item: selectedList,
-                  })
-                }
-              />
-            </section>
-          </header>
-          <section className={tasksSectionClassName}>
-            {tasks.length ? (
-              tasks.map(
-                (task: Task): JSX.Element => (
-                  <TaskCard key={task.id} task={task} openForm={openForm} />
-                ),
-              )
-            ) : (
-              <EmptyPanel>{TASK_PANEL_TEXT.NO_TASKS}</EmptyPanel>
-            )}
-          </section>
+          <TasksPanelHeader selectedList={selectedList} />
+          <ScrollableList
+            items={tasks}
+            renderItem={(task: Task) => <TaskCard key={task.id} task={task} />}
+            emptyState={TASK_PANEL_TEXT.NO_TASKS}
+          />
         </PanelLayout>
       ) : (
         <section className="flex flex-col flex-1 bg-secondary-bg rounded-md justify-center items-center text-center">
