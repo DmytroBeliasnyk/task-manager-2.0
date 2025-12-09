@@ -5,19 +5,17 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useAppSelector } from '@store/redux';
 import { listSelectors } from '@store/slices/listSlice';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
-import { tasksApi } from '@api/tasks/api';
 import { TaskCard } from './TaskCard';
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useOpenForm } from '@hooks/useOpenForm';
 import { TASK_PANEL_TEXT } from '@utils/constants';
 import { PanelLayout } from '@ui/Panels/PanelLayout';
 import { EmptyPanel } from '@ui/Panels/EmptyPanel';
+import { useTasks } from './hooks/useTasks';
 
 export const TasksPanel = memo(() => {
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
   const openForm = useOpenForm();
-
-  const { data: tasks = [] } = tasksApi.useGetTasksQuery(selectedList?.id ?? skipToken);
+  const tasks = useTasks(selectedList?.id);
 
   const tasksSectionClassName = clsx(
     'flex flex-col flex-1',
