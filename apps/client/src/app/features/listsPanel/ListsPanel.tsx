@@ -1,66 +1,32 @@
 import type { List } from '@shared/types/list.ts';
-import clsx from 'clsx/lite';
-import { type JSX, memo, useContext, useMemo } from 'react';
-import { Button } from '@ui/Button';
-import { HeaderContext } from '@ui/header/HeaderContextProvider';
-import { useAppDispatch } from '../../redux';
-import { itemsManagementFormActions } from '../forms/itemsManagement/formSlice';
-import { ItemsManagementFormMode } from '../forms/itemsManagement/itemsManagementFormOptions';
-import { useGetListsQuery } from '@api/lists/api';
-import { ListCard } from './ListCard';
+import { memo, useContext } from 'react';
+import { HeaderContext } from '@ui/Header/HeaderContextProvider';
+import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
+import { ListCard } from '@features/listsPanel/ListCard';
+import { useOpenForm } from '@hooks/useOpenForm';
+import { LIST_PANEL_TEXT } from '@utils/constants';
+import { PanelLayout } from '@ui/Panels/PanelLayout';
+import { useLists } from './hooks/useLists';
+import { ScrollableList } from '@ui/ScrollableList/ScrollableList';
 
 export const ListsPanel = memo(() => {
-  const dispatch = useAppDispatch();
-  const { data } = useGetListsQuery();
-  const lists = data?.lists ?? []
-
   const { searchValue } = useContext(HeaderContext);
-  const filteredLists = useMemo(() => {
-    return searchValue
-      ? lists.filter(list =>
-        list.title.toLowerCase().includes(searchValue.toLowerCase()))
-      : lists;
-  }, [lists, searchValue]);
-
-  const listsSectionClassName = clsx(
-    'flex flex-col flex-1',
-    filteredLists.length
-      ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent'
-      : 'justify-center items-center text-center',
-  );
+  const lists = useLists(searchValue);
+  const openForm = useOpenForm();
 
   return (
-    <section className="flex flex-col flex-1 justify-between gap-2 bg-secondary-bg rounded-md p-4">
-      <h2 className="pb-2 border-b border-text-secondary text-2xl font-semibold text-text-primary">
+    <PanelLayout
+      buttonText="Create new list"
+      buttonHandler={() => openForm({ mode: ItemsManagementFormMode.AddList })}
+    >
+      <header className="pb-2 border-b border-text-secondary text-2xl font-semibold text-text-primary">
         My lists
-      </h2>
-      <section className={listsSectionClassName}>
-        {filteredLists.length ? (
-          filteredLists.map(
-            (list: List): JSX.Element => (
-              <ListCard
-                key={list.id}
-                list={list}
-              />
-            ))
-        ) : (
-          <span className="inline-block w-3/4 text-4xl text-gray-400">
-            {lists.length
-              ? 'No lists match your search...'
-              : 'You don\'t have any lists...'}
-          </span>
-        )}
-      </section>
-      <div className="flex justify-end">
-        <Button
-          type={'button'}
-          onClick={() => dispatch(itemsManagementFormActions.openForm({
-            options: { mode: ItemsManagementFormMode.AddList },
-          }))
-          }>
-          Create new list
-        </Button>
-      </div>
-    </section>
+      </header>
+      <ScrollableList
+        items={lists}
+        renderItem={(list: List) => <ListCard key={list.id} list={list} />}
+        emptyState={searchValue ? LIST_PANEL_TEXT.SEARCH_NO_MATCH : LIST_PANEL_TEXT.NO_LISTS}
+      />
+    </PanelLayout>
   );
 });

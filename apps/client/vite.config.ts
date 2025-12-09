@@ -10,6 +10,10 @@ export default defineConfig({
       '@shared': path.resolve(__dirname, '../../shared'),
       '@api': path.resolve(__dirname, 'src/app/api'),
       '@ui': path.resolve(__dirname, 'src/app/ui'),
+      '@store': path.resolve(__dirname, 'src/app/store'),
+      '@features': path.resolve(__dirname, 'src/app/features'),
+      '@utils': path.resolve(__dirname, 'src/app/utils'),
+      '@hooks': path.resolve(__dirname, 'src/app/hooks'),
     },
   },
   server: {

@@ -13,8 +13,8 @@ const ListResponseSchema = z.object({
 });
 
 export const listsApi = baseApi.injectEndpoints({
-  endpoints: builder => ({
-    addList: builder.mutation<void, { title: string, description: string }>({
+  endpoints: (builder) => ({
+    addList: builder.mutation<void, { title: string; description: string }>({
       query: ({ title, description }) => ({
         url: '/add_list',
         method: 'POST',
@@ -30,7 +30,7 @@ export const listsApi = baseApi.injectEndpoints({
       transformResponse: (res: unknown) => ListResponseSchema.parse(res),
       providesTags: ['lists'],
     }),
-    editList: builder.mutation<void, { id: ListId, title: string, description: string }>({
+    editList: builder.mutation<void, { id: ListId; title: string; description: string }>({
       query: ({ id, title, description }) => ({
         url: '/update_list',
         method: 'POST',
@@ -55,10 +55,3 @@ export const listsApi = baseApi.injectEndpoints({
   }),
   overrideExisting: true,
 });
-
-export const {
-  useAddListMutation,
-  useGetListsQuery,
-  useEditListMutation,
-  useDeleteListMutation,
-} = listsApi;

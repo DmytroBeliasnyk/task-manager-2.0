@@ -9,9 +9,13 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "paths": {
-      "@api/*": ["src/app/api/*"],
       "@shared/*": ["../../shared/*"],
-      "@ui/*": ["src/app/ui/*"]
+      "@store/*": ["src/app/store/*"],
+      "@api/*": ["src/app/api/*"],
+      "@ui/*": ["src/app/ui/*"],
+      "@features/*": ["src/app/features/*"],
+      "@utils/*": ["src/app/utils/*"],
+      "@hooks/*": ["src/app/hooks/*"]
     },
 
     /* Bundler mode */

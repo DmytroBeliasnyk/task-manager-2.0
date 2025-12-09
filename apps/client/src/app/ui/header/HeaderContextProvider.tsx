@@ -1,26 +1,16 @@
-import { createContext, type Dispatch, type FC, type ReactNode, type SetStateAction, useState } from 'react';
-
-type HeaderContextProviderProps = {
-  children: ReactNode;
-}
+import { createContext, type Dispatch, type ReactNode, type SetStateAction, useState } from 'react';
 
 type HeaderContextType = {
   searchValue: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
-}
+};
 export const HeaderContext = createContext<HeaderContextType>({
   searchValue: '',
-  setSearchValue: () => {
-  },
+  setSearchValue: () => {},
 });
 
-export const HeaderContextProvider: FC<HeaderContextProviderProps> =
-  ({ children }) => {
-    const [searchValue, setSearchValue] = useState<string>('');
+export const HeaderContextProvider = ({ children }: { children: ReactNode }) => {
+  const [searchValue, setSearchValue] = useState<string>('');
 
-    return (
-      <HeaderContext value={{ searchValue, setSearchValue }}>
-        {children}
-      </HeaderContext>
-    );
-  };
+  return <HeaderContext value={{ searchValue, setSearchValue }}>{children}</HeaderContext>;
+};
