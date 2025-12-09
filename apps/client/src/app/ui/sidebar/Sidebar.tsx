@@ -1,8 +1,7 @@
-import type { FC } from 'react';
 import { FaList, FaShare } from 'react-icons/fa';
 import { FaGear, FaListCheck } from 'react-icons/fa6';
 
-export const Sidebar: FC = () => {
+export const Sidebar = () => {
   return (
     <aside className="flex flex-col gap-12 h-full w-1/4 p-4 bg-secondary-bg">
       <header className="flex items-center text-2xl font-semibold">

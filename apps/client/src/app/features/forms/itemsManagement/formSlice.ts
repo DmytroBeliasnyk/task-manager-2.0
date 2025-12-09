@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { ItemsManagementFormMode, type ItemsManagementFormOptions } from './itemsManagementFormOptions';
-import { rootReducer } from '../../../../store';
 
 type FormState = {
   options: ItemsManagementFormOptions;
@@ -14,7 +13,7 @@ const initialState: FormState = {
   isOpen: false,
 };
 
-const formSlice = createSlice({
+export const formSlice = createSlice({
   name: 'itemsManagementForm',
   initialState,
   selectors: {
@@ -31,7 +30,7 @@ const formSlice = createSlice({
       state.isOpen = false;
     },
   },
-}).injectInto(rootReducer);
+});
 
 export const itemsManagementFormSelectors = formSlice.selectors;
 export const itemsManagementFormActions = formSlice.actions;

@@ -1,9 +1,9 @@
-import { type FC, useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { FaAngleDown, FaSearch } from 'react-icons/fa';
 import { HeaderContext } from './HeaderContextProvider';
 import debounce from 'debounce';
 
-export const Header: FC = () => {
+export const Header= () => {
   const { setSearchValue } = useContext(HeaderContext);
 
   const debouncedChangeHandler = useMemo(

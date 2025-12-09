@@ -1,11 +1,11 @@
 import clsx from 'clsx/lite';
-import type { FC, ReactNode, ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 type ButtonProps = {
   children: ReactNode
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button: FC<ButtonProps> = ({ children, ...rest }) => {
+export const Button = ({ children, ...rest }: ButtonProps) => {
   const buttonClassName: string = clsx(
     'py-2 px-4 rounded-md bg-highlight-bg outline-none cursor-pointer',
     'font-xl font-semibold text-text-secondary',

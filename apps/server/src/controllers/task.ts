@@ -21,7 +21,13 @@ export const addTaskController: RequestHandler = async (req, res) => {
 
 export const getTasksController: RequestHandler = async (req, res) => {
   try {
-    const tasks = await getTasks();
+    const { list_id: listId }= req.query
+
+    if (!listId) {
+      return res.status(400).json({ message: "list_id is required" });
+    }
+
+    const tasks = await getTasks(String(listId));
     res.status(200).json({ tasks: tasks });
   } catch (err) {
     res.status(500).json({ message: err });

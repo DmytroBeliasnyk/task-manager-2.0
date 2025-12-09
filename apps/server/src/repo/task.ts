@@ -26,13 +26,13 @@ export async function saveTaskInDB(taskId: TaskId,
   }
 }
 
-export async function getTasksFromDB() {
+export async function getTasksFromDB(listId: ListId) {
   try {
-    const res = await db.query<Task>('SELECT * from tasks');
+    const res = await db.query<Task>('SELECT * FROM tasks WHERE list_id=$1', [listId]);
     return res.rows;
   } catch (err) {
     console.log(err);
-    throw new Error('DB error while fetching lists');
+    throw new Error('DB error while fetching tasks');
   }
 }
 
