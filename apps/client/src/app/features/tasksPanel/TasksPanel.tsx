@@ -72,7 +72,7 @@ export const TasksPanel = memo(() => {
           </section>
         </PanelLayout>
       ) : (
-        <section className="flex flex-col flex-1 justify-center items-center text-center">
+        <section className="flex flex-col flex-1 bg-secondary-bg rounded-md justify-center items-center text-center">
           <EmptyPanel>{TASK_PANEL_TEXT.NO_LIST_SELECTED}</EmptyPanel>
         </section>
       )}
