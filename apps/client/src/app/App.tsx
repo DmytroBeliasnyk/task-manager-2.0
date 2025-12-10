@@ -1,7 +1,7 @@
-import { Header } from '@ui/Header/Header';
-import { Main } from '@ui/Main/Main';
-import { Sidebar } from '@ui/Sidebar/Sidebar';
-import { HeaderContextProvider } from '@ui/Header/HeaderContextProvider';
+import { Header } from '@ui/header/Header';
+import { HeaderContextProvider } from '@ui/header/HeaderContextProvider';
+import { Main } from '@ui/main/Main';
+import { Sidebar } from '@ui/sidebar/Sidebar';
 
 export const App = () => {
   return (

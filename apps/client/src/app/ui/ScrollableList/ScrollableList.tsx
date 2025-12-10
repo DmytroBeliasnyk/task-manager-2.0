@@ -1,5 +1,5 @@
 import clsx from 'clsx/lite';
-import { EmptyPanel } from '../Panels/EmptyPanel';
+import { EmptyPanel } from '../panels/EmptyPanel';
 
 export const ScrollableList = <T,>({
   items,

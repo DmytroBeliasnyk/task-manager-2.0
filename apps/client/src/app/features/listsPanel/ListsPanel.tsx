@@ -1,13 +1,13 @@
 import type { List } from '@shared/types/list.ts';
 import { memo, useContext } from 'react';
-import { HeaderContext } from '@ui/Header/HeaderContextProvider';
+import { HeaderContext } from '@ui/header/HeaderContextProvider';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { ListCard } from '@features/listsPanel/ListCard';
 import { useOpenForm } from '@hooks/useOpenForm';
 import { LIST_PANEL_TEXT } from '@utils/constants';
-import { PanelLayout } from '@ui/Panels/PanelLayout';
+import { PanelLayout } from '@ui/panels/PanelLayout';
 import { useLists } from './hooks/useLists';
-import { ScrollableList } from '@ui/ScrollableList/ScrollableList';
+import { ScrollableList } from '@ui/scrollableList/ScrollableList';
 
 export const ListsPanel = memo(() => {
   const { searchValue } = useContext(HeaderContext);

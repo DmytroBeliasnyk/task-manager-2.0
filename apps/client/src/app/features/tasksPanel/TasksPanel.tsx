@@ -6,10 +6,10 @@ import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { TaskCard } from './TaskCard';
 import { useOpenForm } from '@hooks/useOpenForm';
 import { TASK_PANEL_TEXT } from '@utils/constants';
-import { PanelLayout } from '@ui/Panels/PanelLayout';
-import { EmptyPanel } from '@ui/Panels/EmptyPanel';
+import { PanelLayout } from '@ui/panels/PanelLayout';
+import { EmptyPanel } from '@ui/panels/EmptyPanel';
 import { useTasks } from './hooks/useTasks';
-import { ScrollableList } from '@ui/ScrollableList/ScrollableList';
+import { ScrollableList } from '@ui/scrollableList/ScrollableList';
 import { TasksPanelHeader } from './TasksPanelHeader';
 
 export const TasksPanel = memo(() => {

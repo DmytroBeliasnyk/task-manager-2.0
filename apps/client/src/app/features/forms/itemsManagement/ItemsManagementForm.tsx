@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { Button } from '@ui/Button/Button';
 import { useCloseForm } from './hooks/useCloseForm';
 import { useFormActions } from './hooks/useFormActions';
 import { useFormValues } from './hooks/useFormValues';
+import { Button } from '@ui/button/Button';
 
 export const ItemsManagementForm = () => {
   const closeForm = useCloseForm();
