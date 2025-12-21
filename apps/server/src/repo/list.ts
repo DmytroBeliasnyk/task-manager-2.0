@@ -3,22 +3,15 @@ import { db } from '../db/db';
 import NonExistentIDError from '../utils/errors/NonExistentIDError';
 
 export async function saveListInDB(id: ListId, title: string, description: string) {
-  const client = await db.connect();
-
   const query = `
       INSERT INTO lists (id, title, description)
       values ($1, $2, $3)`;
 
   try {
-    await client.query('BEGIN');
-    await client.query(query, [id, title, description]);
-    await client.query('COMMIT');
+    await db.query(query, [id, title, description]);
   } catch (err) {
-    console.error('Error saving list: ', err);
-    await client.query('ROLLBACK');
-    throw new Error('DB error while saving list');
-  } finally {
-    client.release();
+    console.error('DB error while saving list: ', err);
+    throw err;
   }
 }
 
@@ -28,13 +21,12 @@ export async function getListsFromDB() {
                                       from lists`);
     return res.rows;
   } catch (err) {
-    console.log(err);
-    throw new Error('DB error while fetching lists');
+    console.error('DB error while fetching lists: ', err);
+    throw err;
   }
 }
 
 export async function saveUpdatedList(id: ListId, title: string, description: string) {
-  const client = await db.connect();
   const query = `
       UPDATE lists
       SET title=$1,
@@ -43,35 +35,23 @@ export async function saveUpdatedList(id: ListId, title: string, description: st
       RETURNING *`;
 
   try {
-    await client.query('BEGIN');
-
-    const res = await client.query<List>(query, [title, description, id]);
+    const res = await db.query<List>(query, [title, description, id]);
     if (!res.rowCount) {
-      throw new NonExistentIDError('Error update list: non-existent id');
+      throw new NonExistentIDError(`Error update list: non-existent id: ${id}`);
     }
 
-    await client.query('COMMIT');
+    return res.rows[0];
   } catch (err) {
-    console.error(err);
-    await client.query('ROLLBACK');
+    console.error('DB error while updating list: ', err);
     throw err;
-  } finally {
-    client.release();
   }
 }
 
 export async function deleteListFromDB(id: ListId) {
-  const client = await db.connect();
-
   try {
-    await client.query('BEGIN');
-    await client.query('DELETE FROM lists WHERE id = $1', [id]);
-    await client.query('COMMIT');
+    await db.query('DELETE FROM lists WHERE id = $1', [id]);
   } catch (err) {
-    console.error(err);
-    await client.query('ROLLBACK');
+    console.error('DB error while deleting list: ', err);
     throw err;
-  } finally {
-    client.release();
   }
 }

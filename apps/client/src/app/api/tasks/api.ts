@@ -25,7 +25,7 @@ export const tasksApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addTask: builder.mutation<void, { title: string; description: string; listId: ListId }>({
       query: ({ title, description, listId }) => ({
-        url: '/add_task',
+        url: '/task',
         method: 'POST',
         body: JSON.stringify({ title, description, listId }),
         headers: {
@@ -35,7 +35,7 @@ export const tasksApi = baseApi.injectEndpoints({
       invalidatesTags: (_, __, { listId }) => [{ type: 'tasks', id: listId }],
     }),
     getTasks: builder.query<Task[], ListId>({
-      query: (listId) => `/tasks?list_id=${listId}`,
+      query: (listId) => `/task?list_id=${listId}`,
       providesTags: (_, __, listId) => [{ type: 'tasks', id: listId }],
       transformResponse: (res: unknown) => TaskResponseSchema.parse(res).tasks,
     }),
@@ -44,9 +44,9 @@ export const tasksApi = baseApi.injectEndpoints({
       { id: TaskId; title: string; description: string; listId: ListId }
     >({
       query: ({ id, title, description }) => ({
-        url: '/update_task',
-        method: 'POST',
-        body: JSON.stringify({ id, title, description }),
+        url: `/task/${id}`,
+        method: 'PUT',
+        body: JSON.stringify({ title, description }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -55,12 +55,8 @@ export const tasksApi = baseApi.injectEndpoints({
     }),
     deleteTask: builder.mutation<void, { id: TaskId; listId: ListId }>({
       query: ({ id }) => ({
-        url: '/task',
+        url: `/task/${id}`,
         method: 'DELETE',
-        body: JSON.stringify({ id }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
       }),
       invalidatesTags: (_, __, { listId }) => [{ type: 'tasks', id: listId }],
     }),

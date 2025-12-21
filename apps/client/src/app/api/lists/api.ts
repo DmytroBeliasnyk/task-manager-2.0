@@ -16,7 +16,7 @@ export const listsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addList: builder.mutation<void, { title: string; description: string }>({
       query: ({ title, description }) => ({
-        url: '/add_list',
+        url: '/list',
         method: 'POST',
         body: JSON.stringify({ title, description }),
         headers: {
@@ -26,15 +26,15 @@ export const listsApi = baseApi.injectEndpoints({
       invalidatesTags: ['lists'],
     }),
     getLists: builder.query<{ lists: List[] }, void>({
-      query: () => '/lists',
+      query: () => '/list',
       transformResponse: (res: unknown) => ListResponseSchema.parse(res),
       providesTags: ['lists'],
     }),
     editList: builder.mutation<void, { id: ListId; title: string; description: string }>({
       query: ({ id, title, description }) => ({
-        url: '/update_list',
-        method: 'POST',
-        body: JSON.stringify({ id, title, description }),
+        url: `/list/${id}`,
+        method: 'PUT',
+        body: JSON.stringify({ title, description }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -43,12 +43,8 @@ export const listsApi = baseApi.injectEndpoints({
     }),
     deleteList: builder.mutation<void, ListId>({
       query: (id) => ({
-        url: '/list',
+        url: `/list/${id}`,
         method: 'DELETE',
-        body: JSON.stringify({ id }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
       }),
       invalidatesTags: ['lists'],
     }),

@@ -1,69 +1,52 @@
-import { Task } from '@shared/types/task';
 import { RequestHandler } from 'express';
 import { getTasks, saveTask, updateTask } from '../services/task';
-import NonExistentIDError from '../utils/errors/NonExistentIDError';
 import { deleteTaskFromDB } from '../repo/task';
+import ValidationError from '../utils/errors/ValidationError';
+import { asyncHandler } from '../middleware/asyncHandler';
 
-export const addTaskController: RequestHandler = async (req, res) => {
-  try {
-    const { title, description, listId } = req.body;
-    if (!title || !listId) {
-      res.status(400).json({ messages: 'parameter "title" and "listId" are required' });
-      return;
-    }
-
-    const id: string = await saveTask(title, description, listId);
-    res.status(201).json({ id: id });
-  } catch (err) {
-    res.status(500).json({ message: err });
+export const addTaskController: RequestHandler = asyncHandler(async (req, res) => {
+  const { title, description, listId } = req.body;
+  if (!title || !listId) {
+    throw new ValidationError('parameter "title" and "listId" are required');
   }
-};
 
-export const getTasksController: RequestHandler = async (req, res) => {
-  try {
-    const { list_id: listId }= req.query
+  const id = await saveTask(title, description, listId);
+  res.status(201).json({ id: id });
+});
 
-    if (!listId) {
-      return res.status(400).json({ message: "list_id is required" });
-    }
+export const getTasksController: RequestHandler = asyncHandler(async (req, res) => {
+  const { list_id: listId } = req.query;
 
-    const tasks = await getTasks(String(listId));
-    res.status(200).json({ tasks: tasks });
-  } catch (err) {
-    res.status(500).json({ message: err });
+  if (!listId) {
+    throw new ValidationError('list_id is required');
   }
-};
 
-export const updateTaskController: RequestHandler = async (req, res) => {
-  try {
-    const { id, title, description } = req.body;
-    if (!title || !id) {
-      res.status(400).json({ messages: 'parameter "title" and "id" are required' });
-      return;
-    }
+  const tasks = await getTasks(String(listId));
+  res.status(200).json({ tasks: tasks });
+});
 
-    const updatedTask: Task = await updateTask(id, title, description);
+export const updateTaskController: RequestHandler = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { title, description } = req.body;
 
-    res.status(201).json({ updatedTask: updatedTask });
-  } catch (err) {
-    const status: number = err instanceof NonExistentIDError
-      ? 400 : 500;
-
-    res.status(status).json({ message: err });
+  if (!title) {
+    throw new ValidationError('parameter "title" is required');
   }
-};
 
-export const deleteTaskController: RequestHandler = async (req, res) => {
-  try {
-    const { id } = req.body;
-    if (!id) {
-      res.status(400).json({ messages: 'parameter "id" is required' });
-      return;
-    }
-
-    await deleteTaskFromDB(id);
-    res.status(200).end();
-  } catch (err) {
-    res.status(500).json({ message: err });
+  if (!id) {
+    throw new ValidationError('parameter "id" is required');
   }
-};
+
+  const updatedTask = await updateTask(id, title, description);
+  res.status(200).json({ updatedTask: updatedTask });
+});
+
+export const deleteTaskController: RequestHandler = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    throw new ValidationError('parameter "id" is required');
+  }
+
+  await deleteTaskFromDB(id);
+  res.status(200).end();
+});

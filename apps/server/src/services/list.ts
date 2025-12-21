@@ -14,7 +14,7 @@ export async function getLists() {
 }
 
 export async function updateList(id: ListId, title: string, description: string) {
-  await saveUpdatedList(id, title, description);
+  return await saveUpdatedList(id, title, description);
 }
 
 export async function deleteList(id: ListId) {
