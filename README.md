@@ -1,73 +1,73 @@
 # Task Manager 2.0
 
-Task Manager - это приложение для управления задачами и списками, построенное на React, Node.js и PostgreSQL.
+Task Manager is a task and list management application built with React, Node.js, and PostgreSQL.
 
-## Требования
+## Requirements
 
-### Для запуска через Docker (рекомендуется)
+### For Docker deployment (recommended)
 
-- **Docker** версии 20.10 или выше
-- **Docker Compose** версии 2.0 или выше
+- **Docker** version 20.10 or higher
+- **Docker Compose** version 2.0 or higher
 
-> **Важно:** При запуске через Docker **не требуется** установка Node.js, npm, PostgreSQL или других зависимостей на вашем компьютере. Все необходимое будет установлено и запущено внутри Docker-контейнеров.
+> **Important:** When running with Docker, you **do not need** to install Node.js, npm, PostgreSQL, or other dependencies on your computer. Everything needed will be installed and run inside Docker containers.
 
-### Для локальной разработки
+### For local development
 
-- **Node.js** версии 20 или выше
-- **npm** или **yarn**
-- **PostgreSQL** (или используйте Docker только для базы данных)
+- **Node.js** version 20 or higher
+- **npm** or **yarn**
+- **PostgreSQL** (or use Docker only for the database)
 
-## Запуск с помощью Docker
+## Running with Docker
 
-> **Идеально для:** Быстрого запуска проекта без установки зависимостей на вашем компьютере. Все необходимое (Node.js, npm, PostgreSQL, Nginx) уже включено в Docker-образы.
+> **Perfect for:** Quick project setup without installing dependencies on your computer. Everything needed (Node.js, npm, PostgreSQL, Nginx) is already included in Docker images.
 
-### Быстрый старт
+### Quick start
 
-1. **Убедитесь, что Docker и Docker Compose установлены:**
+1. **Make sure Docker and Docker Compose are installed:**
 
    ```bash
    docker --version
    docker-compose --version
    ```
 
-2. **Соберите и запустите все сервисы:**
+2. **Build and run all services:**
 
    ```bash
    docker-compose up --build
    ```
 
-3. **Приложение будет доступно:**
+3. **The application will be available at:**
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:8000
    - PostgreSQL: localhost:5432
 
-> **Примечание:** При первом запуске сборка может занять несколько минут, так как Docker загружает базовые образы и устанавливает все зависимости. Последующие запуски будут быстрее благодаря кэшированию.
+> **Note:** On the first run, the build may take a few minutes as Docker downloads base images and installs all dependencies. Subsequent runs will be faster thanks to caching.
 
-### Остановка
+### Stopping
 
 ```bash
 docker-compose down
 ```
 
-### Остановка с удалением данных
+### Stopping with data removal
 
 ```bash
 docker-compose down -v
 ```
 
-### Запуск в фоновом режиме
+### Running in background mode
 
 ```bash
 docker-compose up -d --build
 ```
 
-### Просмотр логов
+### Viewing logs
 
 ```bash
 docker-compose logs -f
 ```
 
-Просмотр логов конкретного сервиса:
+View logs for a specific service:
 
 ```bash
 docker-compose logs -f server
@@ -75,41 +75,41 @@ docker-compose logs -f client
 docker-compose logs -f postgres
 ```
 
-## Локальная разработка
+## Local development
 
-### Установка зависимостей
+### Installing dependencies
 
 ```bash
 npm install
 ```
 
-### Запуск в режиме разработки
+### Running in development mode
 
-Запуск сервера и клиента одновременно:
+Run server and client simultaneously:
 
 ```bash
 npm run dev
 ```
 
-Или запуск отдельно:
+Or run separately:
 
-**Backend сервер:**
+**Backend server:**
 
 ```bash
 cd apps/server
 npm run dev
 ```
 
-**Frontend клиент:**
+**Frontend client:**
 
 ```bash
 cd apps/client
 npm run dev
 ```
 
-### Переменные окружения
+### Environment variables
 
-Для локальной разработки создайте файл `.env` в корне проекта или в `apps/server`:
+For local development, create a `.env` file in the project root or in `apps/server`:
 
 ```env
 DB_PASSWORD=postgres
@@ -122,13 +122,13 @@ CLIENT_URL=http://localhost:5173
 PORT=8000
 ```
 
-**Важно:** Убедитесь, что PostgreSQL запущен локально или используйте Docker для базы данных:
+**Important:** Make sure PostgreSQL is running locally or use Docker for the database:
 
 ```bash
 docker-compose up postgres -d
 ```
 
-### Сборка для production
+### Building for production
 
 **Backend:**
 
@@ -146,40 +146,40 @@ npm run build
 npm run preview
 ```
 
-## Структура проекта
+## Project structure
 
 ```
 task-manager-2.0/
 ├── apps/
-│   ├── client/          # Frontend приложение (React + Vite)
+│   ├── client/          # Frontend application (React + Vite)
 │   │   ├── src/
 │   │   │   ├── app/
 │   │   │   │   ├── api/         # RTK Query API
-│   │   │   │   ├── features/    # Компоненты фич
-│   │   │   │   ├── hooks/       # React хуки
+│   │   │   │   ├── features/    # Feature components
+│   │   │   │   ├── hooks/       # React hooks
 │   │   │   │   ├── store/       # Redux store
-│   │   │   │   ├── ui/          # UI компоненты
-│   │   │   │   └── utils/       # Утилиты
+│   │   │   │   ├── ui/          # UI components
+│   │   │   │   └── utils/       # Utilities
 │   │   └── package.json
 │   └── server/          # Backend API (Node.js + Express)
 │       ├── src/
-│       │   ├── controllers/    # Контроллеры
-│       │   ├── db/             # Настройка БД
-│       │   ├── repo/           # Репозитории
-│       │   ├── routes/         # Маршруты API
-│       │   ├── services/       # Бизнес-логика
-│       │   └── utils/          # Утилиты
+│       │   ├── controllers/    # Controllers
+│       │   ├── db/             # Database setup
+│       │   ├── repo/           # Repositories
+│       │   ├── routes/         # API routes
+│       │   ├── services/       # Business logic
+│       │   └── utils/          # Utilities
 │       └── package.json
-├── shared/              # Общие типы TypeScript
+├── shared/              # Shared TypeScript types
 │   └── types/
-├── docker-compose.yml   # Docker Compose конфигурация
-├── Dockerfile           # Dockerfile для сервера
-├── Dockerfile.client    # Dockerfile для клиента
-├── nginx.conf           # Nginx конфигурация
-└── package.json         # Корневой package.json
+├── docker-compose.yml   # Docker Compose configuration
+├── Dockerfile           # Dockerfile for server
+├── Dockerfile.client    # Dockerfile for client
+├── nginx.conf           # Nginx configuration
+└── package.json         # Root package.json
 ```
 
-## Технологии
+## Technologies
 
 - **Frontend:**
   - React 19
@@ -194,6 +194,6 @@ task-manager-2.0/
   - PostgreSQL
   - TypeScript
 
-- **Инфраструктура:**
+- **Infrastructure:**
   - Docker & Docker Compose
-  - Nginx (для production клиента)
+  - Nginx (for production client)
