@@ -4,13 +4,14 @@ import { useAppSelector } from '@store/redux';
 import { listSelectors } from '@store/slices/listSlice';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { TaskCard } from './TaskCard';
+import { Button } from '@ui/button/Button';
 import { useOpenForm } from '@hooks/useOpenForm';
 import { TASK_PANEL_TEXT } from '@utils/constants';
-import { PanelLayout } from '@ui/panels/PanelLayout';
-import { EmptyPanel } from '@ui/panels/EmptyPanel';
 import { useTasks } from './hooks/useTasks';
 import { ScrollableList } from '@ui/scrollableList/ScrollableList';
 import { TasksPanelHeader } from './TasksPanelHeader';
+import { LuCirclePlus } from 'react-icons/lu';
+import clsx from 'clsx/lite';
 
 export const TasksPanel = memo(() => {
   const selectedList = useAppSelector(listSelectors.selectSelectedList);
@@ -19,25 +20,36 @@ export const TasksPanel = memo(() => {
 
   return (
     <>
-      {selectedList ? (
-        <PanelLayout
-          buttonText="Add task"
-          buttonHandler={() =>
-            openForm({ mode: ItemsManagementFormMode.AddTask, listId: selectedList.id })
-          }
-        >
-          <TasksPanelHeader selectedList={selectedList} />
-          <ScrollableList
-            items={tasks}
-            renderItem={(task: Task) => <TaskCard key={task.id} task={task} />}
-            emptyState={TASK_PANEL_TEXT.NO_TASKS}
-          />
-        </PanelLayout>
-      ) : (
-        <section className="flex flex-col flex-1 bg-secondary-bg rounded-md justify-center items-center text-center">
-          <EmptyPanel>{TASK_PANEL_TEXT.NO_LIST_SELECTED}</EmptyPanel>
-        </section>
-      )}
+      <section
+        className={clsx(
+          'bg-secondary-bg flex flex-1 flex-col rounded-md p-4',
+          selectedList ? 'justify-between gap-2' : 'items-center justify-center text-center',
+        )}
+      >
+        {selectedList ? (
+          <>
+            <TasksPanelHeader selectedList={selectedList} />
+            <ScrollableList
+              items={tasks}
+              renderItem={(task: Task) => <TaskCard key={task.id} task={task} />}
+              emptyState={TASK_PANEL_TEXT.NO_TASKS}
+            />
+            <Button
+              className="flex w-fit gap-2 self-end"
+              onClick={() =>
+                openForm({ mode: ItemsManagementFormMode.AddTask, listId: selectedList.id })
+              }
+            >
+              <LuCirclePlus />
+              Add task
+            </Button>
+          </>
+        ) : (
+          <span className="text-muted-text inline-block w-3/4 text-4xl">
+            {TASK_PANEL_TEXT.NO_LIST_SELECTED}
+          </span>
+        )}
+      </section>
     </>
   );
 });

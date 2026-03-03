@@ -5,9 +5,10 @@ import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { ListCard } from '@features/listsPanel/ListCard';
 import { useOpenForm } from '@hooks/useOpenForm';
 import { LIST_PANEL_TEXT } from '@utils/constants';
-import { PanelLayout } from '@ui/panels/PanelLayout';
-import { useLists } from './hooks/useLists';
 import { ScrollableList } from '@ui/scrollableList/ScrollableList';
+import { LuCirclePlus } from 'react-icons/lu';
+import { useLists } from './hooks/useLists';
+import { Button } from '@ui/button/Button';
 
 export const ListsPanel = memo(() => {
   const { searchValue } = useContext(HeaderContext);
@@ -15,18 +16,20 @@ export const ListsPanel = memo(() => {
   const openForm = useOpenForm();
 
   return (
-    <PanelLayout
-      buttonText="Create new list"
-      buttonHandler={() => openForm({ mode: ItemsManagementFormMode.AddList })}
-    >
-      <header className="pb-2 border-b border-text-secondary text-2xl font-semibold text-text-primary">
-        My lists
-      </header>
+    <section className="bg-secondary-bg flex flex-1 flex-col justify-between gap-2 rounded-md p-4">
+      <header className="border-border border-b pb-2 text-2xl font-semibold">My lists</header>
       <ScrollableList
         items={lists}
         renderItem={(list: List) => <ListCard key={list.id} list={list} />}
         emptyState={searchValue ? LIST_PANEL_TEXT.SEARCH_NO_MATCH : LIST_PANEL_TEXT.NO_LISTS}
       />
-    </PanelLayout>
+      <Button
+        className="flex w-fit gap-2 self-end"
+        onClick={() => openForm({ mode: ItemsManagementFormMode.AddList })}
+      >
+        <LuCirclePlus />
+        Create new list
+      </Button>
+    </section>
   );
 });

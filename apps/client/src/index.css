@@ -2,19 +2,55 @@
 
 @plugin 'tailwind-scrollbar';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-primary-bg: #f3f4f6;
-  --color-secondary-bg: #e5e7eb;
-  --color-highlight-bg: #a9cdf2;
-  --color-focus-bg: #6eaaf9;
-  --color-text-primary: #111827;
-  --color-text-secondary: #4b5563;
-  --color-border: #d1d5db;
-  --color-error-bg: #fef2f2;
-  --color-error-border: #fca5a5;
-  --color-error-text: #dc2626;
-  --color-success-bg: #f0fdf4;
-  --color-success-text: #16a34a;
-  --color-warning-bg: #fffbeb;
-  --color-warning-text: #a16207;
+  --color-primary-bg: white;
+  --color-secondary-bg: oklch(98.4% 0.003 247.858);
+  --color-highlite-bg: oklch(96.8% 0.007 247.896);
+
+  --color-primary-text: oklch(20.8% 0.042 265.755);
+  --color-secondary-text: oklch(44.6% 0.043 257.281);
+  --color-muted-text: oklch(86.9% 0.022 252.894);
+  --color-button-primary-text: white;
+
+  --color-border: oklch(92.9% 0.013 255.508);
+
+  --color-accent: oklch(54.6% 0.245 262.881);
+  --color-hover: oklch(48.8% 0.243 264.376);
+
+  --color-scrollbar-thumb: oklch(88% 0.015 255);
+  --color-scrollbar-thumb-hover: oklch(82% 0.02 255);
+}
+
+@layer theme {
+  .dark {
+    --color-primary-bg: oklch(14% 0.01 257);
+    --color-secondary-bg: oklch(20% 0.015 257);
+    --color-highlite-bg: oklch(25% 0.02 257);
+
+    --color-primary-text: oklch(98% 0.005 257);
+    --color-secondary-text: oklch(82% 0.015 257);
+    --color-muted-text: oklch(62% 0.02 257);
+    --color-button-primary-text: oklch(96% 0.01 260);
+
+    --color-border: oklch(28% 0.02 257);
+
+    --color-accent: oklch(65% 0.18 260);
+    --color-hover: oklch(72% 0.16 260);
+
+    --color-scrollbar-thumb: oklch(35% 0.02 257);
+    --color-scrollbar-thumb-hover: oklch(42% 0.025 257);
+  }
+}
+
+@layer components {
+  .scrollbar-theme {
+    --scrollbar-thumb: var(--color-scrollbar-thumb);
+    --scrollbar-track: transparent;
+    --scrollbar-thumb-radius: 9999px;
+  }
+  .scrollbar-theme:hover {
+    --scrollbar-thumb: var(--color-scrollbar-thumb-hover);
+  }
 }

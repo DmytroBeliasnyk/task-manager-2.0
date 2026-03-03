@@ -1,5 +1,4 @@
 import clsx from 'clsx/lite';
-import { EmptyPanel } from '../panels/EmptyPanel';
 
 export const ScrollableList = <T,>({
   items,
@@ -13,13 +12,17 @@ export const ScrollableList = <T,>({
   const itemsSectionClassName = clsx(
     'flex flex-col flex-1',
     items.length
-      ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent'
+      ? 'gap-2 pr-1 overflow-y-auto scrollbar-thin scrollbar-theme'
       : 'justify-center items-center text-center',
   );
 
   return (
     <section className={itemsSectionClassName}>
-      {items.length ? items.map((item) => renderItem(item)) : <EmptyPanel>{emptyState}</EmptyPanel>}
+      {items.length ? (
+        items.map((item) => renderItem(item))
+      ) : (
+        <span className="text-muted-text inline-block w-3/4 text-4xl">{emptyState}</span>
+      )}
     </section>
   );
 };

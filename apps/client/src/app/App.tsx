@@ -5,9 +5,9 @@ import { Sidebar } from '@ui/sidebar/Sidebar';
 
 export const App = () => {
   return (
-    <div className="flex flex-row h-full relative">
+    <div className="bg-primary-bg text-primary-text flex h-screen text-base">
       <Sidebar />
-      <div className="flex flex-col size-full p-4">
+      <div className="flex size-full flex-col p-4">
         <HeaderContextProvider>
           <Header />
           <Main />

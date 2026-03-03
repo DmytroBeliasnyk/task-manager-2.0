@@ -1,6 +1,7 @@
 import type { Task } from '@shared/types/task';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { FaTrash } from 'react-icons/fa';
+import { Button } from '@ui/button/Button';
 import { memo } from 'react';
 import { useOpenForm } from '@hooks/useOpenForm';
 
@@ -10,7 +11,7 @@ export const TaskCard = memo(({ task }: { task: Task }) => {
   return (
     <>
       <div
-        className="group flex justify-between items-center p-2 bg-gray-300 rounded-md cursor-pointer hover:border hover:border-gray-400"
+        className="group bg-highlite-bg flex cursor-pointer items-center justify-between rounded-md p-2 hover:shadow-sm"
         onClick={() =>
           openForm({
             mode: ItemsManagementFormMode.EditTask,
@@ -18,12 +19,14 @@ export const TaskCard = memo(({ task }: { task: Task }) => {
           })
         }
       >
-        <section className="flex flex-col">
-          <h3 className="text-text-primary text-base font-semibold">{task.title}</h3>
-          <p className="text-text-secondary text-sm font-medium">{task.description}</p>
-        </section>
-        <FaTrash
-          className="cursor-pointer text-transparent group-hover:text-text-secondary hover:text-text-primary transition-colors duration-300"
+        <div className="flex flex-col">
+          <h3 className="text-primary-text font-semibold">{task.title}</h3>
+          <span className="text-secondary-text text-sm">{task.description}</span>
+        </div>
+        <Button
+          size="icon"
+          intent="ghost"
+          className="group-hover:text-secondary-text hover:text-primary-text size-fit cursor-pointer bg-transparent text-transparent transition-colors hover:bg-transparent"
           onClick={(e) => {
             e.stopPropagation();
             openForm({
@@ -31,7 +34,9 @@ export const TaskCard = memo(({ task }: { task: Task }) => {
               item: task,
             });
           }}
-        />
+        >
+          <FaTrash />
+        </Button>
       </div>
     </>
   );

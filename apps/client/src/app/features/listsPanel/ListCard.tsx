@@ -10,12 +10,12 @@ export const ListCard = memo(({ list }: { list: List }) => {
     <>
       <div
         onClick={() => dispatch(listActions.setSelectedList({ list }))}
-        className="flex justify-between items-center p-2 bg-gray-300 rounded-md cursor-pointer hover:border hover:border-gray-400"
+        className="bg-highlite-bg flex cursor-pointer items-center justify-between rounded-md p-2 hover:shadow-sm"
       >
-        <section className="flex flex-col">
-          <h3 className="text-text-primary text-base font-semibold">{list.title}</h3>
-          <p className="text-text-secondary text-sm font-medium">{list.description}</p>
-        </section>
+        <div className="flex flex-col">
+          <h3 className="text-primary-text font-semibold">{list.title}</h3>
+          <span className="text-secondary-text text-sm">{list.description}</span>
+        </div>
       </div>
     </>
   );
