@@ -1,18 +1,15 @@
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import { FaAngleDown, FaSearch } from 'react-icons/fa';
 import { HeaderContext } from './HeaderContextProvider';
-import debounce from 'debounce';
+import { useDebouncedCallback } from '@hooks/useDebouncedCallback';
 import { ThemeToggler } from '@ui/toggler/ThemeToggler';
 
 export const Header = () => {
   const { setSearchValue } = useContext(HeaderContext);
 
-  const debouncedChangeHandler = useMemo(
-    () =>
-      debounce((value: string) => {
-        setSearchValue(value);
-      }, 500),
-    [setSearchValue],
+  const debouncedChangeHandler = useDebouncedCallback(
+    (value: string) => setSearchValue(value),
+    500,
   );
 
   return (
