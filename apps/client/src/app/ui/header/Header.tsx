@@ -2,6 +2,7 @@ import { useContext, useMemo } from 'react';
 import { FaAngleDown, FaSearch } from 'react-icons/fa';
 import { HeaderContext } from './HeaderContextProvider';
 import debounce from 'debounce';
+import { ThemeToggler } from '@ui/toggler/ThemeToggler';
 
 export const Header = () => {
   const { setSearchValue } = useContext(HeaderContext);
@@ -15,7 +16,7 @@ export const Header = () => {
   );
 
   return (
-    <header className="flex justify-between pb-2">
+    <header className="flex justify-between gap-2 pb-2">
       <label className="group bg-secondary-bg focus-within:bg-primary-bg focus-within:ring-accent/20 flex items-center rounded-full pr-10 pl-4 focus-within:ring-2">
         <FaSearch className="text-muted-text group-focus-within:text-accent/20 dark:group-focus-within:text-accent/80 mr-2" />
         <input
@@ -25,11 +26,14 @@ export const Header = () => {
           onChange={(e) => debouncedChangeHandler(e.target.value)}
         />
       </label>
-      <div className="text-secondary-text flex items-center gap-2 text-base font-medium">
-        <div className="bg-accent/20 size-8 rounded-full">{/* avatar */}</div>
-        <span>username</span>
-        <FaAngleDown />
-        {/* open options list */}
+      <div className="flex gap-2">
+        <ThemeToggler />
+        <div className="text-secondary-text flex items-center gap-2 text-base font-medium">
+          <div className="bg-accent/20 size-8 rounded-full">{/* avatar */}</div>
+          <span>username</span>
+          <FaAngleDown />
+          {/* open options list */}
+        </div>
       </div>
     </header>
   );
