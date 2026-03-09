@@ -14,7 +14,7 @@ export const useFormValues = () => {
   const isEditMode =
     formMode === ItemsManagementFormMode.EditList || formMode === ItemsManagementFormMode.EditTask;
 
-  const inputTitleValue = isEditMode ? options.item.title : '';
+  const inputTitleValue = isEditMode || isDeleteForm ? options.item.title : '';
   const inputDescriptionValue = isEditMode ? options.item.description : '';
 
   return {
