@@ -10,7 +10,7 @@ export const TaskCard = memo(({ task }: { task: Task }) => {
 
   return (
     <div
-      className="group bg-highlite-bg flex cursor-pointer items-center justify-between rounded-md p-2 hover:shadow-sm"
+      className="group bg-highlite-bg flex cursor-pointer justify-between rounded-md p-2 hover:shadow-sm"
       onClick={() =>
         openForm({
           mode: ItemsManagementFormMode.EditTask,
@@ -24,20 +24,22 @@ export const TaskCard = memo(({ task }: { task: Task }) => {
           {task.description}
         </span>
       </div>
-      <Button
-        size="icon"
-        intent="ghost"
-        className="group-hover:text-secondary-text hover:text-primary-text size-fit cursor-pointer bg-transparent text-transparent transition-colors hover:bg-transparent"
-        onClick={(e) => {
-          e.stopPropagation();
-          openForm({
-            mode: ItemsManagementFormMode.DeleteTask,
-            item: task,
-          });
-        }}
-      >
-        <FaTrash />
-      </Button>
+      <div className="flex items-center gap-4 text-xl">
+        <Button
+          size="icon"
+          intent="ghost"
+          className="group-hover:text-secondary-text hover:text-primary-text size-fit cursor-pointer bg-transparent text-transparent transition-colors hover:bg-transparent"
+          onClick={(e) => {
+            e.stopPropagation();
+            openForm({
+              mode: ItemsManagementFormMode.DeleteTask,
+              item: task,
+            });
+          }}
+        >
+          <FaTrash />
+        </Button>
+      </div>
     </div>
   );
 });

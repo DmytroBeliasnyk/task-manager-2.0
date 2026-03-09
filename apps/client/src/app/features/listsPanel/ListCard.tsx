@@ -14,7 +14,7 @@ export const ListCard = memo(({ list }: { list: List }) => {
   return (
     <div
       onClick={() => dispatch(listActions.setSelectedList({ list }))}
-      className="group bg-highlite-bg flex cursor-pointer items-center justify-between rounded-md p-2 hover:shadow-sm"
+      className="group bg-highlite-bg flex cursor-pointer justify-between rounded-md p-2 hover:shadow-sm"
     >
       <div className="flex max-w-3/4 flex-col">
         <h3 className="text-primary-text line-clamp-1 font-semibold break-all">{list.title}</h3>
@@ -22,7 +22,7 @@ export const ListCard = memo(({ list }: { list: List }) => {
           {list.description}
         </span>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4 text-xl">
         <Button
           size="icon"
           intent="ghost"
