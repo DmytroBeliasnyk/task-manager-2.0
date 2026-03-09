@@ -23,7 +23,7 @@ export const ItemsManagementForm = () => {
             <>
               <label className="bg-secondary-bg text-muted-text rounded-md px-2 py-1">
                 <input
-                  className="placeholder:text-muted-text text-secondary-text cursor-text placeholder:italic focus:outline-none"
+                  className="placeholder:text-muted-text text-secondary-text w-full cursor-text placeholder:italic focus:outline-none"
                   type={'text'}
                   name={'title'}
                   ref={inputTitle}
@@ -32,9 +32,9 @@ export const ItemsManagementForm = () => {
                   required
                 />
               </label>
-              <label className="bg-secondary-bg text-muted-text h-18 rounded-md px-2 py-1">
+              <label className="bg-secondary-bg text-muted-text h-36 rounded-md px-2 py-1">
                 <textarea
-                  className="placeholder:text-muted-text text-secondary-text cursor-text resize-none placeholder:italic focus:outline-none"
+                  className="placeholder:text-muted-text text-secondary-text scrollbar-thin scrollbar-theme size-full cursor-text resize-none placeholder:italic focus:outline-none"
                   name={'description'}
                   placeholder={'Description'}
                   defaultValue={inputDescriptionValue}
