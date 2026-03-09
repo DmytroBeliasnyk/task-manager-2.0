@@ -17,7 +17,9 @@ export const ListsPanel = memo(() => {
 
   return (
     <section className="bg-secondary-bg flex flex-1 flex-col justify-between gap-2 rounded-md p-4">
-      <header className="border-border border-b pb-2 text-2xl font-semibold">My lists</header>
+      <header className="border-border flex items-center justify-between gap-4 border-b pb-2 text-2xl font-semibold">
+        <h2 className="line-clamp-1 break-all">My lists</h2>
+      </header>
       <ScrollableList
         items={lists}
         renderItem={(list: List) => <ListCard key={list.id} list={list} />}

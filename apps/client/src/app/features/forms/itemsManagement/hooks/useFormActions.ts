@@ -30,12 +30,10 @@ export const useFormActions = (closeForm: () => void) => {
         case ItemsManagementFormMode.EditList: {
           const list: List = { id: options.item.id, title, description };
           editList(list);
-          dispatch(listActions.setSelectedList({ list }));
           break;
         }
         case ItemsManagementFormMode.DeleteList: {
           deleteList(options.item.id);
-          dispatch(listActions.removeSelectedList());
           break;
         }
         case ItemsManagementFormMode.AddTask: {
