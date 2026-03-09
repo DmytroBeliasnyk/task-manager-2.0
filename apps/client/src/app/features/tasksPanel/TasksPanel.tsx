@@ -7,9 +7,9 @@ import { useOpenForm } from '@hooks/useOpenForm';
 import { TASK_PANEL_TEXT } from '@utils/constants';
 import { useTasks } from './hooks/useTasks';
 import { ScrollableList } from '@ui/scrollableList/ScrollableList';
-import { TasksPanelHeader } from './TasksPanelHeader';
 import { LuCirclePlus } from 'react-icons/lu';
 import type { List } from '@shared/types/list';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
   const openForm = useOpenForm();
@@ -18,7 +18,37 @@ export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
   return (
     <>
       <div className="bg-secondary-bg flex flex-1 flex-col justify-between gap-2 rounded-md p-4">
-        <TasksPanelHeader selectedList={selectedList} />
+        <header className="border-border flex items-center justify-between border-b pb-2 text-2xl font-semibold">
+          <h2 className="line-clamp-1 max-w-3/4 break-all">{selectedList.title}</h2>
+          <div className="flex gap-2 text-base">
+            <Button
+              size="icon"
+              intent="ghost"
+              className="size-fit transition-colors duration-300"
+              onClick={() =>
+                openForm({
+                  mode: ItemsManagementFormMode.EditList,
+                  item: selectedList,
+                })
+              }
+            >
+              <FaEdit />
+            </Button>
+            <Button
+              size="icon"
+              intent="ghost"
+              className="size-fit transition-colors duration-300"
+              onClick={() =>
+                openForm({
+                  mode: ItemsManagementFormMode.DeleteList,
+                  item: selectedList,
+                })
+              }
+            >
+              <FaTrash />
+            </Button>
+          </div>
+        </header>
         <ScrollableList
           items={tasks}
           renderItem={(task: Task) => <TaskCard key={task.id} task={task} />}

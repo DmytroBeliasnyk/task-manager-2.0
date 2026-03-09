@@ -19,9 +19,11 @@ export const TaskCard = memo(({ task }: { task: Task }) => {
           })
         }
       >
-        <div className="flex flex-col">
-          <h3 className="text-primary-text font-semibold">{task.title}</h3>
-          <span className="text-secondary-text text-sm">{task.description}</span>
+        <div className="flex max-w-3/4 flex-col">
+          <h3 className="text-primary-text line-clamp-1 font-semibold break-all">{task.title}</h3>
+          <span className="text-secondary-text line-clamp-2 text-sm break-all">
+            {task.description}
+          </span>
         </div>
         <Button
           size="icon"
