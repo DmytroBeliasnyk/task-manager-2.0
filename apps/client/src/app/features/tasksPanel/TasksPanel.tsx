@@ -10,16 +10,29 @@ import { ScrollableList } from '@ui/scrollableList/ScrollableList';
 import { LuCirclePlus } from 'react-icons/lu';
 import type { List } from '@shared/types/list';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { TiArrowBack } from 'react-icons/ti';
+import { useAppDispatch } from '@store/redux';
+import { listActions } from '@store/slices/listSlice';
 
 export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
   const openForm = useOpenForm();
   const tasks = useTasks(selectedList.id);
-
+  const dispatch = useAppDispatch();
   return (
     <>
       <div className="bg-secondary-bg flex flex-1 flex-col justify-between gap-2 rounded-md p-4">
         <header className="border-border flex items-center justify-between border-b pb-2 text-2xl font-semibold">
-          <h2 className="line-clamp-1 max-w-3/4 break-all">{selectedList.title}</h2>
+          <div className="flex max-w-3/4 items-center gap-4">
+            <Button
+              size="icon"
+              intent="ghost"
+              className="size-fit transition-colors duration-300"
+              onClick={() => dispatch(listActions.removeSelectedList())}
+            >
+              <TiArrowBack />
+            </Button>
+            <h2 className="line-clamp-1 break-all">{selectedList.title}</h2>
+          </div>
           <div className="flex gap-2 text-base">
             <Button
               size="icon"
