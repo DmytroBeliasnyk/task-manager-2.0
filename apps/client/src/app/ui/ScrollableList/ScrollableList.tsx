@@ -16,26 +16,19 @@ export const ScrollableList = <T,>({
   view,
   items,
   renderItem,
-  emptyState,
+  button,
 }: {
   view: 'list' | 'grid';
   items: T[];
   renderItem: (item: T) => React.ReactNode;
-  emptyState: string;
+  button?: React.ReactNode;
 }) => {
-  if (items.length === 0) {
-    return (
-      <div className="flex size-full flex-col items-center justify-center p-8 text-center">
-        <span className="text-4xl font-medium text-balance text-slate-400 dark:text-slate-600">
-          {emptyState}
-        </span>
-      </div>
-    );
-  }
-
   return (
-    <div className="scrollbar-thin scrollbar-theme size-full min-h-0 overflow-y-auto overscroll-contain pr-2">
-      <div className={viewVariants({ view })}>{items.map((item) => renderItem(item))}</div>
+    <div className="scrollbar-thin scrollbar-theme size-full min-h-0 overflow-y-auto overscroll-contain p-2">
+      <div className={viewVariants({ view })}>
+        {items.map((item) => renderItem(item))}
+        {button}
+      </div>
     </div>
   );
 };

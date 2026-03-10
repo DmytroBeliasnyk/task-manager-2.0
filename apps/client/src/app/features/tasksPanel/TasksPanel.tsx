@@ -4,7 +4,6 @@ import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { TaskCard } from './TaskCard';
 import { Button } from '@ui/button/Button';
 import { useOpenForm } from '@hooks/useOpenForm';
-import { TASK_PANEL_TEXT } from '@utils/constants';
 import { useTasks } from './hooks/useTasks';
 import { ScrollableList } from '@ui/scrollableList/ScrollableList';
 import { LuCirclePlus } from 'react-icons/lu';
@@ -58,17 +57,21 @@ export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
           view={view}
           items={tasks}
           renderItem={(task: Task) => <TaskCard key={task.id} task={task} />}
-          emptyState={TASK_PANEL_TEXT.NO_TASKS}
-        />
-        <Button
-          className="flex w-fit gap-2 self-end"
-          onClick={() =>
-            openForm({ mode: ItemsManagementFormMode.AddTask, listId: selectedList.id })
+          button={
+            <Button
+              intent="outline"
+              className="group flex size-full gap-2"
+              onClick={() =>
+                openForm({ mode: ItemsManagementFormMode.AddTask, listId: selectedList.id })
+              }
+            >
+              <LuCirclePlus className="group-hover:text-accent transform transition-colors duration-300 group-hover:scale-110" />
+              <span className="group-hover:text-accent transition-colors duration-300">
+                Add task
+              </span>
+            </Button>
           }
-        >
-          <LuCirclePlus />
-          Add task
-        </Button>
+        />
       </div>
     </>
   );

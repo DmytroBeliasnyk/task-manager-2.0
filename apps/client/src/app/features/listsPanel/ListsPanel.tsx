@@ -4,7 +4,6 @@ import { HeaderContext } from '@ui/header/HeaderContextProvider';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { ListCard } from '@features/listsPanel/ListCard';
 import { useOpenForm } from '@hooks/useOpenForm';
-import { LIST_PANEL_TEXT } from '@utils/constants';
 import { ScrollableList } from '@ui/scrollableList/ScrollableList';
 import { LuCirclePlus } from 'react-icons/lu';
 import { useLists } from './hooks/useLists';
@@ -44,15 +43,19 @@ export const ListsPanel = memo(() => {
         view={view}
         items={lists}
         renderItem={(list: List) => <ListCard key={list.id} list={list} />}
-        emptyState={searchValue ? LIST_PANEL_TEXT.SEARCH_NO_MATCH : LIST_PANEL_TEXT.NO_LISTS}
+        button={
+          <Button
+            intent="outline"
+            className="group flex size-full gap-2"
+            onClick={() => openForm({ mode: ItemsManagementFormMode.AddList })}
+          >
+            <LuCirclePlus className="group-hover:text-accent transform transition-colors duration-300 group-hover:scale-110" />
+            <span className="group-hover:text-accent transition-colors duration-300">
+              Create new list
+            </span>
+          </Button>
+        }
       />
-      <Button
-        className="flex w-fit gap-2 self-end"
-        onClick={() => openForm({ mode: ItemsManagementFormMode.AddList })}
-      >
-        <LuCirclePlus />
-        Create new list
-      </Button>
     </section>
   );
 });
