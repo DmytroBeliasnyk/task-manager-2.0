@@ -9,7 +9,7 @@ const buttonVariants = cva(
       intent: {
         primary: 'bg-accent hover:bg-hover text-button-primary-text',
         outline:
-          'ring-2 ring-accent/20 text-secondary-text hover:text-primary-text bg-primary-bg hover:bg-secondary-bg',
+          'inset-ring-2 inset-ring-accent/20  text-secondary-text hover:text-primary-text bg-primary-bg hover:bg-secondary-bg',
         ghost: 'text-secondary-text hover:text-primary-text hover:bg-secondary-bg',
       },
       size: {
