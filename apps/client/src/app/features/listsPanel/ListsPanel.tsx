@@ -1,5 +1,5 @@
 import type { List } from '@shared/types/list.ts';
-import { memo, useContext, useState } from 'react';
+import { memo, useContext } from 'react';
 import { HeaderContext } from '@ui/header/HeaderContextProvider';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { ListCard } from '@features/listsPanel/ListCard';
@@ -9,9 +9,10 @@ import { LuCirclePlus } from 'react-icons/lu';
 import { useLists } from './hooks/useLists';
 import { Button } from '@ui/button/Button';
 import { IoGrid, IoList } from 'react-icons/io5';
+import { useItemsViewMode } from '@hooks/useItemsViewMode';
 
 export const ListsPanel = memo(() => {
-  const [view, setView] = useState<'list' | 'grid'>('list');
+  const { viewMode, setViewMode } = useItemsViewMode('lists');
   const { searchValue } = useContext(HeaderContext);
   const lists = useLists(searchValue);
   const openForm = useOpenForm();
@@ -25,7 +26,7 @@ export const ListsPanel = memo(() => {
             size="icon"
             intent="ghost"
             className="size-fit text-lg transition-colors duration-300"
-            onClick={() => setView('grid')}
+            onClick={() => setViewMode('grid')}
           >
             <IoGrid />
           </Button>
@@ -33,14 +34,14 @@ export const ListsPanel = memo(() => {
             size="icon"
             intent="ghost"
             className="size-fit text-2xl transition-colors duration-300"
-            onClick={() => setView('list')}
+            onClick={() => setViewMode('list')}
           >
             <IoList />
           </Button>
         </div>
       </header>
       <ScrollableList
-        view={view}
+        viewMode={viewMode}
         items={lists}
         renderItem={(list: List) => <ListCard key={list.id} list={list} />}
         button={

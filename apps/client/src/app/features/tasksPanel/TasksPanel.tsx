@@ -1,5 +1,5 @@
 import type { Task } from '@shared/types/task';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { TaskCard } from './TaskCard';
 import { Button } from '@ui/button/Button';
@@ -12,9 +12,10 @@ import { TiArrowBack } from 'react-icons/ti';
 import { useAppDispatch } from '@store/redux';
 import { listActions } from '@store/slices/listSlice';
 import { IoGrid, IoList } from 'react-icons/io5';
+import { useItemsViewMode } from '@hooks/useItemsViewMode';
 
 export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
-  const [view, setView] = useState<'list' | 'grid'>('list');
+  const { viewMode, setViewMode } = useItemsViewMode('tasks');
   const openForm = useOpenForm();
   const tasks = useTasks(selectedList.id);
   const dispatch = useAppDispatch();
@@ -39,7 +40,7 @@ export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
               size="icon"
               intent="ghost"
               className="size-fit text-lg transition-colors duration-300"
-              onClick={() => setView('grid')}
+              onClick={() => setViewMode('grid')}
             >
               <IoGrid />
             </Button>
@@ -47,14 +48,14 @@ export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
               size="icon"
               intent="ghost"
               className="size-fit text-2xl transition-colors duration-300"
-              onClick={() => setView('list')}
+              onClick={() => setViewMode('list')}
             >
               <IoList />
             </Button>
           </div>
         </header>
         <ScrollableList
-          view={view}
+          viewMode={viewMode}
           items={tasks}
           renderItem={(task: Task) => <TaskCard key={task.id} task={task} />}
           button={
