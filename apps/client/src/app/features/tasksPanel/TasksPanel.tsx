@@ -11,8 +11,8 @@ import type { List } from '@shared/types/list';
 import { TiArrowBack } from 'react-icons/ti';
 import { useAppDispatch } from '@store/redux';
 import { listActions } from '@store/slices/listSlice';
-import { IoGrid, IoList } from 'react-icons/io5';
 import { useItemsViewMode } from '@hooks/useItemsViewMode';
+import { PanelLayout } from '@ui/panelLayout/PanelLayout';
 
 export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
   const { viewMode, setViewMode } = useItemsViewMode('tasks');
@@ -21,59 +21,37 @@ export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
   const dispatch = useAppDispatch();
 
   return (
-    <>
-      <div className="bg-secondary-bg flex flex-1 flex-col justify-between gap-2 rounded-md p-4">
-        <header className="border-border flex items-center justify-between border-b pb-2 text-2xl font-semibold">
-          <div className="flex max-w-3/4 items-center gap-4">
-            <Button
-              size="icon"
-              intent="ghost"
-              className="size-fit transition-colors duration-300"
-              onClick={() => dispatch(listActions.removeSelectedList())}
-            >
-              <TiArrowBack />
-            </Button>
-            <h2 className="line-clamp-1 break-all">{selectedList.title}</h2>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              size="icon"
-              intent="ghost"
-              className="size-fit text-lg transition-colors duration-300"
-              onClick={() => setViewMode('grid')}
-            >
-              <IoGrid />
-            </Button>
-            <Button
-              size="icon"
-              intent="ghost"
-              className="size-fit text-2xl transition-colors duration-300"
-              onClick={() => setViewMode('list')}
-            >
-              <IoList />
-            </Button>
-          </div>
-        </header>
-        <ScrollableList
-          viewMode={viewMode}
-          items={tasks}
-          renderItem={(task: Task) => <TaskCard key={task.id} task={task} />}
-          button={
-            <Button
-              intent="outline"
-              className="group flex size-full gap-2"
-              onClick={() =>
-                openForm({ mode: ItemsManagementFormMode.AddTask, listId: selectedList.id })
-              }
-            >
-              <LuCirclePlus className="group-hover:text-accent transform transition-colors duration-300 group-hover:scale-110" />
-              <span className="group-hover:text-accent transition-colors duration-300">
-                Add task
-              </span>
-            </Button>
-          }
-        />
-      </div>
-    </>
+    <PanelLayout
+      title={selectedList.title}
+      setViewMode={setViewMode}
+      buttonBack={
+        <Button
+          size="icon"
+          intent="ghost"
+          className="size-fit transition-colors duration-300"
+          onClick={() => dispatch(listActions.removeSelectedList())}
+        >
+          <TiArrowBack />
+        </Button>
+      }
+    >
+      <ScrollableList
+        viewMode={viewMode}
+        items={tasks}
+        renderItem={(task: Task) => <TaskCard key={task.id} task={task} />}
+        button={
+          <Button
+            intent="outline"
+            className="group flex size-full gap-2"
+            onClick={() =>
+              openForm({ mode: ItemsManagementFormMode.AddTask, listId: selectedList.id })
+            }
+          >
+            <LuCirclePlus className="group-hover:text-accent transform transition-colors duration-300 group-hover:scale-110" />
+            <span className="group-hover:text-accent transition-colors duration-300">Add task</span>
+          </Button>
+        }
+      />
+    </PanelLayout>
   );
 });
