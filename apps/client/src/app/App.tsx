@@ -5,14 +5,12 @@ import { Sidebar } from '@ui/sidebar/Sidebar';
 
 export const App = () => {
   return (
-    <div className="bg-primary-bg text-primary-text flex h-screen text-base">
+    <div className="bg-primary-bg text-primary-text grid h-dvh grid-cols-1 grid-rows-[auto_auto_1fr] gap-2 text-base sm:grid-cols-[25%_1fr] sm:grid-rows-[auto_1fr] sm:gap-4 sm:p-4">
       <Sidebar />
-      <div className="flex size-full flex-col p-4">
-        <HeaderContextProvider>
-          <Header />
-          <Main />
-        </HeaderContextProvider>
-      </div>
+      <HeaderContextProvider>
+        <Header />
+        <Main />
+      </HeaderContextProvider>
     </div>
   );
 };

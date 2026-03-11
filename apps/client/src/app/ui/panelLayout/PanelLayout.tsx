@@ -19,7 +19,7 @@ export const PanelLayout = ({
           {buttonBack}
           <h2 className="line-clamp-1 break-all">{title}</h2>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-2 sm:flex">
           <Button
             size="icon"
             intent="ghost"

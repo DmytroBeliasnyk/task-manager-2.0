@@ -13,8 +13,8 @@ export const Header = () => {
   );
 
   return (
-    <header className="flex justify-between gap-2 pb-2">
-      <label className="group bg-secondary-bg focus-within:bg-primary-bg focus-within:ring-accent/20 flex items-center rounded-full pr-10 pl-4 focus-within:ring-2">
+    <header className="border-border flex justify-between border-t px-4 pt-2 sm:border-0 sm:px-0 sm:pt-0">
+      <label className="group bg-secondary-bg focus-within:bg-primary-bg focus-within:ring-accent/20 flex items-center rounded-full pl-4 focus-within:ring-2 sm:pr-10">
         <FaSearch className="text-muted-text group-focus-within:text-accent/20 dark:group-focus-within:text-accent/80 mr-2" />
         <input
           className="placeholder:text-muted-text text-secondary-text outline-none placeholder:italic"
@@ -27,7 +27,7 @@ export const Header = () => {
         <ThemeToggler />
         <div className="text-secondary-text flex items-center gap-2 text-base font-medium">
           <div className="bg-accent/20 size-8 rounded-full">{/* avatar */}</div>
-          <span>username</span>
+          <span className="hidden sm:block">username</span>
           <FaAngleDown />
           {/* open options list */}
         </div>

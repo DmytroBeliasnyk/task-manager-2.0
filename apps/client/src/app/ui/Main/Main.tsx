@@ -11,7 +11,7 @@ export const Main = () => {
 
   return (
     <>
-      <main className="flex h-full gap-4 overflow-hidden">
+      <main className="flex overflow-hidden">
         {selectedList ? <TasksPanel selectedList={selectedList} /> : <ListsPanel />}
       </main>
       {isFormOpen && <ItemsManagementForm />}

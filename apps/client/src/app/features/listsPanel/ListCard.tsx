@@ -21,7 +21,7 @@ export const ListCard = memo(({ list }: { list: List }) => {
       <Button
         size="icon"
         intent="ghost"
-        className="group-hover:text-secondary-text hover:text-primary-text size-fit cursor-pointer bg-transparent text-transparent transition-colors hover:bg-transparent"
+        className="text-secondary-text sm:group-hover:text-secondary-text sm:hover:text-primary-text size-fit cursor-pointer bg-transparent transition-colors hover:bg-transparent sm:text-transparent"
         onClick={(e) => {
           e.stopPropagation();
           openForm({
@@ -35,7 +35,7 @@ export const ListCard = memo(({ list }: { list: List }) => {
       <Button
         size="icon"
         intent="ghost"
-        className="group-hover:text-secondary-text hover:text-primary-text size-fit cursor-pointer bg-transparent text-transparent transition-colors hover:bg-transparent"
+        className="text-secondary-text sm:group-hover:text-secondary-text sm:hover:text-primary-text size-fit cursor-pointer bg-transparent transition-colors hover:bg-transparent sm:text-transparent"
         onClick={(e) => {
           e.stopPropagation();
           openForm({

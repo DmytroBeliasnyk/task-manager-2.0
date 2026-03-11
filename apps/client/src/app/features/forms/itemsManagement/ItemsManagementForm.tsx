@@ -29,7 +29,7 @@ export const ItemsManagementForm = () => {
 
   return (
     <div className="bg-accent/10 absolute inset-0 z-10 flex size-full items-center justify-center">
-      <div className="bg-primary-bg flex w-1/3 flex-col gap-2 rounded-md p-4">
+      <div className="bg-primary-bg flex w-3/4 flex-col gap-2 rounded-md p-4 sm:w-1/3">
         <h2 className="border-border border-b pb-2 text-xl font-semibold">{formMode}</h2>
         <form action={formAction} className="flex flex-col gap-2">
           {!isDeleteForm ? (
