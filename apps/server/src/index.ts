@@ -3,6 +3,7 @@ import cors from 'cors';
 import { initDB } from './db/initDB';
 import { apiRouter } from './routes/api';
 import { errorHandler } from './middleware/errorHandler';
+import { authRouter } from './routes/auth';
 
 (async (): Promise<void> => {
   try {
@@ -23,6 +24,8 @@ import { errorHandler } from './middleware/errorHandler';
   );
 
   app.use(express.json());
+
+  app.use('/auth', authRouter);
   app.use('/api', apiRouter);
 
   app.use(errorHandler);

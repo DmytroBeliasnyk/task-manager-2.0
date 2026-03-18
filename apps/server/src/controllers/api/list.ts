@@ -1,8 +1,7 @@
 import { RequestHandler } from 'express';
-import { getLists, saveList, updateList } from '../services/list';
-import { deleteListFromDB } from '../repo/list';
-import ValidationError from '../utils/errors/ValidationError';
-import { asyncHandler } from '../middleware/asyncHandler';
+import { getLists, saveList, updateList, deleteList } from '../../services/api/list';
+import ValidationError from '../../errors/ValidationError';
+import { asyncHandler } from '../../middleware/asyncHandler';
 
 export const addListController: RequestHandler = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
@@ -41,6 +40,6 @@ export const deleteListController: RequestHandler = asyncHandler(async (req, res
     throw new ValidationError('parameter "id" is required');
   }
 
-  await deleteListFromDB(id);
+  await deleteList(id);
   res.status(200).end();
 });

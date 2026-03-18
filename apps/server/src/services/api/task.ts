@@ -1,6 +1,11 @@
 import { TaskId } from '@shared/types/task';
 import { nanoid } from 'nanoid';
-import { deleteTaskFromDB, getTasksFromDB, saveTaskInDB, saveUpdatedTask } from '../repo/task';
+import {
+  deleteTaskFromDB,
+  getTasksFromDB,
+  saveTaskInDB,
+  saveUpdatedTask,
+} from '../../repo/api/task';
 import { ListId } from '@shared/types/list';
 
 export async function saveTask(title: string, description: string, listId: ListId) {

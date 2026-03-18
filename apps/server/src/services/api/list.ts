@@ -1,6 +1,11 @@
 import { ListId } from '@shared/types/list';
 import { nanoid } from 'nanoid';
-import { deleteListFromDB, getListsFromDB, saveListInDB, saveUpdatedList } from '../repo/list';
+import {
+  deleteListFromDB,
+  getListsFromDB,
+  saveListInDB,
+  saveUpdatedList,
+} from '../../repo/api/list';
 
 export async function saveList(title: string, description: string) {
   const id = nanoid();

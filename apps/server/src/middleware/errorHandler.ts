@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import NonExistentIDError from '../utils/errors/NonExistentIDError';
-import ValidationError from '../utils/errors/ValidationError';
+import NonExistentIDError from '../errors/NonExistentIDError';
+import ValidationError from '../errors/ValidationError';
 
 export interface ErrorResponse {
   message: string;

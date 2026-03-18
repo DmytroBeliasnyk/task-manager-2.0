@@ -4,13 +4,13 @@ import {
   deleteListController,
   getListsController,
   updateListController,
-} from '../controllers/list';
+} from '../controllers/api/list';
 import {
   addTaskController,
   deleteTaskController,
   getTasksController,
   updateTaskController,
-} from '../controllers/task';
+} from '../controllers/api/task';
 
 export const apiRouter: Router = express.Router();
 

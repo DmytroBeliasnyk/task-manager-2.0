@@ -1,6 +1,6 @@
 import { List, ListId } from '@shared/types/list';
-import { db } from '../db/db';
-import NonExistentIDError from '../utils/errors/NonExistentIDError';
+import { db } from '../../db/db';
+import NonExistentIDError from '../../errors/NonExistentIDError';
 
 export async function saveListInDB(id: ListId, title: string, description: string) {
   const query = `
