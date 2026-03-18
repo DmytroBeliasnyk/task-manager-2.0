@@ -1,8 +1,9 @@
 import bcrypt from 'bcryptjs';
-import { saveUserInDB, saveRefreshToken } from '../../repo/auth/auth';
-import { generateJWT } from '../../utils/jwt';
+import { saveUserInDB, saveRefreshToken, getUserIdByRefreshToken } from '../../repo/auth/auth';
+import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
 import { getUserByEmail } from '../../repo/auth/auth';
 import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
+import { verifyRefreshToken } from 'src/utils/jwt';
 
 export const saveUser = async (email: string, password: string, username?: string) => {
   if (!username) {
@@ -11,7 +12,8 @@ export const saveUser = async (email: string, password: string, username?: strin
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await saveUserInDB(email, hashedPassword, username);
-  const { accessToken, refreshToken } = generateJWT(user.id);
+  const accessToken = generateAccessToken(user.id);
+  const refreshToken = generateRefreshToken(user.id);
   await saveRefreshToken(user.id, refreshToken);
 
   return { user, accessToken, refreshToken };
@@ -25,8 +27,29 @@ export const loginUser = async (email: string, password: string) => {
     throw new InvalidCredentialsError('Invalid password.');
   }
 
-  const { accessToken, refreshToken } = generateJWT(user.id);
+  const accessToken = generateAccessToken(user.id);
+  const refreshToken = generateRefreshToken(user.id);
   await saveRefreshToken(user.id, refreshToken);
 
   return { accessToken, refreshToken };
+};
+
+export const refreshAccessToken = async (refreshToken: string) => {
+  try {
+    const { userId } = verifyRefreshToken(refreshToken);
+    const storedUserId = await getUserIdByRefreshToken(refreshToken);
+
+    if (!storedUserId || storedUserId !== userId) {
+      throw new InvalidCredentialsError('Unauthorized.');
+    }
+
+    const accessToken = generateAccessToken(userId);
+    const newRefreshToken = generateRefreshToken(userId);
+    await saveRefreshToken(userId, newRefreshToken);
+
+    return { accessToken, refreshToken: newRefreshToken };
+  } catch (err) {
+    console.error('Error verifying refresh token: ', err);
+    throw new InvalidCredentialsError('Unauthorized.');
+  }
 };

@@ -5,6 +5,7 @@ import { apiRouter } from './routes/api';
 import { errorHandler } from './middleware/errorHandler';
 import { authRouter } from './routes/auth';
 import { authMiddleware } from './middleware/auth';
+import cookieParser from 'cookie-parser';
 
 (async (): Promise<void> => {
   try {
@@ -17,13 +18,13 @@ import { authMiddleware } from './middleware/auth';
   const PORT = process.env.PORT || 8000;
   const app: Application = express();
 
+  app.use(cookieParser());
   app.use(
     cors({
       origin: process.env.CLIENT_URL || 'http://localhost:5173',
       credentials: true,
     }),
   );
-
   app.use(express.json());
   app.use('/auth', authRouter);
   app.use(authMiddleware);

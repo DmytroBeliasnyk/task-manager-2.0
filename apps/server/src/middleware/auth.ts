@@ -1,26 +1,22 @@
 import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
 import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { UserId } from '@shared/types/user';
+import { verifyAccessToken } from 'src/utils/jwt';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authorizationHeader = req.headers.authorization;
-  if (!authorizationHeader) {
+  if (!authorizationHeader?.startsWith('Bearer ')) {
     throw new InvalidCredentialsError('Unauthorized.');
   }
 
-  const accessSecret = process.env.ACCESS_TOKEN_SECRET;
-  if (!accessSecret) {
-    throw new Error('Missing JWT secrets: ACCESS_TOKEN_SECRET');
+  const token = authorizationHeader.split(' ')[1];
+
+  try {
+    const { userId } = verifyAccessToken(token);
+    res.locals.userId = userId;
+  } catch (err) {
+    console.error('Error verifying access token: ', err);
+    throw new InvalidCredentialsError('Unauthorized.');
   }
 
-  const token = authorizationHeader.split(' ')[1];
-  jwt.verify(token, accessSecret, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ message: 'Unauthorized.' });
-    }
-
-    res.locals.userId = (decoded as JwtPayload).userId as UserId;
-    next();
-  });
+  next();
 };

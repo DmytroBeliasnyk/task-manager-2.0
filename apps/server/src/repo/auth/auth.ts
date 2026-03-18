@@ -47,3 +47,17 @@ export const saveRefreshToken = async (userId: UserId, token: string) => {
     throw err;
   }
 };
+
+export const getUserIdByRefreshToken = async (token: string) => {
+  const query = 'SELECT user_id FROM tokens WHERE token=$1';
+  try {
+    const res = await db.query(query, [token]);
+    if (!res.rowCount) {
+      throw new InvalidCredentialsError('Invalid refresh token.');
+    }
+    return res.rows[0].user_id as UserId;
+  } catch (err) {
+    console.error('DB error while fetching user id by refresh token: ', err);
+    throw err;
+  }
+};
