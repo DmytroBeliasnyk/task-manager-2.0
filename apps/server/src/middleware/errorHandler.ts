@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import NonExistentIDError from '../errors/NonExistentIDError';
 import ValidationError from '../errors/ValidationError';
+import InvalidCredentialsError from '../errors/InvalidCredentialsError';
 
 export interface ErrorResponse {
   message: string;
@@ -24,6 +25,9 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
     message = err.message;
   } else if (err instanceof ValidationError) {
     status = 400;
+    message = err.message;
+  } else if (err instanceof InvalidCredentialsError) {
+    status = 401;
     message = err.message;
   } else if (err instanceof Error) {
     message = err.message || message;

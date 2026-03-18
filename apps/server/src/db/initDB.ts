@@ -35,10 +35,8 @@ export async function initDB(): Promise<void> {
         CREATE TABLE IF NOT EXISTS tokens
         (
             id          SERIAL PRIMARY KEY,
-            user_id     INTEGER REFERENCES users (id) ON DELETE CASCADE,
-            token       TEXT NOT NULL,
-            created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            expires_at  TIMESTAMP NOT NULL
+            user_id     INTEGER REFERENCES users (id) ON DELETE CASCADE UNIQUE,
+            token       TEXT NOT NULL
         );`);
 
     await client.query('COMMIT');
