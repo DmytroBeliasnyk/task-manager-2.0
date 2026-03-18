@@ -1,5 +1,10 @@
 import bcrypt from 'bcryptjs';
-import { saveUserInDB, saveRefreshToken, getUserIdByRefreshToken } from '../../repo/auth/auth';
+import {
+  saveUserInDB,
+  saveRefreshToken,
+  getUserIdByRefreshToken,
+  deleteRefreshTokenFromDB,
+} from '../../repo/auth/auth';
 import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
 import { getUserByEmail } from '../../repo/auth/auth';
 import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
@@ -52,4 +57,8 @@ export const refreshAccessToken = async (refreshToken: string) => {
     console.error('Error verifying refresh token: ', err);
     throw new InvalidCredentialsError('Unauthorized.');
   }
+};
+
+export const deleteRefreshToken = async (token: string) => {
+  await deleteRefreshTokenFromDB(token);
 };

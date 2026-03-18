@@ -1,7 +1,12 @@
 import ValidationError from 'src/errors/ValidationError';
 import { asyncHandler } from 'src/middleware/asyncHandler';
 import { RequestHandler } from 'express';
-import { saveUser, loginUser, refreshAccessToken } from '../../services/auth/auth';
+import {
+  saveUser,
+  loginUser,
+  refreshAccessToken,
+  deleteRefreshToken,
+} from '../../services/auth/auth';
 import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
 
 export const registerController: RequestHandler = asyncHandler(async (req, res) => {
@@ -15,7 +20,6 @@ export const registerController: RequestHandler = asyncHandler(async (req, res) 
     .status(201)
     .cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: true,
       maxAge: 1000 * 60 * 60 * 24,
     })
     .json({ user: user, accessToken: accessToken });
@@ -33,7 +37,6 @@ export const loginController: RequestHandler = asyncHandler(async (req, res) => 
     .status(200)
     .cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: true,
       maxAge: 1000 * 60 * 60 * 24,
     })
     .json({ accessToken: accessToken });
@@ -51,8 +54,18 @@ export const refreshTokenController: RequestHandler = asyncHandler(async (req, r
     .status(200)
     .cookie('refreshToken', newRefreshToken, {
       httpOnly: true,
-      secure: true,
       maxAge: 1000 * 60 * 60 * 24,
     })
     .json({ accessToken: accessToken });
+});
+
+export const logoutController: RequestHandler = asyncHandler(async (req, res) => {
+  const refreshToken = req.cookies?.refreshToken;
+  if (!refreshToken) {
+    return res.status(204).send();
+  }
+
+  await deleteRefreshToken(refreshToken);
+  res.clearCookie('refreshToken', { httpOnly: true });
+  res.status(204).send();
 });

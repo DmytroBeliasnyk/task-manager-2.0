@@ -61,3 +61,14 @@ export const getUserIdByRefreshToken = async (token: string) => {
     throw err;
   }
 };
+
+export const deleteRefreshTokenFromDB = async (token: string) => {
+  const query = 'DELETE FROM tokens WHERE token=$1';
+
+  try {
+    await db.query(query, [token]);
+  } catch (err) {
+    console.error('DB error while deleting refresh token: ', err);
+    throw err;
+  }
+};
