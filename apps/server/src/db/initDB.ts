@@ -27,15 +27,15 @@ export async function initDB(): Promise<void> {
         (
             id          SERIAL PRIMARY KEY,
             email       TEXT UNIQUE NOT NULL,
-            password    TEXT NOT NULL
-            username    TEXT UNIQUE,
+            hashed_password    TEXT NOT NULL,
+            username    TEXT UNIQUE NOT NULL
         );`);
 
     await client.query(`
         CREATE TABLE IF NOT EXISTS tokens
         (
             id          SERIAL PRIMARY KEY,
-            user_id     TEXT REFERENCES users (id) ON DELETE CASCADE,
+            user_id     INTEGER REFERENCES users (id) ON DELETE CASCADE,
             token       TEXT NOT NULL,
             created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             expires_at  TIMESTAMP NOT NULL
