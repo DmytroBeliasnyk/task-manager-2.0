@@ -4,6 +4,7 @@ import { initDB } from './db/initDB';
 import { apiRouter } from './routes/api';
 import { errorHandler } from './middleware/errorHandler';
 import { authRouter } from './routes/auth';
+import { authMiddleware } from './middleware/auth';
 
 (async (): Promise<void> => {
   try {
@@ -24,10 +25,9 @@ import { authRouter } from './routes/auth';
   );
 
   app.use(express.json());
-
   app.use('/auth', authRouter);
+  app.use(authMiddleware);
   app.use('/api', apiRouter);
-
   app.use(errorHandler);
 
   app.listen(PORT, () => console.log(`server connected on port ${PORT}`));

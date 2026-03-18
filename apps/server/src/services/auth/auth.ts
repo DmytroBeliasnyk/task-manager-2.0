@@ -11,7 +11,7 @@ export const saveUser = async (email: string, password: string, username?: strin
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await saveUserInDB(email, hashedPassword, username);
-  const { accessToken, refreshToken } = generateJWT(user.username);
+  const { accessToken, refreshToken } = generateJWT(user.id);
   await saveRefreshToken(user.id, refreshToken);
 
   return { user, accessToken, refreshToken };
@@ -25,7 +25,7 @@ export const loginUser = async (email: string, password: string) => {
     throw new InvalidCredentialsError('Invalid password.');
   }
 
-  const { accessToken, refreshToken } = generateJWT(user.username);
+  const { accessToken, refreshToken } = generateJWT(user.id);
   await saveRefreshToken(user.id, refreshToken);
 
   return { accessToken, refreshToken };
