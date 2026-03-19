@@ -1,14 +1,12 @@
-import { useAppDispatch, useAppSelector } from '@store/redux';
-import { itemsManagementFormSelectors } from '@store/slices/formSlice';
-import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { listsApi } from '@api/lists/api';
 import { tasksApi } from '@api/tasks/api';
-import { listActions } from '@store/slices/listSlice';
 import type { List } from '@shared/types/list';
+import { useAppSelector } from '@store/redux';
+import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
+import { itemsManagementFormSelectors } from '../slice/formSlice';
 
 export const useFormActions = (closeForm: () => void) => {
   const options = useAppSelector(itemsManagementFormSelectors.selectOptions);
-  const dispatch = useAppDispatch();
 
   const [addList] = listsApi.useAddListMutation();
   const [editList] = listsApi.useEditListMutation();

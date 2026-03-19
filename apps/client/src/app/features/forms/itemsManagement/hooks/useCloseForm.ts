@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@store/redux';
-import { itemsManagementFormActions } from '@store/slices/formSlice';
 import { useCallback } from 'react';
+import { itemsManagementFormActions } from '../slice/formSlice';
 
 export const useCloseForm = () => {
   const dispatch = useAppDispatch();

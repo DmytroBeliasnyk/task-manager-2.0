@@ -1,18 +1,18 @@
-import type { Task } from '@shared/types/task';
-import { memo } from 'react';
-import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
-import { TaskCard } from './TaskCard';
-import { Button } from '@ui/button/Button';
-import { useOpenForm } from '@hooks/useOpenForm';
-import { useTasks } from './hooks/useTasks';
-import { ScrollableList } from '@ui/scrollableList/ScrollableList';
-import { LuCirclePlus } from 'react-icons/lu';
-import type { List } from '@shared/types/list';
-import { TiArrowBack } from 'react-icons/ti';
-import { useAppDispatch } from '@store/redux';
-import { listActions } from '@store/slices/listSlice';
+import { listActions } from '@features/listsPanel/slice/listSlice';
 import { useItemsViewMode } from '@hooks/useItemsViewMode';
+import { useOpenForm } from '@hooks/useOpenForm';
+import type { List } from '@shared/types/list';
+import type { Task } from '@shared/types/task';
+import { useAppDispatch } from '@store/redux';
+import { Button } from '@ui/button/Button';
 import { PanelLayout } from '@ui/panelLayout/PanelLayout';
+import { ScrollableList } from '@ui/scrollableList/ScrollableList';
+import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
+import { memo } from 'react';
+import { LuCirclePlus } from 'react-icons/lu';
+import { TiArrowBack } from 'react-icons/ti';
+import { useTasks } from './hooks/useTasks';
+import { TaskCard } from './TaskCard';
 
 export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
   const { viewMode, setViewMode } = useItemsViewMode('tasks');

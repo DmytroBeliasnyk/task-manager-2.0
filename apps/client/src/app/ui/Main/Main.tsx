@@ -1,9 +1,9 @@
-import { ListsPanel } from '@features/listsPanel/ListsPanel';
-import { TasksPanel } from '@features/tasksPanel/TasksPanel';
 import { ItemsManagementForm } from '@features/forms/itemsManagement/ItemsManagementForm';
+import { itemsManagementFormSelectors } from '@features/forms/itemsManagement/slice/formSlice';
+import { ListsPanel } from '@features/listsPanel/ListsPanel';
+import { listSelectors } from '@features/listsPanel/slice/listSlice';
+import { TasksPanel } from '@features/tasksPanel/TasksPanel';
 import { useAppSelector } from '@store/redux';
-import { itemsManagementFormSelectors } from '@store/slices/formSlice';
-import { listSelectors } from '@store/slices/listSlice';
 
 export const Main = () => {
   const isFormOpen = useAppSelector(itemsManagementFormSelectors.isOpen);

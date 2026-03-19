@@ -1,6 +1,6 @@
 import { useAppSelector } from '@store/redux';
-import { itemsManagementFormSelectors } from '@store/slices/formSlice';
 import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
+import { itemsManagementFormSelectors } from '../slice/formSlice';
 
 export const useFormValues = () => {
   const options = useAppSelector(itemsManagementFormSelectors.selectOptions);

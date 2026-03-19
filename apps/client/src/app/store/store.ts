@@ -1,7 +1,7 @@
-import { combineSlices, configureStore } from '@reduxjs/toolkit';
 import { baseApi } from '@api/baseApi';
-import { listSlice } from '@store/slices/listSlice';
-import { formSlice } from '@store/slices/formSlice';
+import { formSlice } from '@features/forms/itemsManagement/slice/formSlice';
+import { listSlice } from '@features/listsPanel/slice/listSlice';
+import { combineSlices, configureStore } from '@reduxjs/toolkit';
 
 export const extraArgument = {};
 
