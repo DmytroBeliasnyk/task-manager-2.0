@@ -6,3 +6,5 @@ export type User = {
   password: string;
   username: string;
 };
+
+export type UserDTO = Omit<User, 'password'>;

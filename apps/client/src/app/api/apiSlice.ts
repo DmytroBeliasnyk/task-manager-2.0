@@ -30,15 +30,12 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   await mutex.waitForUnlock();
 
   let res = await baseQuery(args, api, extraOptions);
-  console.log('sending refresh token');
-
   if (res?.error?.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
 
       try {
         const refreshRes = await baseQuery('/auth/refresh', api, extraOptions);
-        console.log(refreshRes);
 
         if (refreshRes?.data) {
           const { user, accessToken } = refreshRes.data as { user: User; accessToken: string };
