@@ -1,13 +1,13 @@
+import { RequestHandler } from 'express';
+import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
 import ValidationError from 'src/errors/ValidationError';
 import { asyncHandler } from 'src/middleware/asyncHandler';
-import { RequestHandler } from 'express';
 import {
-  saveUser,
+  deleteRefreshToken,
   loginUser,
   refreshAccessToken,
-  deleteRefreshToken,
+  saveUser,
 } from '../../services/auth/auth';
-import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
 
 export const registerController: RequestHandler = asyncHandler(async (req, res) => {
   const { email, password, username } = req.body;
@@ -22,7 +22,7 @@ export const registerController: RequestHandler = asyncHandler(async (req, res) 
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
     })
-    .json({ user: user, accessToken: accessToken });
+    .json({ user, accessToken });
 });
 
 export const loginController: RequestHandler = asyncHandler(async (req, res) => {
@@ -39,7 +39,7 @@ export const loginController: RequestHandler = asyncHandler(async (req, res) => 
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
     })
-    .json({ accessToken: accessToken });
+    .json({ accessToken });
 });
 
 export const refreshTokenController: RequestHandler = asyncHandler(async (req, res) => {
@@ -48,7 +48,7 @@ export const refreshTokenController: RequestHandler = asyncHandler(async (req, r
     throw new InvalidCredentialsError('Unauthorized.');
   }
 
-  const { accessToken, refreshToken: newRefreshToken } = await refreshAccessToken(refreshToken);
+  const { user, accessToken, newRefreshToken } = await refreshAccessToken(refreshToken);
 
   res
     .status(200)
@@ -56,7 +56,7 @@ export const refreshTokenController: RequestHandler = asyncHandler(async (req, r
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
     })
-    .json({ accessToken: accessToken });
+    .json({ user, accessToken });
 });
 
 export const logoutController: RequestHandler = asyncHandler(async (req, res) => {

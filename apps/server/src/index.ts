@@ -1,11 +1,11 @@
-import express, { Application } from 'express';
-import cors from 'cors';
-import { initDB } from './db/initDB';
-import { apiRouter } from './routes/api';
-import { errorHandler } from './middleware/errorHandler';
-import { authRouter } from './routes/auth';
-import { authMiddleware } from './middleware/auth';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import express, { Application } from 'express';
+import { initDB } from './db/initDB';
+import { authMiddleware } from './middleware/auth';
+import { errorHandler } from './middleware/errorHandler';
+import { apiRouter } from './routes/api';
+import { authRouter } from './routes/auth';
 
 (async (): Promise<void> => {
   try {

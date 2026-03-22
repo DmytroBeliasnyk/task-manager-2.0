@@ -1,14 +1,14 @@
 import bcrypt from 'bcryptjs';
-import {
-  saveUserInDB,
-  saveRefreshToken,
-  getUserIdByRefreshToken,
-  deleteRefreshTokenFromDB,
-} from '../../repo/auth/auth';
-import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
-import { getUserByEmail } from '../../repo/auth/auth';
 import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
 import { verifyRefreshToken } from 'src/utils/jwt';
+import {
+  deleteRefreshTokenFromDB,
+  getUserByEmail,
+  getUserById,
+  saveRefreshToken,
+  saveUserInDB,
+} from '../../repo/auth/auth';
+import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
 
 export const saveUser = async (email: string, password: string, username?: string) => {
   if (!username) {
@@ -42,9 +42,9 @@ export const loginUser = async (email: string, password: string) => {
 export const refreshAccessToken = async (refreshToken: string) => {
   try {
     const { userId } = verifyRefreshToken(refreshToken);
-    const storedUserId = await getUserIdByRefreshToken(refreshToken);
+    const user = await getUserById(userId);
 
-    if (!storedUserId || storedUserId !== userId) {
+    if (!user) {
       throw new InvalidCredentialsError('Unauthorized.');
     }
 
@@ -52,7 +52,7 @@ export const refreshAccessToken = async (refreshToken: string) => {
     const newRefreshToken = generateRefreshToken(userId);
     await saveRefreshToken(userId, newRefreshToken);
 
-    return { accessToken, refreshToken: newRefreshToken };
+    return { user, accessToken, newRefreshToken };
   } catch (err) {
     console.error('Error verifying refresh token: ', err);
     throw new InvalidCredentialsError('Unauthorized.');
