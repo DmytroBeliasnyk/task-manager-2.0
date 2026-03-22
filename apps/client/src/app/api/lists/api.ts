@@ -1,6 +1,6 @@
 import type { List, ListId } from '@shared/types/list';
-import { baseApi } from '../baseApi';
 import { z } from 'zod';
+import { apiSlice } from '../apiSlice';
 
 const ListSchema = z.object({
   id: z.string(),
@@ -12,7 +12,7 @@ const ListResponseSchema = z.object({
   lists: ListSchema.array(),
 });
 
-export const listsApi = baseApi.injectEndpoints({
+export const listsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addList: builder.mutation<void, { title: string; description: string }>({
       query: ({ title, description }) => ({

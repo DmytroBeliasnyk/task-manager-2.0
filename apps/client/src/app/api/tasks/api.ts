@@ -1,7 +1,7 @@
-import { baseApi } from '../baseApi';
-import type { Task, TaskId } from '@shared/types/task';
 import type { ListId } from '@shared/types/list';
+import type { Task, TaskId } from '@shared/types/task';
 import { z } from 'zod';
+import { apiSlice } from '../apiSlice';
 
 const TaskSchema = z
   .object({
@@ -21,7 +21,7 @@ const TaskResponseSchema = z.object({
   tasks: TaskSchema.array(),
 });
 
-export const tasksApi = baseApi.injectEndpoints({
+export const tasksApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addTask: builder.mutation<void, { title: string; description: string; listId: ListId }>({
       query: ({ title, description, listId }) => ({
