@@ -24,13 +24,10 @@ const TaskResponseSchema = z.object({
 export const tasksApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addTask: builder.mutation<void, { title: string; description: string; listId: ListId }>({
-      query: ({ title, description, listId }) => ({
+      query: (taskData) => ({
         url: '/task',
         method: 'POST',
-        body: JSON.stringify({ title, description, listId }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: taskData,
       }),
       invalidatesTags: (_, __, { listId }) => [{ type: 'tasks', id: listId }],
     }),
@@ -46,10 +43,7 @@ export const tasksApi = apiSlice.injectEndpoints({
       query: ({ id, title, description }) => ({
         url: `/task/${id}`,
         method: 'PUT',
-        body: JSON.stringify({ title, description }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: { title, description },
       }),
       invalidatesTags: (_, __, { listId }) => [{ type: 'tasks', id: listId }],
     }),

@@ -15,13 +15,10 @@ const ListResponseSchema = z.object({
 export const listsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addList: builder.mutation<void, { title: string; description: string }>({
-      query: ({ title, description }) => ({
+      query: (listData) => ({
         url: '/list',
         method: 'POST',
-        body: JSON.stringify({ title, description }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: listData,
       }),
       invalidatesTags: ['lists'],
     }),
@@ -34,10 +31,7 @@ export const listsApi = apiSlice.injectEndpoints({
       query: ({ id, title, description }) => ({
         url: `/list/${id}`,
         method: 'PUT',
-        body: JSON.stringify({ title, description }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: { title, description },
       }),
       invalidatesTags: ['lists'],
     }),
