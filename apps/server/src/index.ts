@@ -2,10 +2,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application } from 'express';
 import { initDB } from './db/initDB';
-import { authMiddleware } from './middleware/auth';
 import { errorHandler } from './middleware/errorHandler';
-import { apiRouter } from './routes/api';
-import { authRouter } from './routes/auth';
+import { rootRouter } from './routes';
 
 (async (): Promise<void> => {
   try {
@@ -26,9 +24,9 @@ import { authRouter } from './routes/auth';
     }),
   );
   app.use(express.json());
-  app.use('/auth', authRouter);
-  app.use(authMiddleware);
-  app.use('/api', apiRouter);
+
+  app.use('/api', rootRouter);
+
   app.use(errorHandler);
 
   app.listen(PORT, () => console.log(`server connected on port ${PORT}`));
