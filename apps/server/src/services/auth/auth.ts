@@ -10,24 +10,23 @@ import {
 } from '../../repo/auth/auth';
 import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
 
-export const saveUser = async (email: string, password: string, username?: string) => {
-  if (!username) {
-    username = email.split('@')[0];
-  }
-
+export const saveUser = async (email: string, password: string) => {
+  const username = email.split('@')[0];
   const hashedPassword = await bcrypt.hash(password, 10);
+
   const user = await saveUserInDB(email, hashedPassword, username);
   const accessToken = generateAccessToken(user.id);
   const refreshToken = generateRefreshToken(user.id);
+
   await saveRefreshToken(user.id, refreshToken);
 
   return { user, accessToken, refreshToken };
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const user = await getUserByEmail(email);
-
-  const isPasswordValid = await bcrypt.compare(password, user.hashed_password);
+  const { user, hashedPassword } = await getUserByEmail(email);
+  console.log(user);
+  const isPasswordValid = await bcrypt.compare(password, hashedPassword);
   if (!isPasswordValid) {
     throw new InvalidCredentialsError('Invalid password.');
   }
@@ -36,7 +35,7 @@ export const loginUser = async (email: string, password: string) => {
   const refreshToken = generateRefreshToken(user.id);
   await saveRefreshToken(user.id, refreshToken);
 
-  return { accessToken, refreshToken };
+  return { user, accessToken, refreshToken };
 };
 
 export const refreshAccessToken = async (refreshToken: string) => {
@@ -52,7 +51,7 @@ export const refreshAccessToken = async (refreshToken: string) => {
     const newRefreshToken = generateRefreshToken(userId);
     await saveRefreshToken(userId, newRefreshToken);
 
-    return { user, accessToken, newRefreshToken };
+    return { user, accessToken, refreshToken: newRefreshToken };
   } catch (err) {
     console.error('Error verifying refresh token: ', err);
     throw new InvalidCredentialsError('Unauthorized.');

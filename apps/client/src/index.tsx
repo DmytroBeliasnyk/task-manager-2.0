@@ -1,9 +1,9 @@
-import { createRoot } from 'react-dom/client';
-import { App } from './app/App';
-import { Provider } from 'react-redux';
+import { listsApi } from '@api/lists/api';
 import { store } from '@store/store';
 import { StrictMode } from 'react';
-import { listsApi } from '@api/lists/api';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { App } from './app/App';
 
 store.dispatch(listsApi.util.prefetch('getLists', undefined));
 

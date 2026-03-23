@@ -8,21 +8,16 @@ import {
   refreshAccessToken,
   saveUser,
 } from '../../services/auth/auth';
+import { sendAuthResponse } from './sendAuthResponse';
 
 export const registerController: RequestHandler = asyncHandler(async (req, res) => {
-  const { email, password, username } = req.body;
+  const { email, password } = req.body;
   if (!email || !password) {
     throw new ValidationError('parameter "email" and "password" are required');
   }
 
-  const { user, accessToken, refreshToken } = await saveUser(email, password, username);
-  res
-    .status(201)
-    .cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24,
-    })
-    .json({ user, accessToken });
+  const result = await saveUser(email, password);
+  sendAuthResponse(res, 201, result);
 });
 
 export const loginController: RequestHandler = asyncHandler(async (req, res) => {
@@ -31,15 +26,8 @@ export const loginController: RequestHandler = asyncHandler(async (req, res) => 
     throw new ValidationError('parameter "email" and "password" are required');
   }
 
-  const { accessToken, refreshToken } = await loginUser(email, password);
-
-  res
-    .status(200)
-    .cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24,
-    })
-    .json({ accessToken });
+  const result = await loginUser(email, password);
+  sendAuthResponse(res, 200, result);
 });
 
 export const refreshTokenController: RequestHandler = asyncHandler(async (req, res) => {
@@ -48,15 +36,8 @@ export const refreshTokenController: RequestHandler = asyncHandler(async (req, r
     throw new InvalidCredentialsError('Unauthorized.');
   }
 
-  const { user, accessToken, newRefreshToken } = await refreshAccessToken(refreshToken);
-
-  res
-    .status(200)
-    .cookie('refreshToken', newRefreshToken, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24,
-    })
-    .json({ user, accessToken });
+  const result = await refreshAccessToken(refreshToken);
+  sendAuthResponse(res, 200, result);
 });
 
 export const logoutController: RequestHandler = asyncHandler(async (req, res) => {

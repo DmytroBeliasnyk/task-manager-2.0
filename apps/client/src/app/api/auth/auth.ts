@@ -1,11 +1,11 @@
-import type { UserDTO } from '@shared/types/user';
+import type { User } from '@shared/types/user';
 import { apiSlice } from '../apiSlice';
 
 const auth = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<
-      { user: UserDTO; accessToken: string },
-      { email: string; password: string; username: string }
+      { user: User; accessToken: string },
+      { email: string; password: string }
     >({
       query: (userData) => ({
         url: '/auth/register',
@@ -14,7 +14,7 @@ const auth = apiSlice.injectEndpoints({
       }),
     }),
     login: builder.mutation<
-      { user: UserDTO; accessToken: string },
+      { user: User; accessToken: string },
       { email: string; password: string }
     >({
       query: (credentials) => ({
