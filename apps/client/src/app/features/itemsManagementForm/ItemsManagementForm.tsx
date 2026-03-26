@@ -1,9 +1,9 @@
+import { Button } from '@ui/button/Button';
 import { useCallback, useEffect, useRef } from 'react';
 import { useCloseForm } from './hooks/useCloseForm';
 import { useFormActions } from './hooks/useFormActions';
-import { useFormValues } from './hooks/useFormValues';
-import { Button } from '@ui/button/Button';
 import { useFormValidation } from './hooks/useFormValidation';
+import { useFormValues } from './hooks/useFormValues';
 
 export const ItemsManagementForm = () => {
   const closeForm = useCloseForm();
@@ -34,9 +34,9 @@ export const ItemsManagementForm = () => {
         <form action={formAction} className="flex flex-col gap-2">
           {!isDeleteForm ? (
             <>
-              <label className="bg-secondary-bg text-muted-text rounded-md">
+              <label className="input-label">
                 <input
-                  className="placeholder:text-muted-text text-secondary-text w-full cursor-text p-2 placeholder:italic focus:outline-none"
+                  className="input-field"
                   type={'text'}
                   name={'title'}
                   ref={inputTitleRef}
@@ -46,9 +46,9 @@ export const ItemsManagementForm = () => {
                   required
                 />
               </label>
-              <label className="bg-secondary-bg text-muted-text h-36 rounded-md">
+              <label className="input-label h-36">
                 <textarea
-                  className="placeholder:text-muted-text text-secondary-text scrollbar-thin scrollbar-theme size-full cursor-text resize-none p-2 placeholder:italic focus:outline-none"
+                  className="input-field scrollbar-thin scrollbar-theme size-full cursor-text resize-none"
                   name={'description'}
                   placeholder={'Description'}
                   defaultValue={inputDescriptionValue}
@@ -58,9 +58,9 @@ export const ItemsManagementForm = () => {
           ) : (
             <>
               <p className="text-secondary-text">{`To confirm, type "${inputTitleValue}" in the field below`}</p>
-              <label className="bg-secondary-bg text-muted-text rounded-md">
+              <label className="input-label">
                 <input
-                  className="placeholder:text-muted-text text-secondary-text w-full cursor-text p-2 placeholder:italic focus:outline-none"
+                  className="input-field"
                   type={'text'}
                   name={'title'}
                   ref={inputTitleRef}

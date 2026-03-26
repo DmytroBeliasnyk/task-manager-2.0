@@ -1,4 +1,4 @@
-import { authSlice } from '@features/authPage/slice/authSlice';
+import { authSlice } from '@features/auth/slice/authSlice';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { User } from '@shared/types/user';

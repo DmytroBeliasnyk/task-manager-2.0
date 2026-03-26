@@ -1,9 +1,9 @@
+import { ItemsManagementFormMode } from '@features/itemsManagementForm/itemsManagementForm.types';
 import { useOpenForm } from '@hooks/useOpenForm';
 import type { List } from '@shared/types/list';
 import { useAppDispatch } from '@store/redux';
 import { Button } from '@ui/button/Button';
 import { ItemCard } from '@ui/itemCard/ItemCard';
-import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { memo } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { listActions } from './slice/listSlice';

@@ -2,14 +2,14 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import {
   ItemsManagementFormMode,
   type ItemsManagementFormOptions,
-} from '@utils/itemsManagementFormOptions';
+} from '../itemsManagementForm.types';
 
-type FormState = {
+type ItemsManagementFormState = {
   options: ItemsManagementFormOptions;
   isOpen: boolean;
 };
 
-const initialState: FormState = {
+const initialState: ItemsManagementFormState = {
   options: {
     mode: ItemsManagementFormMode.Close,
   },

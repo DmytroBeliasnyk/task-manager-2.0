@@ -1,10 +1,10 @@
-import type { Task } from '@shared/types/task';
-import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
-import { FaTrash } from 'react-icons/fa';
-import { Button } from '@ui/button/Button';
-import { memo } from 'react';
+import { ItemsManagementFormMode } from '@features/itemsManagementForm/itemsManagementForm.types';
 import { useOpenForm } from '@hooks/useOpenForm';
+import type { Task } from '@shared/types/task';
+import { Button } from '@ui/button/Button';
 import { ItemCard } from '@ui/itemCard/ItemCard';
+import { memo } from 'react';
+import { FaTrash } from 'react-icons/fa';
 
 export const TaskCard = memo(({ task }: { task: Task }) => {
   const openForm = useOpenForm();

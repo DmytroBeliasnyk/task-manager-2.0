@@ -1,3 +1,4 @@
+import { ItemsManagementFormMode } from '@features/itemsManagementForm/itemsManagementForm.types';
 import { useItemsViewMode } from '@hooks/useItemsViewMode';
 import { useOpenForm } from '@hooks/useOpenForm';
 import type { List } from '@shared/types/list.ts';
@@ -5,7 +6,6 @@ import { Button } from '@ui/button/Button';
 import { HeaderContext } from '@ui/header/HeaderContextProvider';
 import { PanelLayout } from '@ui/panelLayout/PanelLayout';
 import { ScrollableList } from '@ui/scrollableList/ScrollableList';
-import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { memo, useContext } from 'react';
 import { LuCirclePlus } from 'react-icons/lu';
 import { useLists } from './hooks/useLists';

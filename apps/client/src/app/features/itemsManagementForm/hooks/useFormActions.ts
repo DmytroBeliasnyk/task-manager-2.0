@@ -2,7 +2,7 @@ import { listsApi } from '@api/lists/api';
 import { tasksApi } from '@api/tasks/api';
 import type { List } from '@shared/types/list';
 import { useAppSelector } from '@store/redux';
-import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
+import { ItemsManagementFormMode } from '../itemsManagementForm.types';
 import { itemsManagementFormSelectors } from '../slice/formSlice';
 
 export const useFormActions = (closeForm: () => void) => {

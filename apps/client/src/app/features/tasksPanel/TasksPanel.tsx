@@ -1,3 +1,4 @@
+import { ItemsManagementFormMode } from '@features/itemsManagementForm/itemsManagementForm.types';
 import { listActions } from '@features/listsPanel/slice/listSlice';
 import { useItemsViewMode } from '@hooks/useItemsViewMode';
 import { useOpenForm } from '@hooks/useOpenForm';
@@ -7,7 +8,6 @@ import { useAppDispatch } from '@store/redux';
 import { Button } from '@ui/button/Button';
 import { PanelLayout } from '@ui/panelLayout/PanelLayout';
 import { ScrollableList } from '@ui/scrollableList/ScrollableList';
-import { ItemsManagementFormMode } from '@utils/itemsManagementFormOptions';
 import { memo } from 'react';
 import { LuCirclePlus } from 'react-icons/lu';
 import { TiArrowBack } from 'react-icons/ti';

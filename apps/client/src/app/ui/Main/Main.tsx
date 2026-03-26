@@ -1,5 +1,5 @@
-import { ItemsManagementForm } from '@features/forms/itemsManagement/ItemsManagementForm';
-import { itemsManagementFormSelectors } from '@features/forms/itemsManagement/slice/formSlice';
+import { ItemsManagementForm } from '@features/itemsManagementForm/ItemsManagementForm';
+import { itemsManagementFormSelectors } from '@features/itemsManagementForm/slice/formSlice';
 import { ListsPanel } from '@features/listsPanel/ListsPanel';
 import { listSelectors } from '@features/listsPanel/slice/listSlice';
 import { TasksPanel } from '@features/tasksPanel/TasksPanel';

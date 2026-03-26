@@ -1,6 +1,6 @@
-import { itemsManagementFormActions } from '@features/forms/itemsManagement/slice/formSlice';
+import { type ItemsManagementFormOptions } from '@features/itemsManagementForm/itemsManagementForm.types';
+import { itemsManagementFormActions } from '@features/itemsManagementForm/slice/formSlice';
 import { useAppDispatch } from '@store/redux';
-import { type ItemsManagementFormOptions } from '@utils/itemsManagementFormOptions';
 import { useCallback } from 'react';
 
 export const useOpenForm = () => {
