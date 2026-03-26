@@ -1,9 +1,9 @@
-import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@utils/cn';
+import { cva, type VariantProps } from 'class-variance-authority';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-xl font-medium whitespace-nowrap transition-transform active:scale-[0.96] disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center rounded-xl font-medium whitespace-nowrap disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       intent: {
@@ -18,10 +18,15 @@ const buttonVariants = cva(
         lg: 'h-12 px-8 py-4 text-lg',
         icon: 'size-10',
       },
+      transformed: {
+        true: 'transition-transform active:scale-[0.96]',
+        false: '',
+      },
     },
     defaultVariants: {
       intent: 'primary',
       size: 'md',
+      transformed: true,
     },
   },
 );
@@ -31,9 +36,16 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
     children: ReactNode;
   };
 
-export const Button = ({ intent, size, className, children, ...rest }: ButtonProps) => {
+export const Button = ({
+  intent,
+  size,
+  transformed,
+  className,
+  children,
+  ...rest
+}: ButtonProps) => {
   return (
-    <button className={cn(buttonVariants({ intent, size, className }))} {...rest}>
+    <button className={cn(buttonVariants({ intent, size, transformed, className }))} {...rest}>
       {children}
     </button>
   );

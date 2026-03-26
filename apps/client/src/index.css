@@ -4,6 +4,12 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@layer base {
+  body {
+    @apply bg-gradient-from sm:bg-primary-bg antialiased;
+  }
+}
+
 @theme {
   --color-primary-bg: white;
   --color-secondary-bg: oklch(98.4% 0.003 247.858);
@@ -22,6 +28,9 @@
 
   --color-scrollbar-thumb: oklch(88% 0.015 255);
   --color-scrollbar-thumb-hover: oklch(82% 0.02 255);
+
+  --color-gradient-from: oklch(85% 0.08 260);
+  --color-gradient-to: var(--color-secondary-bg);
 }
 
 @layer theme {
@@ -43,6 +52,9 @@
 
     --color-scrollbar-thumb: oklch(35% 0.02 257);
     --color-scrollbar-thumb-hover: oklch(42% 0.025 257);
+
+    --color-gradient-from: oklch(22% 0.04 260);
+    --color-gradient-to: var(--color-primary-bg);
   }
 }
 
@@ -57,5 +69,28 @@
   }
   .title-error {
     @apply ring-error border-error rounded-md border-1;
+  }
+  .bg-gradient {
+    @apply bg-linear-to-b from-[var(--color-gradient-from)] to-[var(--color-gradient-to)];
+  }
+  .input-field {
+    @apply placeholder:text-muted-text text-secondary-text w-full cursor-text p-2 placeholder:italic focus:outline-none;
+  }
+  .input-label {
+    @apply bg-secondary-bg text-muted-text w-full rounded-md;
+  }
+  .glass-card {
+    /* Базовые стили: размытие, скругление и переход темы */
+    @apply border shadow-2xl backdrop-blur-xl transition-all duration-500;
+
+    /* Светлая тема */
+    @apply border-white/50 bg-white/40;
+
+    /* Темная тема */
+    /* Используем очень слабую прозрачность белого или вторичный фон */
+    &.dark,
+    .dark & {
+      @apply border-white/10 bg-white/[0.03] shadow-[0_20px_50px_rgba(0,0,0,0.3)];
+    }
   }
 }
