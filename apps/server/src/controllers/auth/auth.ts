@@ -11,12 +11,12 @@ import {
 import { sendAuthResponse } from './sendAuthResponse';
 
 export const registerController: RequestHandler = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    throw new ValidationError('parameter "email" and "password" are required');
+  const { username, email, password } = req.body;
+  if (!username || !email || !password) {
+    throw new ValidationError('parameter "username", "email" and "password" are required');
   }
 
-  const result = await saveUser(email, password);
+  const result = await saveUser(username, email, password);
   sendAuthResponse(res, 201, result);
 });
 

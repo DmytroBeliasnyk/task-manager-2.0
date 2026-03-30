@@ -10,8 +10,7 @@ import {
 } from '../../repo/auth/auth';
 import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
 
-export const saveUser = async (email: string, password: string) => {
-  const username = email.split('@')[0];
+export const saveUser = async (username: string, email: string, password: string) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await saveUserInDB(email, hashedPassword, username);
