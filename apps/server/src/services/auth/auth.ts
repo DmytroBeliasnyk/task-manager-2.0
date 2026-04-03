@@ -1,6 +1,6 @@
+import { ERROR } from '@shared/constants/auth';
 import bcrypt from 'bcryptjs';
-import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
-import { verifyRefreshToken } from 'src/utils/jwt';
+import InvalidCredentialsError from '../../errors/InvalidCredentialsError';
 import {
   deleteRefreshTokenFromDB,
   getUserByEmail,
@@ -8,7 +8,7 @@ import {
   saveRefreshToken,
   saveUserInDB,
 } from '../../repo/auth/auth';
-import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../utils/jwt';
 
 export const saveUser = async (username: string, email: string, password: string) => {
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -23,11 +23,17 @@ export const saveUser = async (username: string, email: string, password: string
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const { user, hashedPassword } = await getUserByEmail(email);
-  console.log(user);
+  const res = await getUserByEmail(email);
+  if (!res) {
+    throw new InvalidCredentialsError(ERROR.INVALID_CREDENTIALS, { email: ERROR.INVALID_EMAIL });
+  }
+
+  const { user, hashedPassword } = res;
   const isPasswordValid = await bcrypt.compare(password, hashedPassword);
   if (!isPasswordValid) {
-    throw new InvalidCredentialsError('Invalid password.');
+    throw new InvalidCredentialsError(ERROR.INVALID_CREDENTIALS, {
+      password: ERROR.INVALID_PASSWORD,
+    });
   }
 
   const accessToken = generateAccessToken(user.id);

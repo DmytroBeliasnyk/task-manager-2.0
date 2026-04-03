@@ -1,12 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { ErrorResponse } from '@shared/types/response';
+import { NextFunction, Request, Response } from 'express';
+import InvalidCredentialsError from '../errors/InvalidCredentialsError';
 import NonExistentIDError from '../errors/NonExistentIDError';
 import ValidationError from '../errors/ValidationError';
-import InvalidCredentialsError from '../errors/InvalidCredentialsError';
-
-export interface ErrorResponse {
-  message: string;
-  status?: number;
-}
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction): void => {
   console.error('Error:', {
@@ -19,6 +15,7 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
 
   let status = 500;
   let message = 'Internal server error';
+  let errors: unknown = undefined;
 
   if (err instanceof NonExistentIDError) {
     status = 400;
@@ -27,11 +24,15 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
     status = 400;
     message = err.message;
   } else if (err instanceof InvalidCredentialsError) {
-    status = 401;
+    status = err.status;
     message = err.message;
+    errors = err.data;
   } else if (err instanceof Error) {
     message = err.message || message;
   }
 
-  res.status(status).json({ message });
+  const response: ErrorResponse = { message };
+  if (errors) response.errors = errors;
+
+  res.status(status).json(response);
 };

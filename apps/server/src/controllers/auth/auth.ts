@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
-import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
-import ValidationError from 'src/errors/ValidationError';
-import { asyncHandler } from 'src/middleware/asyncHandler';
+import InvalidCredentialsError from '../../errors/InvalidCredentialsError';
+import ValidationError from '../../errors/ValidationError';
+import { asyncHandler } from '../../middleware/asyncHandler';
 import {
   deleteRefreshToken,
   loginUser,

@@ -5,16 +5,14 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "outDir": "dist",
+    "rootDir": "../../",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "@shared/*": ["../../shared/*"]
     }
   },
-  "include": ["src",
-    "../../shared"
-  ]
+  "include": ["src/**/*", "../../shared/**/*"]
 }

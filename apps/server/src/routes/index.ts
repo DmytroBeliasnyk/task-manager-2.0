@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authMiddleware } from 'src/middleware/auth';
+import { authMiddleware } from '../middleware/auth';
 import { apiRouter } from './api';
 import { authRouter } from './auth';
 

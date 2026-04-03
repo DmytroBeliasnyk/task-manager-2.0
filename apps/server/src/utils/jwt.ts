@@ -1,6 +1,6 @@
 import { UserId } from '@shared/types/user';
 import jwt from 'jsonwebtoken';
-import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
+import InvalidCredentialsError from '../errors/InvalidCredentialsError';
 
 export const generateAccessToken = (userId: UserId): string => {
   const secret = getAccessTokenSecret();

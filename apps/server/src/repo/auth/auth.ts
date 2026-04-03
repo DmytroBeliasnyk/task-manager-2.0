@@ -1,6 +1,8 @@
+import { ERROR } from '@shared/constants/auth';
 import { User, UserId } from '@shared/types/user';
-import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
+import { DatabaseError } from 'pg';
 import { db } from '../../db/db';
+import InvalidCredentialsError from '../../errors/InvalidCredentialsError';
 
 export const saveUserInDB = async (email: string, hashedPassword: string, username: string) => {
   const query = `
@@ -11,20 +13,29 @@ export const saveUserInDB = async (email: string, hashedPassword: string, userna
 
   try {
     const res = await db.query<User>(query, [email, hashedPassword, username]);
-    if (!res.rowCount) {
-      throw new Error('Failed to save user');
-    }
 
     return res.rows[0];
   } catch (err) {
-    console.error('DB error while saving new user: ', err);
+    if (err instanceof DatabaseError && err.code === '23505') {
+      const constraint = err.constraint || '';
+      if (constraint === 'users_username_key') {
+        throw new InvalidCredentialsError(ERROR.NO_UNIQUE_DATA, {
+          username: ERROR.NO_UNIQUE_USERNAME,
+        });
+      }
+
+      if (constraint === 'users_email_key') {
+        throw new InvalidCredentialsError(ERROR.NO_UNIQUE_DATA, { email: ERROR.NO_UNIQUE_EMAIL });
+      }
+    }
+
     throw err;
   }
 };
 
 export const getUserByEmail = async (
   email: string,
-): Promise<{ user: User; hashedPassword: string }> => {
+): Promise<{ user: User; hashedPassword: string } | null> => {
   const query = 'SELECT * FROM users WHERE email=$1';
 
   try {
@@ -34,11 +45,11 @@ export const getUserByEmail = async (
       hashed_password: string;
       username: string;
     }>(query, [email]);
-    if (!res.rowCount) {
-      throw new InvalidCredentialsError('Invalid email.');
-    }
 
-    const { hashed_password: hashedPassword, ...user } = res.rows[0];
+    const row = res.rows[0];
+    if (!row) return null;
+
+    const { hashed_password: hashedPassword, ...user } = row;
     return { user, hashedPassword };
   } catch (err) {
     console.error('DB error while fetching user by email: ', err);

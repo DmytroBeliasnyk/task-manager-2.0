@@ -1,6 +1,6 @@
-import InvalidCredentialsError from 'src/errors/InvalidCredentialsError';
-import { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken } from 'src/utils/jwt';
+import { NextFunction, Request, Response } from 'express';
+import InvalidCredentialsError from '../errors/InvalidCredentialsError';
+import { verifyAccessToken } from '../utils/jwt';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authorizationHeader = req.headers.authorization;
