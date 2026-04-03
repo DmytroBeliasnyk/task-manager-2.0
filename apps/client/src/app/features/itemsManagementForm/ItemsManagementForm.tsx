@@ -1,4 +1,5 @@
 import { Button } from '@ui/button/Button';
+import { Input } from '@ui/input/Input';
 import { useCallback, useEffect, useRef } from 'react';
 import { useCloseForm } from './hooks/useCloseForm';
 import { useFormActions } from './hooks/useFormActions';
@@ -34,19 +35,16 @@ export const ItemsManagementForm = () => {
         <form action={formAction} className="flex flex-col gap-2">
           {!isDeleteForm ? (
             <>
-              <label className="input-label">
-                <input
-                  className="input-field"
-                  type={'text'}
-                  name={'title'}
-                  ref={inputTitleRef}
-                  placeholder={'Title'}
-                  defaultValue={inputTitleValue}
-                  onChange={clearTitleError}
-                  required
-                />
-              </label>
-              <label className="input-label h-36">
+              <Input
+                type={'text'}
+                name={'title'}
+                ref={inputTitleRef}
+                placeholder={'Title'}
+                defaultValue={inputTitleValue}
+                onChange={clearTitleError}
+                required
+              />
+              <label className="bg-secondary-bg text-muted-text h-36 w-full rounded-md">
                 <textarea
                   className="placeholder:text-muted-text text-secondary-text scrollbar-thin scrollbar-theme size-full cursor-text resize-none p-2 placeholder:italic focus:outline-none"
                   name={'description'}
@@ -58,17 +56,14 @@ export const ItemsManagementForm = () => {
           ) : (
             <>
               <p className="text-secondary-text">{`To confirm, type "${inputTitleValue}" in the field below`}</p>
-              <label className="input-label">
-                <input
-                  className="input-field"
-                  type={'text'}
-                  name={'title'}
-                  ref={inputTitleRef}
-                  placeholder={'Confirm title'}
-                  onChange={clearTitleError}
-                  required
-                />
-              </label>
+              <Input
+                type={'text'}
+                name={'title'}
+                ref={inputTitleRef}
+                placeholder={'Confirm title'}
+                onChange={clearTitleError}
+                required
+              />
             </>
           )}
           <div className="mt-2 flex justify-end gap-4">
