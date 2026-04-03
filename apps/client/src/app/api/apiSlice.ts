@@ -30,7 +30,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   await mutex.waitForUnlock();
 
   let res = await baseQuery(args, api, extraOptions);
-  if (res?.error?.status === 401) {
+  if (res?.error?.status === 401 && !res?.meta?.request.url.includes('/auth')) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
 

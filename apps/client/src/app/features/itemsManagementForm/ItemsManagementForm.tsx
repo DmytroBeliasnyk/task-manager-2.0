@@ -48,7 +48,7 @@ export const ItemsManagementForm = () => {
               </label>
               <label className="input-label h-36">
                 <textarea
-                  className="input-field scrollbar-thin scrollbar-theme size-full cursor-text resize-none"
+                  className="placeholder:text-muted-text text-secondary-text scrollbar-thin scrollbar-theme size-full cursor-text resize-none p-2 placeholder:italic focus:outline-none"
                   name={'description'}
                   placeholder={'Description'}
                   defaultValue={inputDescriptionValue}

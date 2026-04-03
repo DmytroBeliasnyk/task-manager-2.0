@@ -34,6 +34,7 @@ export const PromoSection = ({
       <Button
         intent="outline"
         className="hidden bg-transparent sm:block"
+        data-auth-switch
         onClick={() => setForm(isFormSignUp ? 'signin' : 'signup')}
       >
         {isFormSignUp ? AUTH_TEXTS.signIn.switchBtn : AUTH_TEXTS.signUp.switchBtn}

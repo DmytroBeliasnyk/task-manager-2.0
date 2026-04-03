@@ -19,6 +19,7 @@ export const FormSwitcher = ({
       <Button
         intent="ghost"
         transformed={false}
+        data-auth-switch
         className={`relative z-10 flex-1 transition-colors duration-500 ${
           isFormSignUp ? 'text-primary-text' : 'text-secondary-text'
         }`}
@@ -29,6 +30,7 @@ export const FormSwitcher = ({
       <Button
         intent="ghost"
         transformed={false}
+        data-auth-switch
         className={`relative z-10 flex-1 transition-colors duration-500 ${
           isFormSignUp ? 'text-secondary-text' : 'text-primary-text'
         }`}
