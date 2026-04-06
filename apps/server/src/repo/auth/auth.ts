@@ -58,10 +58,10 @@ export const getUserByEmail = async (
 };
 
 export const getUserById = async (id: UserId) => {
-  const query = 'SELECT * FROM users WHERE id=$1';
+  const query = 'SELECT id, email, username FROM users WHERE id=$1';
 
   try {
-    const res = await db.query(query, [id]);
+    const res = await db.query<User>(query, [id]);
     if (!res.rowCount) {
       throw new InvalidCredentialsError('Invalid user id.');
     }
