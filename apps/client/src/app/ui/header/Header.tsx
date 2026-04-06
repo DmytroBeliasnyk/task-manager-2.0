@@ -1,11 +1,15 @@
+import { authSelectors } from '@features/auth/slice/authSlice';
+import { useDebouncedCallback } from '@hooks/useDebouncedCallback';
+import type { User } from '@shared/types/user';
+import { useAppSelector } from '@store/redux';
+import { ThemeToggler } from '@ui/toggler/ThemeToggler';
 import { useContext } from 'react';
 import { FaAngleDown, FaSearch } from 'react-icons/fa';
 import { HeaderContext } from './HeaderContextProvider';
-import { useDebouncedCallback } from '@hooks/useDebouncedCallback';
-import { ThemeToggler } from '@ui/toggler/ThemeToggler';
 
 export const Header = () => {
   const { setSearchValue } = useContext(HeaderContext);
+  const user = useAppSelector(authSelectors.selectUser) as User;
 
   const debouncedChangeHandler = useDebouncedCallback(
     (value: string) => setSearchValue(value),
@@ -27,7 +31,7 @@ export const Header = () => {
         <ThemeToggler />
         <div className="text-secondary-text flex items-center gap-2 text-base font-medium">
           <div className="bg-accent/20 size-8 rounded-full">{/* avatar */}</div>
-          <span className="hidden sm:block">username</span>
+          <span className="hidden sm:block">{user.username}</span>
           <FaAngleDown />
           {/* open options list */}
         </div>
