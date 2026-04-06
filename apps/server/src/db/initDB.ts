@@ -6,11 +6,29 @@ export async function initDB(): Promise<void> {
     await client.query('BEGIN');
 
     await client.query(`
+            CREATE TABLE IF NOT EXISTS users
+            (
+                id          SERIAL PRIMARY KEY,
+                email       TEXT UNIQUE NOT NULL,
+                hashed_password    TEXT NOT NULL,
+                username    TEXT UNIQUE NOT NULL
+            );`);
+
+    await client.query(`
+            CREATE TABLE IF NOT EXISTS tokens
+            (
+                id          SERIAL PRIMARY KEY,
+                user_id     INTEGER REFERENCES users (id) ON DELETE CASCADE UNIQUE,
+                token       TEXT NOT NULL
+            );`);
+
+    await client.query(`
         CREATE TABLE IF NOT EXISTS lists
         (
             id          TEXT PRIMARY KEY,
             title       TEXT NOT NULL,
-            description TEXT
+            description TEXT,
+            user_id INTEGER REFERENCES users (id) ON DELETE CASCADE
         );`);
 
     await client.query(`
@@ -20,23 +38,6 @@ export async function initDB(): Promise<void> {
             title       TEXT NOT NULL,
             description TEXT,
             list_id     TEXT REFERENCES lists (id) ON DELETE CASCADE 
-        );`);
-
-    await client.query(`
-        CREATE TABLE IF NOT EXISTS users
-        (
-            id          SERIAL PRIMARY KEY,
-            email       TEXT UNIQUE NOT NULL,
-            hashed_password    TEXT NOT NULL,
-            username    TEXT UNIQUE NOT NULL
-        );`);
-
-    await client.query(`
-        CREATE TABLE IF NOT EXISTS tokens
-        (
-            id          SERIAL PRIMARY KEY,
-            user_id     INTEGER REFERENCES users (id) ON DELETE CASCADE UNIQUE,
-            token       TEXT NOT NULL
         );`);
 
     await client.query('COMMIT');

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
-import { getLists, saveList, updateList, deleteList } from '../../services/api/list';
 import ValidationError from '../../errors/ValidationError';
 import { asyncHandler } from '../../middleware/asyncHandler';
+import { deleteList, getLists, saveList, updateList } from '../../services/api/list';
 
 export const addListController: RequestHandler = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
@@ -9,12 +9,12 @@ export const addListController: RequestHandler = asyncHandler(async (req, res) =
     throw new ValidationError('parameter "title" is required');
   }
 
-  const id = await saveList(title, description);
+  const id = await saveList(title, description, res.locals.userId);
   res.status(201).json({ id: id });
 });
 
 export const getListsController: RequestHandler = asyncHandler(async (req, res) => {
-  const lists = await getLists();
+  const lists = await getLists(res.locals.userId);
   res.status(200).json({ lists: lists });
 });
 

@@ -1,24 +1,27 @@
 import { List, ListId } from '@shared/types/list';
+import { UserId } from '@shared/types/user';
 import { db } from '../../db/db';
 import NonExistentIDError from '../../errors/NonExistentIDError';
 
-export async function saveListInDB(id: ListId, title: string, description: string) {
+export async function saveListInDB(id: ListId, title: string, description: string, userId: UserId) {
   const query = `
-      INSERT INTO lists (id, title, description)
-      values ($1, $2, $3)`;
+      INSERT INTO lists (id, title, description, user_id)
+      values ($1, $2, $3, $4)`;
 
   try {
-    await db.query(query, [id, title, description]);
+    await db.query(query, [id, title, description, userId]);
   } catch (err) {
     console.error('DB error while saving list: ', err);
     throw err;
   }
 }
 
-export async function getListsFromDB() {
+export async function getListsFromDB(userId: UserId) {
   try {
-    const res = await db.query<List>(`SELECT *
-                                      from lists`);
+    const res = await db.query<List>(
+      `SELECT id, title, description from lists WHERE user_id = $1`,
+      [userId],
+    );
     return res.rows;
   } catch (err) {
     console.error('DB error while fetching lists: ', err);
@@ -32,7 +35,7 @@ export async function saveUpdatedList(id: ListId, title: string, description: st
       SET title=$1,
           description=$2
       WHERE id = $3
-      RETURNING *`;
+      RETURNING id, title, description`;
 
   try {
     const res = await db.query<List>(query, [title, description, id]);
