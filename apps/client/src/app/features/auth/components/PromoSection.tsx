@@ -23,11 +23,11 @@ export const PromoSection = ({
     <div
       className={`flex flex-col items-center gap-2 text-center transition-transform duration-700 ease-in-out ${isFormSignUp ? 'sm:translate-x-full' : 'sm:translate-x-0'}`}
     >
-      <h1 className="text-secondary-text text-2xl font-bold">
+      <h1 className="text-primary-text text-2xl font-bold">
         <span className="sm:hidden">{mobileContent.title}</span>
         <span className="hidden sm:inline">{desktopContent.title}</span>
       </h1>
-      <p className="text-muted-text w-8/10">
+      <p className="text-secondary-text w-8/10">
         <span className="sm:hidden">{mobileContent.subTitle}</span>
         <span className="hidden sm:inline">{desktopContent.subTitle}</span>
       </p>

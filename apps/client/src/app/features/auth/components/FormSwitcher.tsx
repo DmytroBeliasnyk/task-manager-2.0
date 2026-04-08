@@ -12,7 +12,7 @@ export const FormSwitcher = ({
   return (
     <nav className="glass-card relative flex w-4/5 rounded-3xl p-1 sm:hidden">
       <div
-        className={`bg-accent absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-3xl transition-transform duration-500 ease-in-out ${
+        className={`bg-accent/30 absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-3xl transition-transform duration-500 ease-in-out ${
           isFormSignUp ? 'translate-x-0' : 'translate-x-full'
         }`}
       />

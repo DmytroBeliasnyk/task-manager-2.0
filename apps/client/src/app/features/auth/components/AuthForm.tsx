@@ -136,7 +136,7 @@ export const AuthForm = ({ isFormSignUp }: { isFormSignUp: boolean }) => {
         {!isFormSignUp && (
           <a
             href="#"
-            className="text-muted-text hover:text-primary-text"
+            className="text-secondary-text hover:text-primary-text"
             onClick={() => alert("Doesn't implemented.")}
           >
             {AUTH_TEXTS.forgotPassword}
