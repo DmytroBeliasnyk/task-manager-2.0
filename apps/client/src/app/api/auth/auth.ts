@@ -64,7 +64,7 @@ const auth = apiSlice.injectEndpoints({
           dispatch(authActions.logOut());
           dispatch(apiSlice.util.resetApiState());
         } catch (err) {
-          console.error('Login failed', err);
+          console.error('Logout failed', err);
         }
       },
     }),

@@ -1,15 +1,21 @@
+import { useLogOutMutation } from '@api/auth/auth';
 import { authSelectors } from '@features/auth/slice/authSlice';
 import { useDebouncedCallback } from '@hooks/useDebouncedCallback';
 import type { User } from '@shared/types/user';
 import { useAppSelector } from '@store/redux';
+import { Button } from '@ui/button/Button';
 import { ThemeToggler } from '@ui/toggler/ThemeToggler';
 import { useContext } from 'react';
-import { FaAngleDown, FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
+import { MdOutlineAccountCircle, MdOutlineLogout } from 'react-icons/md';
+import { useNavigate } from 'react-router';
 import { HeaderContext } from './HeaderContextProvider';
 
 export const Header = () => {
   const { setSearchValue } = useContext(HeaderContext);
   const user = useAppSelector(authSelectors.selectUser) as User;
+  const [logout] = useLogOutMutation();
+  const navigate = useNavigate();
 
   const debouncedChangeHandler = useDebouncedCallback(
     (value: string) => setSearchValue(value),
@@ -30,10 +36,18 @@ export const Header = () => {
       <div className="flex gap-2">
         <ThemeToggler />
         <div className="text-secondary-text flex items-center gap-2 text-base font-medium">
-          <div className="bg-accent/20 size-8 rounded-full">{/* avatar */}</div>
+          <MdOutlineAccountCircle className="bg-accent/20 text-secondary-text h-full w-fit rounded-full p-1" />
           <span className="hidden sm:block">{user.username}</span>
-          <FaAngleDown />
-          {/* open options list */}
+          <Button
+            intent="ghost"
+            size="icon"
+            onClick={() => {
+              logout();
+              navigate('/auth');
+            }}
+          >
+            <MdOutlineLogout className="text-2xl" />
+          </Button>
         </div>
       </div>
     </header>
