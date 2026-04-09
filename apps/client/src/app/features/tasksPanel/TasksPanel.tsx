@@ -1,40 +1,20 @@
 import { ItemsManagementFormMode } from '@features/itemsManagementForm/itemsManagementForm.types';
-import { listActions } from '@features/listsPanel/slice/listSlice';
-import { useItemsViewMode } from '@hooks/useItemsViewMode';
 import { useOpenForm } from '@hooks/useOpenForm';
 import type { List } from '@shared/types/list';
 import type { Task } from '@shared/types/task';
-import { useAppDispatch } from '@store/redux';
 import { Button } from '@ui/button/Button';
-import { PanelLayout } from '@ui/panelLayout/PanelLayout';
 import { ScrollableList } from '@ui/scrollableList/ScrollableList';
 import { memo } from 'react';
 import { LuCirclePlus } from 'react-icons/lu';
-import { TiArrowBack } from 'react-icons/ti';
 import { useTasks } from './hooks/useTasks';
 import { TaskCard } from './TaskCard';
 
-export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
-  const { viewMode, setViewMode } = useItemsViewMode('tasks');
-  const openForm = useOpenForm();
-  const tasks = useTasks(selectedList.id);
-  const dispatch = useAppDispatch();
+export const TasksPanel = memo(
+  ({ selectedList, viewMode }: { selectedList: List; viewMode: 'list' | 'grid' }) => {
+    const openForm = useOpenForm();
+    const tasks = useTasks(selectedList.id);
 
-  return (
-    <PanelLayout
-      title={selectedList.title}
-      setViewMode={setViewMode}
-      buttonBack={
-        <Button
-          size="icon"
-          intent="ghost"
-          className="size-fit transition-colors duration-300"
-          onClick={() => dispatch(listActions.removeSelectedList())}
-        >
-          <TiArrowBack />
-        </Button>
-      }
-    >
+    return (
       <ScrollableList
         viewMode={viewMode}
         items={tasks}
@@ -52,6 +32,6 @@ export const TasksPanel = memo(({ selectedList }: { selectedList: List }) => {
           </Button>
         }
       />
-    </PanelLayout>
-  );
-});
+    );
+  },
+);

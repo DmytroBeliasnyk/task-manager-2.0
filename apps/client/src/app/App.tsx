@@ -1,8 +1,8 @@
 import { AuthPage } from '@features/auth/AuthPage';
 import { RequireAuth } from '@features/auth/RequireAuth';
-import { Dashboard } from '@features/Dashboard';
-import { Settings } from '@features/Settings';
 import { Route, Routes } from 'react-router';
+import { Dashboard } from './features/dashboard/Dashboard';
+import { Settings } from './features/settings/Settings';
 import { Layout } from './ui/layout/Layout';
 
 export const App = () => {
