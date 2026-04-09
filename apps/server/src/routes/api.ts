@@ -11,6 +11,7 @@ import {
   getTasksController,
   updateTaskController,
 } from '../controllers/api/task';
+import { updateUserData, updateUserPassword } from '../controllers/api/user';
 
 export const apiRouter: Router = express.Router();
 
@@ -23,3 +24,6 @@ apiRouter.post('/task', addTaskController);
 apiRouter.get('/task', getTasksController);
 apiRouter.put('/task/:id', updateTaskController);
 apiRouter.delete('/task/:id', deleteTaskController);
+
+apiRouter.put('/user/profile', updateUserData);
+apiRouter.put('/user/password', updateUserPassword);
