@@ -11,7 +11,9 @@ export const PanelLayout = ({
         <header className="border-border flex items-center justify-between gap-4 border-b pb-2 text-2xl font-semibold">
           {header}
         </header>
-        {children}
+        <div className="scrollbar-thin scrollbar-theme size-full min-h-0 overflow-y-auto overscroll-contain pr-2">
+          {children}
+        </div>
       </section>
     </main>
   );

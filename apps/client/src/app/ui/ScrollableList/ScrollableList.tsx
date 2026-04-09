@@ -24,11 +24,9 @@ export const ScrollableList = <T,>({
   button?: React.ReactNode;
 }) => {
   return (
-    <div className="scrollbar-thin scrollbar-theme size-full min-h-0 overflow-y-auto overscroll-contain pr-2">
-      <div className={viewModeVariants({ viewMode })}>
-        {items.map((item) => renderItem(item))}
-        {button}
-      </div>
+    <div className={viewModeVariants({ viewMode })}>
+      {items.map((item) => renderItem(item))}
+      {button}
     </div>
   );
 };
