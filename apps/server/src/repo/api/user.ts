@@ -30,4 +30,16 @@ export const saveUpdatedUser = async (id: UserId, username: string, email: strin
   }
 };
 
-export const saveUpdatedPassword = async () => {};
+export const saveUpdatedPassword = async (id: UserId, hashedPassword: string) => {
+  const query = `UPDATE users SET hashed_password=$1 WHERE id=$2`;
+
+  try {
+    const res = await db.query(query, [hashedPassword, id]);
+    if (res.rowCount === 0) {
+      throw new NonExistentIDError(`Failed to update password: user with id ${id} not found`);
+    }
+  } catch (err) {
+    console.error('DB error: ', err);
+    throw err;
+  }
+};
