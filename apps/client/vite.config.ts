@@ -15,6 +15,7 @@ export default defineConfig({
       '@utils': path.resolve(__dirname, 'src/app/utils'),
       '@hooks': path.resolve(__dirname, 'src/app/hooks'),
       '@consts': path.resolve(__dirname, 'src/app/consts'),
+      '@f-types': path.resolve(__dirname, 'src/app/types'),
     },
   },
   server: {

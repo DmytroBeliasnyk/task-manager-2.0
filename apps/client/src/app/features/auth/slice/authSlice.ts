@@ -24,6 +24,9 @@ export const authSlice = createSlice({
       state.user = user;
       state.accessToken = accessToken;
     },
+    updateUser: (state, action: PayloadAction<{ user: User }>) => {
+      state.user = action.payload.user;
+    },
     logOut: (state) => {
       state.user = undefined;
       state.accessToken = undefined;

@@ -1,5 +1,5 @@
 import { useLoginMutation, useRegisterMutation } from '@api/auth/auth';
-import { isAuthErrors, isFetchBaseQueryError } from '@api/helpers/helpers';
+import { isFetchBaseQueryError, isUserDataErrors } from '@api/helpers/helpers';
 import type { UserDataErrors, UserDataFieldName } from '@shared/types/userdata';
 
 export const useSubmitForm = (isFormSignUp: boolean) => {
@@ -28,7 +28,7 @@ export const useSubmitForm = (isFormSignUp: boolean) => {
       let message = 'Unknown error occured. Please try again.';
 
       if (isFetchBaseQueryError(err)) {
-        if (isAuthErrors(err)) {
+        if (isUserDataErrors(err)) {
           errors = err.data.errors;
           message = err.data.message;
         }

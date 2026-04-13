@@ -1,9 +1,6 @@
 import { FORM_ERRORS } from '@consts/errors';
-import type { UserDataFieldName as FieldName } from '@shared/types/userdata';
+import type { FieldName, FormErrors, FormFields } from '@f-types/form';
 import { useCallback, useState } from 'react';
-
-type FormErrors = Partial<Record<FieldName, string>>;
-type FormFields = Partial<Record<FieldName, string>>;
 
 export const useValidateUserData = () => {
   const [errors, setErrors] = useState<FormErrors>({});

@@ -15,7 +15,8 @@
       "@features/*": ["./src/app/features/*"],
       "@utils/*": ["./src/app/utils/*"],
       "@hooks/*": ["./src/app/hooks/*"],
-      "@consts/*": ["./src/app/consts/*"]
+      "@consts/*": ["./src/app/consts/*"],
+      "@f-types/*": ["./src/app/types/*"]
     },
 
     /* Bundler mode */
