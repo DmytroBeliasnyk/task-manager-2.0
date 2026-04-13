@@ -1,4 +1,4 @@
-import { ERROR } from '@shared/constants/auth';
+import { ERROR } from '@shared/constants/userdata';
 import { User, UserId } from '@shared/types/user';
 import { DatabaseError } from 'pg';
 import { db } from '../../db/db';

@@ -1,8 +1,9 @@
+import { ERROR } from '@shared/constants/userdata';
 import { User, UserId } from '@shared/types/user';
 import { DatabaseError } from 'pg';
 import { db } from '../../db/db';
+import InvalidCredentialsError from '../../errors/InvalidCredentialsError';
 import NonExistentIDError from '../../errors/NonExistentIDError';
-import ValidationError from '../../errors/ValidationError';
 
 export const saveUpdatedUser = async (id: UserId, username: string, email: string) => {
   const query = `UPDATE users SET username=COALESCE($1, username), email=COALESCE($2, email) WHERE id=$3 RETURNING id, username, email`;
@@ -18,11 +19,15 @@ export const saveUpdatedUser = async (id: UserId, username: string, email: strin
     if (err instanceof DatabaseError && err.code === '23505') {
       const constraint = err.constraint || '';
       if (constraint === 'users_username_key') {
-        throw new ValidationError('Username already exist.');
+        throw new InvalidCredentialsError(ERROR.NO_UNIQUE_USERNAME, {
+          username: ERROR.NO_UNIQUE_USERNAME,
+        });
       }
 
       if (constraint === 'users_email_key') {
-        throw new ValidationError('Email already exist.');
+        throw new InvalidCredentialsError(ERROR.NO_UNIQUE_EMAIL, {
+          email: ERROR.NO_UNIQUE_EMAIL,
+        });
       }
     }
 

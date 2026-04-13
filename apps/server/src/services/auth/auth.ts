@@ -1,4 +1,4 @@
-import { ERROR } from '@shared/constants/auth';
+import { ERROR } from '@shared/constants/userdata';
 import bcrypt from 'bcryptjs';
 import InvalidCredentialsError from '../../errors/InvalidCredentialsError';
 import {
