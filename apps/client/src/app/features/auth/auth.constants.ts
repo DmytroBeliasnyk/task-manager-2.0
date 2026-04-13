@@ -15,9 +15,3 @@ export const AUTH_TEXTS = {
   },
   forgotPassword: 'Forgot your password?',
 } as const;
-
-export const ERRORS = {
-  email: 'Invalid email address',
-  password: 'Password must be at least 6 characters',
-  username: 'Username must be at least 3 characters',
-} as const;

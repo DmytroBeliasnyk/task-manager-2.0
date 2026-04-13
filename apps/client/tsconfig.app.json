@@ -14,7 +14,8 @@
       "@ui/*": ["./src/app/ui/*"],
       "@features/*": ["./src/app/features/*"],
       "@utils/*": ["./src/app/utils/*"],
-      "@hooks/*": ["./src/app/hooks/*"]
+      "@hooks/*": ["./src/app/hooks/*"],
+      "@consts/*": ["./src/app/consts/*"]
     },
 
     /* Bundler mode */

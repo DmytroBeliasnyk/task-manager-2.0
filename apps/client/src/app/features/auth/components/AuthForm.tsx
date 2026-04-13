@@ -1,3 +1,4 @@
+import { useValidateUserData } from '@hooks/useFormValidation';
 import type { AuthFieldName } from '@shared/types/auth';
 import { Button } from '@ui/button/Button';
 import { Input } from '@ui/input/Input';
@@ -5,14 +6,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { FaGithub, FaGooglePlusG, FaLinkedinIn } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { AUTH_TEXTS } from '../auth.constants';
-import { useFormValidation } from '../hooks/useFormValidation';
 import { useSubmitForm } from '../hooks/useSubmitForm';
 
 export const AuthForm = ({ isFormSignUp }: { isFormSignUp: boolean }) => {
   const [generalError, setGeneralError] = useState<string | null>(null);
 
   const { validate, validateField, setError, errors, clearErrors, clearFieldError } =
-    useFormValidation(isFormSignUp);
+    useValidateUserData();
 
   const { submitForm, isLoading } = useSubmitForm(isFormSignUp);
   const navigate = useNavigate();
