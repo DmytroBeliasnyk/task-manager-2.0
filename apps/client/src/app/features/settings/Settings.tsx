@@ -1,9 +1,10 @@
 import { PanelLayout } from '@ui/panelLayout/PanelLayout';
+import { SetNewDataForm } from './components/SetNewDataForm';
 
 export const Settings = () => {
   return (
     <PanelLayout header={'Settings'}>
-      <h1>Settings</h1>
+      <SetNewDataForm />
     </PanelLayout>
   );
 };
