@@ -1,5 +1,5 @@
 import { FORM_ERRORS } from '@consts/errors';
-import type { AuthFieldName as FieldName } from '@shared/types/auth';
+import type { UserDataFieldName as FieldName } from '@shared/types/userdata';
 import { useCallback, useState } from 'react';
 
 type FormErrors = Partial<Record<FieldName, string>>;

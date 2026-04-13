@@ -1,13 +1,13 @@
 import { useLoginMutation, useRegisterMutation } from '@api/auth/auth';
 import { isAuthErrors, isFetchBaseQueryError } from '@api/helpers/helpers';
-import type { AuthErrors, AuthFieldName } from '@shared/types/auth';
+import type { UserDataErrors, UserDataFieldName } from '@shared/types/userdata';
 
 export const useSubmitForm = (isFormSignUp: boolean) => {
   const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
   const [login, { isLoading: isLoginLoading }] = useLoginMutation();
 
   const submitForm = async (formData: FormData) => {
-    const formEntries = Object.fromEntries(formData) as Partial<Record<AuthFieldName, string>>;
+    const formEntries = Object.fromEntries(formData) as Partial<Record<UserDataFieldName, string>>;
 
     const userData = {
       username: formEntries.username || '',
@@ -24,7 +24,7 @@ export const useSubmitForm = (isFormSignUp: boolean) => {
 
       return { isSuccess: true, errors: undefined, message: 'Success' };
     } catch (err) {
-      let errors: AuthErrors | undefined = undefined;
+      let errors: UserDataErrors | undefined = undefined;
       let message = 'Unknown error occured. Please try again.';
 
       if (isFetchBaseQueryError(err)) {

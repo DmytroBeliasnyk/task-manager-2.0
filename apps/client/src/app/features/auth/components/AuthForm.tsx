@@ -1,5 +1,5 @@
 import { useValidateUserData } from '@hooks/useFormValidation';
-import type { AuthFieldName } from '@shared/types/auth';
+import type { UserDataFieldName } from '@shared/types/userdata';
 import { Button } from '@ui/button/Button';
 import { Input } from '@ui/input/Input';
 import { useCallback, useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ export const AuthForm = ({ isFormSignUp }: { isFormSignUp: boolean }) => {
       } else {
         if (errors) {
           Object.entries(errors).forEach(([key, error]) => {
-            const field = key as AuthFieldName;
+            const field = key as UserDataFieldName;
             setError(field, error);
           });
         } else {
