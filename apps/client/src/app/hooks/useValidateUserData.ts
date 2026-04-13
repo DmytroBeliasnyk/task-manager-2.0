@@ -50,14 +50,18 @@ function validateForm(values: FormFields) {
   const fields = Object.keys(values) as FieldName[];
 
   fields.forEach((field) => {
-    const error = validateFormField(field, values[field]);
+    const error = validateFormField(field, values[field], values.password);
     if (error) errors[field] = error;
   });
 
   return errors;
 }
 
-function validateFormField(fieldName: FieldName, value: string = ''): string | undefined {
+function validateFormField(
+  fieldName: FieldName,
+  value: string = '',
+  password: string = '',
+): string | undefined {
   switch (fieldName) {
     case 'username':
       if (value.length < 3) return FORM_ERRORS.username;
@@ -67,6 +71,9 @@ function validateFormField(fieldName: FieldName, value: string = ''): string | u
       return;
     case 'password':
       if (value.length < 6) return FORM_ERRORS.password;
+      return;
+    case 'confirmPassword':
+      if (value !== password) return FORM_ERRORS.confirmPassword;
       return;
     default:
       return;

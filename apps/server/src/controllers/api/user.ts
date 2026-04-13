@@ -17,13 +17,13 @@ export const updateUserData: RequestHandler = asyncHandler(async (req, res) => {
 });
 
 export const updateUserPassword: RequestHandler = asyncHandler(async (req, res) => {
-  const { newPassword } = req.body;
-  if (!newPassword) {
+  const { password } = req.body;
+  if (!password) {
     throw new ValidationError('parameter password is required');
   }
 
   const userId = res.locals.userId as UserId;
-  await updatePassword(userId, newPassword);
+  await updatePassword(userId, password);
 
   res.status(200).send();
 });

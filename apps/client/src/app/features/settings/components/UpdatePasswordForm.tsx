@@ -1,34 +1,28 @@
 import type { FieldName } from '@f-types/form';
-import { authSelectors } from '@features/auth/slice/authSlice';
 import { useValidateUserData } from '@hooks/useValidateUserData';
-import type { User } from '@shared/types/user';
-import { useAppSelector } from '@store/redux';
 import { Button } from '@ui/button/Button';
 import { Input } from '@ui/input/Input';
 import { useCallback, useState } from 'react';
-import { useSubmitProfile } from '../hooks/useSubmitProfile';
-import { useValidateProfile } from '../hooks/useValidateProfile';
+import { useSubmitPassword } from '../hooks/useSubmitPassword';
 
-export const SetNewDataForm = () => {
+export const UpdatePasswordForm = () => {
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [message, setMessage] = useState<string>('');
-  const user = useAppSelector(authSelectors.selectUser) as User;
+
   const { validate, validateField, setError, errors, clearErrors, clearFieldError } =
     useValidateUserData();
-  const isProfileUnchanged = useValidateProfile(user);
-  const { submit, isLoading } = useSubmitProfile();
+  const { submit, isLoading } = useSubmitPassword();
 
   const formAction = useCallback(
     async (formData: FormData) => {
-      if (isProfileUnchanged(formData)) {
-        setMessage("There's nothing to update");
-        return;
-      }
-
       if (!validate(formData)) return;
 
       const { isSuccess, errors, message } = await submit(formData);
       if (isSuccess) {
         clearErrors();
+        setPassword('');
+        setConfirmPassword('');
         setMessage(message);
       } else if (errors) {
         Object.entries(errors).forEach(([key, error]) => {
@@ -41,33 +35,34 @@ export const SetNewDataForm = () => {
   );
 
   return (
-    <div className="border-border flex w-5/6 flex-col gap-4 border-b pb-2 sm:w-1/2">
-      <h2 className="text-secondary-text text-lg">Change your personal data:</h2>
+    <div className="border-border mt-4 flex w-5/6 flex-col gap-4 border-b pb-2 sm:w-1/2">
+      <h2 className="text-secondary-text text-lg">Change your password:</h2>
       <form action={formAction} className="flex flex-col gap-2">
         <Input
-          type={'email'}
-          name={'email'}
-          defaultValue={user.email}
+          type={'password'}
+          name={'password'}
+          value={password}
           labelClassName="bg-primary-bg"
-          inputTitle="Email:"
-          error={errors.email}
-          onBlur={(e) => validateField('email', e.target.value)}
-          onChange={() => {
+          inputTitle="New password:"
+          error={errors.password}
+          onBlur={(e) => validateField('password', e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
             message && setMessage('');
-            errors.email && clearFieldError('email');
+            errors.password && clearFieldError('password');
           }}
         />
         <Input
-          type={'text'}
-          name={'username'}
-          defaultValue={user.username}
+          type={'password'}
+          name={'confirmPassword'}
+          value={confirmPassword}
           labelClassName="bg-primary-bg"
-          inputTitle="Username:"
-          error={errors.username}
-          onBlur={(e) => validateField('username', e.target.value)}
-          onChange={() => {
+          inputTitle="Confirm password:"
+          error={errors.confirmPassword}
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
             message && setMessage('');
-            errors.username && clearFieldError('username');
+            errors.confirmPassword && clearFieldError('confirmPassword');
           }}
         />
         {message && <span className="text-success ml-2 text-sm">{message}</span>}
